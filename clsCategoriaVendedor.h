@@ -1,0 +1,26 @@
+#ifndef CLSCATEGORIAVENDEDOR_H_INCLUDED
+#define CLSCATEGORIAVENDEDOR_H_INCLUDED
+
+class CategoriaVendedor {
+    private:
+        int idCategoria;
+        char descripcion[30];
+        float porcentajeComision;
+        bool estado;
+    public:
+        CategoriaVendedor();
+        void setIdCategoria(int id);
+        void setDescripcion(const char *d);
+        void setComision(float c);
+        void setEstado(bool e);
+        int getIdCategoria();
+        const char *getDescripcion();
+        float getPorcentajeComision();
+        bool getEstado();
+        void Cargar();
+        void Mostrar();
+        ~CategoriaVendedor();
+};
+
+
+#endif // CLSCATEGORIAVENDEDOR_H_INCLUDED

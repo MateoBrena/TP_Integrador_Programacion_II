@@ -1,9 +1,10 @@
 #include <iostream>
-
 using namespace std;
+#include "clsMenu.h"
 
 int main()
 {
-    cout << "Concesionaria++" << endl;
+    Menu menu;
+    menu.iniciar();
     return 0;
 }
