@@ -6,30 +6,30 @@
 
 class Persona{
     protected:
-        char nombre[50];
-        char apellido[50];
         int dni;
+        char nombre[20];
+        char apellido[20];
         char mail[30];
         Fecha fechaNacimiento;
         Domicilio domicilio;
         bool estado;
     public:
-        Persona(const char *n="Fulano", const char *a="Perez", int d=0, const char *m="mail@ejemplo.com", Fecha fN=Fecha(), Domicilio dom=Domicilio());
+        Persona(int d=0, const char *n="Fulano", const char *a="Perez", const char *m="mail@ejemplo.com", Fecha fN=Fecha(), Domicilio dom=Domicilio());
+        void setDni(int);
         void setNombre(const char *n);
         void setApellido(const char *a);
-        void setDni(int);
         void setMail(const char *m);
         void setFechaNacimiento(Fecha fechaNac);
         void setDomicilio(Domicilio);
         void setEstado(bool e);
+        int getDni();
         const char *getNombre();
         const char *getApellido();
-        int getDni();
         const char *getMail();
         Fecha getFechaNacimiento();
         Domicilio getDomicilio();
         bool getEstado();
-        void Cargar();
+        void Cargar(int d);
         void Mostrar();
         ~Persona();
 };

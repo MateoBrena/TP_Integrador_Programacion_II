@@ -4,7 +4,7 @@ using namespace std;
 
 int main()
 {
-    Menu menu;
-    menu.iniciar();
+    Menu menuPrincipal;
+    menuPrincipal.iniciar();
     return 0;
 }

@@ -1,12 +1,15 @@
 #ifndef CLSDOMICILIO_H_INCLUDED
 #define CLSDOMICILIO_H_INCLUDED
 
+#include <iostream>
+#include <cstring>
+
 class Domicilio{
     private:
-        char calle[50];
+        char calle[30];
         int altura;
-        char localidad[50];
-        char provincia[50];
+        char localidad[30];
+        char provincia[30];
         int codigoPostal;
     public:
         Domicilio(const char *c = "Calle Falsa", int a = 123, const char *l = "Una localidad", const char *p = "Buenos Aires", int cp=1234);
@@ -20,8 +23,9 @@ class Domicilio{
         const char *getProvincia();
         int getAltura();
         int getCodigoPostal();
-        void cargar();
-        void mostrar();
+        void Cargar();
+        void Mostrar();
+        std::string MostrarFormato();
         ~Domicilio();
 
 };

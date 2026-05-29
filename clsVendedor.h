@@ -5,15 +5,18 @@
 
 class Vendedor : public Persona {
     private:
+        int nroVendedor;
         int categoria;
         Fecha fechaContratacion;
     public:
-        Vendedor();
+        Vendedor(int n=0, int c=1, Fecha f=Fecha());
+        void setNroVendedor(int n);
         void setCategoria(int c);
         void setFechaContratacion(Fecha f);
+        int getNroVendedor();
         int getCategoria();
         Fecha getFechaContratacion();
-        void Cargar();
+        void Cargar(int d, int n);
         void Mostrar();
         ~Vendedor();
 };

@@ -6,12 +6,10 @@
 using namespace std;
 
 class Menu {
-    private:
-
     public:
         Menu();
-        void mostrarSeleccionado(string texto, int posX, int posY, bool seleccionado);
-        int mostrarMenu(string opciones[], int cantidad, int x, int y);
+        void mostrarSeleccionado(string texto, int posX, int posY, bool seleccionado, int anchoMenu);
+        int mostrarMenu(string opciones[], int cantidad, int x, int y, int anchoMenu);
         void iniciar();
 };
 

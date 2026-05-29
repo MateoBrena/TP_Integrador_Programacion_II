@@ -1,46 +1,165 @@
 #include <iostream>
 #include <string>
+#include <iomanip>
 #include "rlutil.h"
 #include "clsMenu.h"
 #include "clsMenuCliente.h"
+#include "clsArchivoClientes.h"
 using namespace std;
 
 menuCliente::menuCliente(){
 }
 
-void menuCliente::iniciar(){
+void menuCliente::mostrarCabeceraTabla(int posX, int posY) {
+    rlutil::setColor(rlutil::CYAN);
+    rlutil::locate(posX, posY);
+    cout << (char)218<<"----"<<(char)194<<"--------------"<<(char)194<<"--------------"<<(char)194<<"----------"<<(char)194;
+    cout << "------------------------------"<<(char)194<<"------------"<<(char)194<<"------------------------"<<(char)191;
 
+    rlutil::locate(posX, posY + 1);
+    cout << "| " << left << setw(2) << "NC"
+         << " | " << setw(12) << "NOMBRE"
+         << " | " << setw(12) << "APELLIDO"
+         << " | " << setw(8) << "D.N.I"
+         << " | " << setw(28) << "DOMICILIO"
+         << " | " << setw(10) << "FECHA NAC."
+         << " | " << setw(22) << "MAIL" << " |";
+
+    rlutil::locate(posX, posY + 2);
+    cout <<(char)195<<"----"<<(char)197<<"--------------"<<(char)197<<"--------------"<<(char)197<<"----------"<<(char)197;
+    cout << "------------------------------"<<(char)197<<"------------"<<(char)197<<"------------------------|";
+
+    rlutil::setColor(rlutil::WHITE);
+}
+
+void menuCliente::tablaClientes(int posX, int posY){
+    rlutil::setColor(rlutil::WHITE);
+
+    int filaActual = posY + 3;
+    ArchivoClientes arc;
+    int cant = arc.contarRegistros();
+    Cliente c;
+    for(int i=0; i<cant; i++){
+        rlutil::locate(posX, filaActual);
+        c = arc.leerRegistro(i);
+        cout << "| " << left << setw(2) << c.getNroCliente()
+        << " | " << setw(12) << c.getNombre()
+        << " | " << setw(12) << c.getApellido()
+        << " | " << setw(8) << c.getDni()
+        << " | " << setw(28) << c.getDomicilio().MostrarFormato()
+        << " | " << setw(10) << c.getFechaNacimiento().mostrarFechaFormato();
+        cout << " | " << setw(22) << c.getMail() << " |";
+
+        if(i == cant-1){
+            rlutil::locate(posX, filaActual + 1);
+            cout <<(char)192<<"----"<<(char)193<<"--------------"<<(char)193<<"--------------"<<(char)193<<"----------"<<(char)193;
+            cout<<"------------------------------"<<(char)193<<"------------"<<(char)193<<"------------------------"<<(char)217;
+        }else{
+            rlutil::locate(posX, filaActual + 1);
+            cout <<(char)195<<"----"<<(char)197<<"--------------"<<(char)197<<"--------------"<<(char)197<<"----------"<<(char)197;
+            cout << "------------------------------"<<(char)197<<"------------"<<(char)197<<"------------------------|";
+        }
+        filaActual += 2;
+    }
+
+}
+
+void menuCliente::subMenuModificarCliente(){
     rlutil::hidecursor();
-    string opcionesMenu[] = {" Alta cliente ", " Buscar cliente ", " Listar clientes ", " Modificar cliente ", " Baja cliente ", " Volver " };
+    string opcionesMenu[] = {"Modificar Nombre", "Modificar Apellido", "Modificar Mail", "Modificar fecha de nac.",
+    "Modificar domicilio", "Modificar telefono" ,"Volver" };
+    int anchoMenu = 32;
+    int cantidadOpciones = 7;
+
+    int consolaAncho = rlutil::tcols();
+    int consolaAlto = rlutil::trows();
+    int posX = (consolaAncho - anchoMenu) / 2;
+    int posY = (consolaAlto - (cantidadOpciones + 4)) / 2;
+
+    if (posX < 1) posX = 1;
+    if (posY < 1) posY = 1;
+    Menu m;
+    ArchivoClientes arc;
     while(true){
         system("cls");
-        cout << "   =====================   " << endl;
-        cout << "   |SUBMENU DE CLIENTES|   " << endl;
-        cout << "   =====================   " << endl;
-        Menu m;
-        int opc = m.mostrarMenu(opcionesMenu, 6, 6, 4);
+        rlutil::locate(posX, posY);
+        cout << "================================";
+        rlutil::locate(posX, posY + 1);
+        cout << "|      MODIFICAR CLIENTES      |";
+        rlutil::locate(posX, posY + 2);
+        cout << "================================";
+        int opc = m.mostrarMenu(opcionesMenu, cantidadOpciones, posX, posY + 4, anchoMenu);
         system("cls");
         switch(opc){
             case 0:
-                //altaCliente();
-                cout << "Alta cliente";
+                arc.modificarNombre();
                 break;
             case 1:
-                //buscarCliente();
-                cout << "Buscar cliente";
+                arc.modificarApellido();
+                break;
+            case 2:
+                arc.modificarMail();
+                break;
+            case 3:
+                arc.modificarFechaNacimiento();
+                break;
+            case 4:
+                arc.modificarDomicilio();
+                break;
+            case 5:
+                arc.modificarTelefono();
+                break;
+            case 6:
+                return;
+        }
+        system("pause>nul");
+    }
+}
+
+void menuCliente::iniciar(){
+
+    rlutil::hidecursor();
+    string opcionesMenu[] = {"Alta cliente", "Buscar cliente", "Listar clientes", "Modificar cliente", "Baja cliente", "Volver" };
+    int anchoMenu = 32;
+    int cantidadOpciones = 6;
+
+    int consolaAncho = rlutil::tcols();
+    int consolaAlto = rlutil::trows();
+    int posX = (consolaAncho - anchoMenu) / 2;
+    int posY = (consolaAlto - (cantidadOpciones + 4)) / 2;
+
+    if (posX < 1) posX = 1;
+    if (posY < 1) posY = 1;
+    Menu m;
+    ArchivoClientes arc;
+    while(true){
+        system("cls");
+        rlutil::locate(posX, posY);
+        cout << "================================";
+        rlutil::locate(posX, posY + 1);
+        cout << "|      SUBMENU DE CLIENTES      |";
+        rlutil::locate(posX, posY + 2);
+        cout << "================================";
+        int opc = m.mostrarMenu(opcionesMenu, cantidadOpciones, posX, posY + 4, anchoMenu);
+        system("cls");
+        switch(opc){
+            case 0:
+                arc.altaCliente();
+                continue;
+            case 1:
+                arc.buscarPorDni();
                 break;
             case 2:
                 //listarClientes();
-                cout << "Listado de  clientes";
+                mostrarCabeceraTabla(2,2);
+                tablaClientes(2,2);
                 break;
             case 3:
-                //modificarCliente();
-                cout << "Modificar clientes";
-                break;
+                subMenuModificarCliente();
+                continue;
             case 4:
-                //bajaCliente();
-                cout << "Baja cliente";
-                break;
+                arc.bajaCliente();
+                continue;
             case 5:
                 return;
         }

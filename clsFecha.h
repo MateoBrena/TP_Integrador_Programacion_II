@@ -1,6 +1,9 @@
 #ifndef CLSFECHA_H_INCLUDED
 #define CLSFECHA_H_INCLUDED
 
+
+#include <iostream>
+#include <cstring>
 class Fecha{
     private:
         int dia, mes, anio;
@@ -17,6 +20,7 @@ class Fecha{
         void setHoy();
         void cargarFecha();
         void mostrarFecha();
+        std::string mostrarFechaFormato();
         bool operator<(Fecha);
         bool operator<=(Fecha);
         ~Fecha();

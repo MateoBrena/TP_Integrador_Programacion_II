@@ -110,6 +110,10 @@ void Fecha::mostrarFecha(){
     cout << dia << "/" << mes << "/" << anio << endl;
 }
 
+string Fecha::mostrarFechaFormato(){
+    return to_string(dia) + "/" + to_string(mes) + "/" + to_string(anio);
+}
+
 bool Fecha::operator<(Fecha obj){
     if(anio < obj.anio or (anio == obj.anio and mes < obj.mes) or (anio == obj.anio and mes == obj.mes and dia < obj.dia)){
         return true;

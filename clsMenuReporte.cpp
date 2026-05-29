@@ -11,14 +11,27 @@ menuReporte::menuReporte(){
 void menuReporte::iniciar(){
 
     rlutil::hidecursor();
-    string opcionesMenu[] = {" Reporte 1 ", " Reporte 2 ", " Reporte 3 ", " Reporte 4 ", " Reporte 5 ", " Volver " };
+    string opcionesMenu[] = {"Reporte 1", "Reporte 2", "Reporte 3", "Reporte 4", "Reporte 5", "Volver" };
+    int anchoMenu = 32;
+    int cantidadOpciones = 6;
+
+    int consolaAncho = rlutil::tcols();
+    int consolaAlto = rlutil::trows();
+    int posX = (consolaAncho - anchoMenu) / 2;
+    int posY = (consolaAlto - (cantidadOpciones + 4)) / 2;
+
+    if (posX < 1) posX = 1;
+    if (posY < 1) posY = 1;
+    Menu m;
     while(true){
         system("cls");
-        cout << "   =========================   " << endl;
-        cout << "   |  SUBMENU DE REPORTES  |   " << endl;
-        cout << "   =========================   " << endl;
-        Menu m;
-        int opc = m.mostrarMenu(opcionesMenu, 6, 6, 4);
+        rlutil::locate(posX, posY);
+        cout << "================================";
+        rlutil::locate(posX, posY + 1);
+        cout << "|      SUBMENU DE REPORTES      |";
+        rlutil::locate(posX, posY + 2);
+        cout << "================================";
+        int opc = m.mostrarMenu(opcionesMenu, cantidadOpciones, posX, posY + 4, anchoMenu);
         system("cls");
         switch(opc){
             case 0:

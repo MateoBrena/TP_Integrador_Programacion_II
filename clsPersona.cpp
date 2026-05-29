@@ -4,14 +4,18 @@
 #include "cargarCadena.h"
 using namespace std;
 
-Persona::Persona(const char *n, const char *a, int d, const char *m, Fecha fN, Domicilio dom){
+Persona::Persona(int d, const char *n, const char *a, const char *m, Fecha fN, Domicilio dom){
+    dni = d;
     strcpy(nombre, n);
     strcpy(apellido, a);
-    dni = d;
     strcpy(mail, m);
     fechaNacimiento = fN;
     domicilio = dom;
     estado = true;
+}
+
+void Persona::setDni(int d){
+    dni = d;
 }
 
 void Persona::setNombre(const char *n){
@@ -20,10 +24,6 @@ void Persona::setNombre(const char *n){
 
 void Persona::setApellido(const char *a){
     strcpy(apellido, a);
-}
-
-void Persona::setDni(int d){
-    dni = d;
 }
 
 void Persona::setMail(const char *m){
@@ -42,16 +42,16 @@ void Persona::setEstado(bool e){
     estado = e;
 }
 
+int Persona::getDni(){
+    return dni;
+}
+
 const char* Persona::getNombre(){
     return nombre;
 }
 
 const char* Persona::getApellido(){
     return apellido;
-}
-
-int Persona::getDni(){
-    return dni;
 }
 
 const char* Persona::getMail(){
@@ -70,30 +70,34 @@ bool Persona::getEstado(){
     return estado;
 }
 
-void Persona::Cargar(){
+void Persona::Cargar(int d){
+    if(d == -1){
+        cout<<"DNI: ";
+        cin>>dni;
+    }else{
+        dni = d;
+    }
     cout<<"Nombre: ";
-    cargarCadena(nombre, 50);
+    cargarCadena(nombre, 20);
     cout<<"Apellido: ";
-    cargarCadena(apellido, 50);
-    cout<<"DNI: ";
-    cin>>dni;
+    cargarCadena(apellido, 20);
     cout<<"Mail: ";
     cargarCadena(mail, 30);
-    cout<<"Fecha de nacimiento: ";
+    cout<<"Fecha de nacimiento: " << endl;
     fechaNacimiento.cargarFecha();
-    cout<<"Domicilio: ";
-    domicilio.cargar();
+    cout<<"Domicilio: " << endl;
+    domicilio.Cargar();
 }
 
 void Persona::Mostrar(){
+    cout<<"DNI: "<<dni<<endl;
     cout<<"Nombre: "<<nombre<<endl;
     cout<<"Apellido: "<<apellido<<endl;
-    cout<<"DNI: "<<dni<<endl;
     cout<<"Mail: "<<mail<<endl;
     cout<<"Fecha de nacimiento: ";
     fechaNacimiento.mostrarFecha();
     cout<<"Domicilio: "<<endl;
-    domicilio.mostrar();
+    domicilio.Mostrar();
 }
 
 Persona::~Persona(){
