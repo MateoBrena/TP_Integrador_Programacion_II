@@ -36,6 +36,10 @@
 		<Unit filename="cargarCadena.h" />
 		<Unit filename="clsArchivoClientes.cpp" />
 		<Unit filename="clsArchivoClientes.h" />
+		<Unit filename="clsArchivosCategoriaVendedor.cpp" />
+		<Unit filename="clsArchivosCategoriaVendedor.h" />
+		<Unit filename="clsArchivosVendedores.cpp" />
+		<Unit filename="clsArchivosVendedores.h" />
 		<Unit filename="clsCategoriaVendedor.cpp" />
 		<Unit filename="clsCategoriaVendedor.h" />
 		<Unit filename="clsCliente.cpp" />

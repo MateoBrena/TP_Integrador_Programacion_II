@@ -202,3 +202,215 @@
 	"clsArchivoClientes.h"
 	"cargarCadena.h"
 
+1779760489 source:c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\cargarcadena.cpp
+	<iostream>
+	<cstring>
+
+1780088997 source:c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clscategoriavendedor.cpp
+	<iostream>
+	<cstring>
+	"clsCategoriaVendedor.h"
+	"cargarCadena.h"
+
+1780088997 c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clscategoriavendedor.h
+
+1779760489 c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\cargarcadena.h
+
+1779760489 source:c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsmarca.cpp
+	<iostream>
+	<cstring>
+	"clsMarca.h"
+
+1779760489 c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsmarca.h
+
+1779760489 source:c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsvehiculo.cpp
+	<iostream>
+	<cstring>
+	"clsVehiculo.h"
+	"cargarCadena.h"
+
+1779760489 c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsvehiculo.h
+	"clsFecha.h"
+
+1780084486 c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsfecha.h
+	<iostream>
+	<cstring>
+
+1779760489 source:c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsventa.cpp
+	<iostream>
+	"clsVenta.h"
+
+1779760489 c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsventa.h
+	"clsFecha.h"
+
+1780084486 source:c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsarchivoclientes.cpp
+	<iostream>
+	<cstring>
+	"clsArchivoClientes.h"
+	"cargarCadena.h"
+
+1780084486 c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsarchivoclientes.h
+	"clsCliente.h"
+
+1780084486 c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clscliente.h
+	"clsPersona.h"
+
+1780084486 c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clspersona.h
+	"clsFecha.h"
+	"clsDomicilio.h"
+
+1780084486 c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsdomicilio.h
+	<iostream>
+	<cstring>
+
+1780084486 source:c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clscliente.cpp
+	<iostream>
+	<cstring>
+	"clsCliente.h"
+	"cargarCadena.h"
+
+1780084486 source:c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsdomicilio.cpp
+	<iostream>
+	<cstring>
+	<iomanip>
+	"rlutil.h"
+	"clsDomicilio.h"
+	"cargarCadena.h"
+
+1779760489 c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\rlutil.h
+	<iostream>
+	<string>
+	<cstdio>
+	<stdio.h>
+	<string.h>
+	<windows.h>
+	<conio.h>
+	<termios.h>
+	<unistd.h>
+	<sys/ioctl.h>
+	<sys/types.h>
+	<sys/time.h>
+
+1780084486 source:c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsfecha.cpp
+	<iostream>
+	"clsFecha.h"
+
+1780084486 source:c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsmenu.cpp
+	<iostream>
+	"rlutil.h"
+	<string>
+	"clsMenu.h"
+	"clsMenuCliente.h"
+	"clsMenuVendedor.h"
+	"clsMenuCategoriaVendedor.h"
+	"clsMenuMarca.h"
+	"clsMenuVehiculo.h"
+	"clsMenuVenta.h"
+	"clsMenuReporte.h"
+
+1780084486 c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsmenu.h
+	<iostream>
+	<string>
+
+1780084486 c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsmenucliente.h
+
+1779760489 c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsmenuvendedor.h
+
+1779760489 c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsmenucategoriavendedor.h
+
+1779760489 c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsmenumarca.h
+
+1779760489 c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsmenuvehiculo.h
+
+1779760489 c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsmenuventa.h
+
+1779760489 c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsmenureporte.h
+
+1780084486 source:c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsmenucategoriavendedor.cpp
+	<iostream>
+	<string>
+	"rlutil.h"
+	"clsMenu.h"
+	"clsMenuCategoriaVendedor.h"
+
+1780084486 source:c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsmenucliente.cpp
+	<iostream>
+	<string>
+	<iomanip>
+	"rlutil.h"
+	"clsMenu.h"
+	"clsMenuCliente.h"
+	"clsArchivoClientes.h"
+
+1780084486 source:c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsmenumarca.cpp
+	<iostream>
+	<string>
+	"rlutil.h"
+	"clsMenu.h"
+	"clsMenuMarca.h"
+
+1780084486 source:c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsmenureporte.cpp
+	<iostream>
+	<string>
+	"rlutil.h"
+	"clsMenu.h"
+	"clsMenuReporte.h"
+
+1780084486 source:c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsmenuvehiculo.cpp
+	<iostream>
+	<string>
+	"rlutil.h"
+	"clsMenu.h"
+	"clsMenuVehiculo.h"
+
+1780084486 source:c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsmenuvendedor.cpp
+	<iostream>
+	<string>
+	"rlutil.h"
+	"clsMenu.h"
+	"clsMenuVendedor.h"
+
+1780084486 source:c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsmenuventa.cpp
+	<iostream>
+	<string>
+	"rlutil.h"
+	"clsMenu.h"
+	"clsMenuVenta.h"
+
+1780084486 source:c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clspersona.cpp
+	<iostream>
+	<cstring>
+	"clsPersona.h"
+	"cargarCadena.h"
+
+1780088123 source:c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsvendedor.cpp
+	<iostream>
+	<cstring>
+	"clsVendedor.h"
+	"cargarCadena.h"
+
+1780088123 c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsvendedor.h
+	"clsPersona.h"
+
+1780084486 source:c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\main.cpp
+	<iostream>
+	"clsMenu.h"
+
+1780086943 source:c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsarchivosvendedores.cpp
+	<iostream>
+	<cstring>
+	"clsArchivosVendedores.h"
+	"cargarCadena.h"
+
+1780085722 c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsarchivosvendedores.h
+	"clsVendedor.h"
+
+1780088457 source:c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsarchivoscategoriavendedor.cpp
+	<iostream>
+	<cstring>
+	"clsArchivosCategoriaVendedor.h"
+	"cargarCadena.h"
+
+1780087841 c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsarchivoscategoriavendedor.h
+	"clsCategoriaVendedor.h"
+
