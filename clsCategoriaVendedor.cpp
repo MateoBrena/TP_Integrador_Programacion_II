@@ -39,7 +39,7 @@ bool CategoriaVendedor::getEstado(){
     return estado;
 }
 
-void CategoriaVendedor::Cargar(){
+void CategoriaVendedor::Cargar(int id){
     cout << "ID de categoria: ";
     cin >> idCategoria;
     cout << "Descripcion: ";
