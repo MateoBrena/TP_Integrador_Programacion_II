@@ -42,10 +42,21 @@ void Cliente::Cargar(int d, int n){
     cargarCadena(telefono,12);
 }
 
+void Cliente::cuitFormato(const char *c){
+    if (c== nullptr) return;
+    cout << c[0] << c[1] << "-";
+
+    for (int i = 2; i < 10; ++i) {
+        cout << cuit[i];
+    }
+    cout << "-" << cuit[10] << std::endl;
+}
+
 void Cliente::Mostrar(){
     cout << "Nro Cliente: " << nroCliente << endl;
     Persona::Mostrar();
-    cout << "CUIT: " << cuit << endl;
+    cout << "CUIT: ";
+    cuitFormato(cuit);
     cout << "Telefono: " << telefono << endl;
 }
 

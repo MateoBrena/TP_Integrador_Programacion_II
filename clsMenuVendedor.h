@@ -7,6 +7,7 @@ class menuVendedor {
     public:
         menuVendedor();
         void iniciar();
+        ~menuVendedor();
 };
 
 #endif // CLSMENUVENDEDOR_H_INCLUDED

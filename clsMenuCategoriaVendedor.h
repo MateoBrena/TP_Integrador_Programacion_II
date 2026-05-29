@@ -7,6 +7,7 @@ class menuCategoriaVendedor {
     public:
         menuCategoriaVendedor();
         void iniciar();
+        ~menuCategoriaVendedor();
 };
 
 #endif // CLSMENUCATEGORIAVENDEDOR_H_INCLUDED

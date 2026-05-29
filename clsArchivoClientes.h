@@ -12,6 +12,7 @@ class ArchivoClientes {
         bool grabarRegistro(Cliente);
         bool modificarRegistro(Cliente, int);
         int contarRegistros();
+        int contarRegistrosActivos(int ca);
         int buscarRegistro(int);
         void listarRegistros();
         void altaCliente();

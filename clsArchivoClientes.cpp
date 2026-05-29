@@ -60,6 +60,19 @@ int ArchivoClientes::contarRegistros(){
     return cant;
 }
 
+int ArchivoClientes::contarRegistrosActivos(int ca){
+
+    int cantActivos = 0;
+    for(int i=0; i<ca; i++){
+        Cliente c = leerRegistro(i);
+        if(c.getEstado()){
+            cantActivos++;
+        }
+    }
+
+    return cantActivos;
+}
+
 int ArchivoClientes::buscarRegistro(int d){
 
     int cantReg = contarRegistros();

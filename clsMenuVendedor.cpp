@@ -9,7 +9,6 @@ menuVendedor::menuVendedor(){
 }
 
 void menuVendedor::iniciar(){
-
     rlutil::hidecursor();
     string opcionesMenu[] = {"Alta vendedor", "Buscar vendedor", "Listar vendedores", "Modificar vendedor", "Baja vendedor", "Volver"};
     int anchoMenu = 32;
@@ -59,4 +58,7 @@ void menuVendedor::iniciar(){
         }
         system("pause>nul");
     }
+}
+
+menuVendedor::~menuVendedor(){
 }

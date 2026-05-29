@@ -7,6 +7,7 @@ class menuReporte {
     public:
         menuReporte();
         void iniciar();
+        ~menuReporte();
 };
 
 #endif // CLSMENUREPORTE_H_INCLUDED

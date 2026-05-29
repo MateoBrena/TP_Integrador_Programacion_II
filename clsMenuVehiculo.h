@@ -7,6 +7,7 @@ class menuVehiculo {
     public:
         menuVehiculo();
         void iniciar();
+        ~menuVehiculo();
 };
 
 #endif // CLSMENUVEHICULO_H_INCLUDED

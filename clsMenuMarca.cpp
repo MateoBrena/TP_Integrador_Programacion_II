@@ -60,3 +60,6 @@ void menuMarca::iniciar(){
         system("pause>nul");
     }
 }
+
+menuMarca::~menuMarca(){
+}

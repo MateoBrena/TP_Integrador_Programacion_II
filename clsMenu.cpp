@@ -13,7 +13,6 @@
 using namespace std;
 
 Menu::Menu(){
-
 }
 
 void Menu::mostrarSeleccionado(string texto, int posX, int posY, bool seleccionado, int anchoMenu){
@@ -143,4 +142,7 @@ void Menu::iniciar(){
                 return;
         }
     }
+}
+
+Menu::~Menu(){
 }

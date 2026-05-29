@@ -17,6 +17,7 @@ class Cliente : public Persona {
         const char * getCuit();
         const char * getTelefono();
         void Cargar(int d, int n);
+        void cuitFormato(const char *c);
         void Mostrar();
         ~Cliente();
 };

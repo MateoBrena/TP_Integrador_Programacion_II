@@ -7,6 +7,7 @@ class menuMarca {
     public:
         menuMarca();
         void iniciar();
+        ~menuMarca();
 };
 
 #endif // CLSMENUMARCA_H_INCLUDED

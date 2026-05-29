@@ -33,22 +33,33 @@ void menuCliente::mostrarCabeceraTabla(int posX, int posY) {
 }
 
 void menuCliente::tablaClientes(int posX, int posY){
-    rlutil::setColor(rlutil::WHITE);
 
-    int filaActual = posY + 3;
     ArchivoClientes arc;
     int cant = arc.contarRegistros();
+    if(cant == 0){
+        cout << "No hay clientes cargados." << endl;
+        return;
+    }
+    int cantActivos = arc.contarRegistrosActivos(cant);
+    if(cantActivos == 0){
+        cout << "No hay clientes activos cargados." << endl;
+        return;
+    }
+    mostrarCabeceraTabla(posX,posY);
+    int filaActual = posY + 3;
     Cliente c;
     for(int i=0; i<cant; i++){
         rlutil::locate(posX, filaActual);
         c = arc.leerRegistro(i);
-        cout << "| " << left << setw(2) << c.getNroCliente()
-        << " | " << setw(12) << c.getNombre()
-        << " | " << setw(12) << c.getApellido()
-        << " | " << setw(8) << c.getDni()
-        << " | " << setw(28) << c.getDomicilio().MostrarFormato()
-        << " | " << setw(10) << c.getFechaNacimiento().mostrarFechaFormato();
-        cout << " | " << setw(22) << c.getMail() << " |";
+        if(c.getEstado()){
+            cout << "| " << left << setw(2) << c.getNroCliente()
+            << " | " << setw(12) << c.getNombre()
+            << " | " << setw(12) << c.getApellido()
+            << " | " << setw(8) << c.getDni()
+            << " | " << setw(28) << c.getDomicilio().MostrarFormato()
+            << " | " << setw(10) << c.getFechaNacimiento().mostrarFechaFormato();
+            cout << " | " << setw(22) << c.getMail() << " |";
+        }
 
         if(i == cant-1){
             rlutil::locate(posX, filaActual + 1);
@@ -150,8 +161,7 @@ void menuCliente::iniciar(){
                 arc.buscarPorDni();
                 break;
             case 2:
-                //listarClientes();
-                mostrarCabeceraTabla(2,2);
+//                arc.listarRegistros();
                 tablaClientes(2,2);
                 break;
             case 3:
@@ -159,10 +169,13 @@ void menuCliente::iniciar(){
                 continue;
             case 4:
                 arc.bajaCliente();
-                continue;
+                break;
             case 5:
                 return;
         }
         system("pause>nul");
     }
+}
+
+menuCliente::~menuCliente(){
 }

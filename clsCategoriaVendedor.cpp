@@ -53,7 +53,7 @@ void CategoriaVendedor::Cargar(){
 void CategoriaVendedor::Mostrar(){
     cout << "ID de Categoria: " << idCategoria << endl;
     cout << "Descripcion: " << descripcion << endl;
-    cout << "Comision: %" << porcentajeComision*100 << endl;
+    cout << "Comision: " << porcentajeComision*100 << "%" <<endl;
 }
 
 CategoriaVendedor::~CategoriaVendedor(){

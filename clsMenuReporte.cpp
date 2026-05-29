@@ -9,7 +9,6 @@ menuReporte::menuReporte(){
 }
 
 void menuReporte::iniciar(){
-
     rlutil::hidecursor();
     string opcionesMenu[] = {"Reporte 1", "Reporte 2", "Reporte 3", "Reporte 4", "Reporte 5", "Volver" };
     int anchoMenu = 32;
@@ -59,4 +58,7 @@ void menuReporte::iniciar(){
         }
         system("pause>nul");
     }
+}
+
+menuReporte::~menuReporte(){
 }

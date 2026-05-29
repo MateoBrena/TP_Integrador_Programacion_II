@@ -10,6 +10,7 @@ class menuCliente {
         void tablaClientes(int posX, int posY);
         void subMenuModificarCliente();
         void iniciar();
+        ~menuCliente();
 };
 
 #endif // CLSMENUCLIENTE_H_INCLUDED

@@ -60,3 +60,6 @@ void menuVehiculo::iniciar(){
         system("pause>nul");
     }
 }
+
+menuVehiculo::~menuVehiculo(){
+}

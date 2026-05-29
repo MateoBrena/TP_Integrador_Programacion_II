@@ -60,3 +60,6 @@ void menuCategoriaVendedor::iniciar(){
         system("pause>nul");
     }
 }
+
+menuCategoriaVendedor::~menuCategoriaVendedor(){
+}

@@ -9,7 +9,6 @@ menuVenta::menuVenta(){
 }
 
 void menuVenta::iniciar(){
-
     rlutil::hidecursor();
     string opcionesMenu[] = {"Alta venta", "Buscar venta", "Listar ventas", "Modificar venta", "Baja venta", "Volver"};
     int anchoMenu = 32;
@@ -59,4 +58,7 @@ void menuVenta::iniciar(){
         }
         system("pause>nul");
     }
+}
+
+menuVenta::~menuVenta(){
 }
