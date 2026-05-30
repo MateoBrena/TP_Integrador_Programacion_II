@@ -60,12 +60,39 @@ int ArchivoCategorias::contarRegistros(){
     return cant;
 }
 
+int ArchivoCategorias::contarRegistrosActivos(int ca){
+
+    int cantActivos = 0;
+    for(int i=0; i<ca; i++){
+        CategoriaVendedor c = leerRegistro(i);
+        if(c.getEstado()){
+            cantActivos++;
+        }
+    }
+
+    return cantActivos;
+}
+
+
 int ArchivoCategorias::buscarRegistro(int d){
 
     int cantReg = contarRegistros();
     for(int i=0; i<cantReg; i++){
         CategoriaVendedor obj = leerRegistro(i);
         if(obj.getIdCategoria() == d){
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+int ArchivoCategorias::buscarRegistroActivo(int d){
+
+    int cantReg = contarRegistros();
+    for(int i=0; i<cantReg; i++){
+        CategoriaVendedor obj = leerRegistro(i);
+        if(obj.getIdCategoria() == d && obj.getEstado()){
             return i;
         }
     }
@@ -87,7 +114,7 @@ void ArchivoCategorias::listarRegistros(){
 
 void ArchivoCategorias::buscarPorId(){
     int d;
-    cout<<"Ingrese el ID de la Categoria: ";
+    cout<<"Ingrese el ID de la categoria: ";
     cin>>d;
     int pos = buscarRegistro(d);
     if(pos < 0){
@@ -95,25 +122,19 @@ void ArchivoCategorias::buscarPorId(){
         return;
     }
     CategoriaVendedor obj = leerRegistro(pos);
-    obj.Mostrar();
+    if(obj.getEstado()){
+        obj.Mostrar();
+    }else{
+        cout << "Error: la categoria con ID " << d << " se encuentra dada de baja.";
+    }
 }
 
 void ArchivoCategorias::altaCategoria(){
     CategoriaVendedor obj;
-    int d;
-    cout << "Ingrese el ID de la Categoria: ";
-    cin >> d;
-    if(d <= 0){
-        cout << "Error: No se puede ingresar un ID igual o menor a cero" << endl;
-        return;
-    }
-    int pos = buscarRegistro(d);
-    if(pos >= 0){
-        cout << endl << "Error: Ya existe una Categoria con ese ID" << endl;
-        return;
-    }
-    obj.Cargar(d);
-    obj.setEstado(true);
+    int cant = contarRegistros();
+    if(cant <0) cant = 0;
+    int nro = cant + 1;
+    obj.Cargar(nro);
     if(grabarRegistro(obj)==false){
         cout<<"Error al grabar el registro"<<endl;
     }
@@ -191,6 +212,7 @@ void ArchivoCategorias::bajaCategoria(){
     }else{
         cout << "Error al procesar la baja." << endl;
     }
+}
 
-
+ArchivoCategorias::~ArchivoCategorias(){
 }

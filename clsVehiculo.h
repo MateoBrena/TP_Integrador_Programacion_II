@@ -17,7 +17,8 @@ class Vehiculo {
         Fecha fechaIngreso;
         bool estado;
     public:
-        Vehiculo();
+        Vehiculo(int d=0, const char *p="AAA123", int iM=1, const char *m="Un modelo", int a=1900, const char *c="Negro",
+        int k=0, float pr=100.00, const char *co="Nafta", Fecha fI=Fecha());
         void setId(int i);
         void setPatente(const char *p);
         void setIdMarca(int iM);

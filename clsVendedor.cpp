@@ -34,11 +34,10 @@ Fecha Vendedor::getFechaContratacion(){
     return fechaContratacion;
 }
 
-void Vendedor::Cargar(int d, int n){
-    Persona::Cargar(d);
+void Vendedor::Cargar(int d, int n, int cat){
     nroVendedor = n;
-    cout << "Categoria: ";
-    cin >> categoria;
+    categoria = cat;
+    Persona::Cargar(d);
     cout << "Fecha de contratacion: ";
     fechaContratacion.cargarFecha();
 }

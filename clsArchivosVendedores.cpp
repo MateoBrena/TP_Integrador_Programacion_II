@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include "clsArchivosVendedores.h"
+#include "clsArchivosCategoriaVendedor.h"
 #include "cargarCadena.h"
 using namespace std;
 
@@ -88,22 +89,25 @@ void ArchivoVendedores::listarRegistros(){
 
 void ArchivoVendedores::buscarPorDni(){
     int d;
-    cout<<"Ingrese el DNI del Vendedor: ";
+    cout<<"Ingrese el DNI del vendedor: ";
     cin>>d;
-
     int pos = buscarRegistro(d);
     if(pos < 0){
         cout << "El DNI ingresado no existe en el archivo" << endl;
         return;
     }
     Vendedor obj = leerRegistro(pos);
-    obj.Mostrar();
+    if(obj.getEstado()){
+        obj.Mostrar();
+    }else{
+        cout << "Error: el vendedor con DNI " << d << " se encuentra dado de baja.";
+    }
 }
 
 void ArchivoVendedores::altaVendedor(){
     Vendedor obj;
     int d;
-    cout << "Ingrese el DNI del Vendedor: ";
+    cout << "Ingrese el DNI del vendedor: ";
     cin >> d;
     if(d <= 0){
         cout << "Error: No se puede ingresar un DNI igual o menor a cero" << endl;
@@ -115,10 +119,19 @@ void ArchivoVendedores::altaVendedor(){
         cout << endl << "Error: Ya existe un cliente con ese DNI" << endl;
         return;
     }
+    int cat;
+    cout << "Ingrese el ID de categoria del vendedor: ";
+    cin >> cat;
+    ArchivoCategorias arcCat;
+    pos = arcCat.buscarRegistroActivo(cat);
+    if(pos == -1){
+        cout << "Error: no existe categoria con ese ID" << endl;
+        return;
+    }
     int cant = arcVen.contarRegistros();
     if(cant <0) cant = 0;
     int nro = cant + 1;
-    obj.Cargar(d, nro);
+    obj.Cargar(d, nro, cat);
     if(arcVen.grabarRegistro(obj)==false){
         cout<<"Error al grabar el registro"<<endl;
     }
@@ -126,7 +139,7 @@ void ArchivoVendedores::altaVendedor(){
 
 void ArchivoVendedores::modificarNombre(){
     int d;
-    cout<<"Ingrese el DNI del Vendedor: ";
+    cout<<"Ingrese el DNI del vendedor: ";
     cin>>d;
     ArchivoVendedores arcVen;
     int pos = arcVen.buscarRegistro(d);
@@ -149,7 +162,7 @@ void ArchivoVendedores::modificarNombre(){
 
 void ArchivoVendedores::modificarApellido(){
     int d;
-    cout<<"Ingrese el DNI del Vendedor: ";
+    cout<<"Ingrese el DNI del vendedor: ";
     cin>>d;
     ArchivoVendedores arcVen;
     int pos = arcVen.buscarRegistro(d);
@@ -172,7 +185,7 @@ void ArchivoVendedores::modificarApellido(){
 
 void ArchivoVendedores::modificarFechaNacimiento(){
     int d;
-    cout<<"Ingrese el DNI del Vendedor: ";
+    cout<<"Ingrese el DNI del vendedor: ";
     cin>>d;
     ArchivoVendedores arcVen;
     int pos = arcVen.buscarRegistro(d);
@@ -185,7 +198,7 @@ void ArchivoVendedores::modificarFechaNacimiento(){
     Fecha faux;
     cout << "Ingrese la nueva fecha de nacimiento: " << endl;
     faux.cargarFecha();
-    obj.setFechaContratacion(faux);
+    obj.setFechaNacimiento(faux);
     if(arcVen.modificarRegistro(obj, pos)){
         cout << endl << "Fecha de nacimiento modificada!" << endl;
     }else{
@@ -195,7 +208,7 @@ void ArchivoVendedores::modificarFechaNacimiento(){
 
 void ArchivoVendedores::modificarFechaContratacion(){
     int d;
-    cout<<"Ingrese el DNI del Vendedor: ";
+    cout<<"Ingrese el DNI del vendedor: ";
     cin>>d;
     ArchivoVendedores arcVen;
     int pos = arcVen.buscarRegistro(d);
@@ -208,7 +221,7 @@ void ArchivoVendedores::modificarFechaContratacion(){
     Fecha faux;
     cout << "Ingrese la nueva Fecha de Contratacion: " << endl;
     faux.cargarFecha();
-    obj.setFechaNacimiento(faux);
+    obj.setFechaContratacion(faux);
     if(arcVen.modificarRegistro(obj, pos)){
         cout << endl << "Fecha de Contratacion modificada!" << endl;
     }else{
@@ -218,7 +231,7 @@ void ArchivoVendedores::modificarFechaContratacion(){
 
 void ArchivoVendedores::modificarMail(){
     int d;
-    cout<<"Ingrese el DNI del Vendedor: ";
+    cout<<"Ingrese el DNI del vendedor: ";
     cin>>d;
     ArchivoVendedores arcVen;
     int pos = arcVen.buscarRegistro(d);
@@ -241,7 +254,7 @@ void ArchivoVendedores::modificarMail(){
 
 void ArchivoVendedores::modificarDomicilio(){
     int d;
-    cout<<"Ingrese el DNI del cliente: ";
+    cout<<"Ingrese el DNI del vendedor: ";
     cin>>d;
     ArchivoVendedores arcVec;
     int pos = arcVec.buscarRegistro(d);
@@ -264,7 +277,7 @@ void ArchivoVendedores::modificarDomicilio(){
 
 void ArchivoVendedores::bajaVendedor(){
     ArchivoVendedores arcVen;
-    cout<<"Ingrese el DNI del cliente: ";
+    cout<<"Ingrese el DNI del vendedor: ";
     int d;
     cin>>d;
     int pos = arcVen.buscarRegistro(d);
@@ -275,7 +288,7 @@ void ArchivoVendedores::bajaVendedor(){
     Vendedor obj;
     obj = arcVen.leerRegistro(pos);
     if(obj.getEstado() == false){
-        cout<<"El cliente ya se encuentra dado de baja"<<endl;
+        cout<<"El vendedor ya se encuentra dado de baja"<<endl;
         return;
     }
     obj.setEstado(false);
@@ -284,4 +297,7 @@ void ArchivoVendedores::bajaVendedor(){
     }else{
         cout<<"Error al realizar la baja"<<endl;
     }
+}
+
+ArchivoVendedores::~ArchivoVendedores(){
 }

@@ -24,6 +24,7 @@ class ArchivoClientes {
         void modificarDomicilio();
         void modificarTelefono();
         void bajaCliente();
+        ~ArchivoClientes();
 };
 
 #endif // CLSARCHIVOCLIENTES_H_INCLUDED

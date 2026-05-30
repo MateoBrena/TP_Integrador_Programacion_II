@@ -109,7 +109,12 @@ void ArchivoClientes::buscarPorDni(){
         return;
     }
     Cliente obj = arcCli.leerRegistro(pos);
-    obj.Mostrar();
+    if(obj.getEstado()){
+        obj.Mostrar();
+    }else{
+        cout << "Error: el cliente con DNI " << d << " se encuentra dado de baja.";
+    }
+
 }
 
 void ArchivoClientes::altaCliente(){
@@ -295,4 +300,7 @@ void ArchivoClientes::bajaCliente(){
     }else{
         cout<<"Error al realizar la baja"<<endl;
     }
+}
+
+ArchivoClientes::~ArchivoClientes(){
 }

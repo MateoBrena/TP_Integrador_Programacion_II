@@ -24,6 +24,7 @@ class ArchivoVendedores {
         void modificarDomicilio();
         void modificarFechaContratacion();
         void bajaVendedor();
+        ~ArchivoVendedores();
 };
 
 

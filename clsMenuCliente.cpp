@@ -59,18 +59,17 @@ void menuCliente::tablaClientes(int posX, int posY){
             << " | " << setw(28) << c.getDomicilio().MostrarFormato()
             << " | " << setw(10) << c.getFechaNacimiento().mostrarFechaFormato();
             cout << " | " << setw(22) << c.getMail() << " |";
+            if(i == cant-1){
+                rlutil::locate(posX, filaActual + 1);
+                cout <<(char)192<<"----"<<(char)193<<"--------------"<<(char)193<<"--------------"<<(char)193<<"----------"<<(char)193;
+                cout<<"------------------------------"<<(char)193<<"------------"<<(char)193<<"------------------------"<<(char)217;
+            }else{
+                rlutil::locate(posX, filaActual + 1);
+                cout <<(char)195<<"----"<<(char)197<<"--------------"<<(char)197<<"--------------"<<(char)197<<"----------"<<(char)197;
+                cout << "------------------------------"<<(char)197<<"------------"<<(char)197<<"------------------------|";
+            }
+            filaActual += 2;
         }
-
-        if(i == cant-1){
-            rlutil::locate(posX, filaActual + 1);
-            cout <<(char)192<<"----"<<(char)193<<"--------------"<<(char)193<<"--------------"<<(char)193<<"----------"<<(char)193;
-            cout<<"------------------------------"<<(char)193<<"------------"<<(char)193<<"------------------------"<<(char)217;
-        }else{
-            rlutil::locate(posX, filaActual + 1);
-            cout <<(char)195<<"----"<<(char)197<<"--------------"<<(char)197<<"--------------"<<(char)197<<"----------"<<(char)197;
-            cout << "------------------------------"<<(char)197<<"------------"<<(char)197<<"------------------------|";
-        }
-        filaActual += 2;
     }
 
 }

@@ -16,7 +16,7 @@ class Vendedor : public Persona {
         int getNroVendedor();
         int getCategoria();
         Fecha getFechaContratacion();
-        void Cargar(int d, int n);
+        void Cargar(int d, int n, int cat);
         void Mostrar();
         ~Vendedor();
 };

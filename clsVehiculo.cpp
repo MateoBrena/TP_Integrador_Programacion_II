@@ -4,8 +4,17 @@
 #include "cargarCadena.h"
 using namespace std;
 
-Vehiculo::Vehiculo(){
-
+Vehiculo::Vehiculo(int d, const char *p, int iM, const char *m, int a, const char *c, int k, float pr, const char *co, Fecha fI){
+    id = d;
+    strcpy(patente, p);
+    idMarca = iM;
+    strcpy(modelo, m);
+    anio = a;
+    strcpy(color, c);
+    kilometros = k;
+    precio = pr;
+    strcpy(combustible, co);
+    fechaIngreso = fI;
 }
 
 void Vehiculo::setId(int i){
@@ -97,9 +106,38 @@ bool Vehiculo::getEstado(){
 }
 
 void Vehiculo::Cargar(){
+    cout << "Patente: ";
+    cargarCadena(patente,8);
+    cout << "ID de marca: ";
+    cin >> idMarca;
+    cout << "Modelo: ";
+    cargarCadena(modelo,20);
+    cout << "Anio: ";
+    cin >> anio;
+    cout << "Color: ";
+    cargarCadena(color,20);
+    cout << "Kilometraje: ";
+    cin >> kilometros;
+    cout << "Precio: ";
+    cin >> precio;
+    cout << "Combustible: ";
+    cargarCadena(combustible,10);
+    cout << "Fecha de ingreso: ";
+    fechaIngreso.cargarFecha();
 }
 
 void Vehiculo::Mostrar(){
+    cout << "N de Vehiculo: " << id << endl;
+    cout << "Patente: " << patente << endl;
+    cout << "ID de marca: " << idMarca << endl;
+    cout << "Modelo: " << modelo << endl;
+    cout << "Anio: " << anio << endl;
+    cout << "Color: " << color << endl;
+    cout << "Kilometraje: " << kilometros << endl;
+    cout << "Precio: " << precio << endl;
+    cout << "Combustible: " << combustible << endl;
+    cout << "Fecha de ingreso: ";
+    fechaIngreso.mostrarFecha();
 }
 
 Vehiculo::~Vehiculo(){

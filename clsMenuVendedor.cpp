@@ -3,6 +3,7 @@
 #include "rlutil.h"
 #include "clsMenu.h"
 #include "clsMenuVendedor.h"
+#include "clsArchivosVendedores.h"
 using namespace std;
 
 menuVendedor::menuVendedor(){
@@ -22,6 +23,7 @@ void menuVendedor::iniciar(){
     if (posX < 1) posX = 1;
     if (posY < 1) posY = 1;
     Menu m;
+    ArchivoVendedores arc;
     while(true){
         system("cls");
         rlutil::locate(posX, posY);
@@ -34,24 +36,20 @@ void menuVendedor::iniciar(){
         system("cls");
         switch(opc){
             case 0:
-                //altaVendedor();
-                cout << "Alta vendedor";
+                arc.altaVendedor();
                 break;
             case 1:
-                //buscarVendedor();
-                cout << "Buscar vendedor";
+                arc.buscarPorDni();
                 break;
             case 2:
-                //listarVendedor();
-                cout << "Listado de vendedores";
+                arc.listarRegistros();
                 break;
             case 3:
                 //modificarVendedor();
                 cout << "Modificar vendedor";
                 break;
             case 4:
-                //bajaVendedor();
-                cout << "Baja vendedor";
+                arc.bajaVendedor();
                 break;
             case 5:
                 return;

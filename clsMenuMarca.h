@@ -6,6 +6,9 @@ class menuMarca {
 
     public:
         menuMarca();
+        void mostrarCabeceraTabla(int posX, int posY);
+        void tablaMarcas(int posX, int posY);
+        void subMenuModificarMarca();
         void iniciar();
         ~menuMarca();
 };

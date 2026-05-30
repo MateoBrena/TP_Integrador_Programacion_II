@@ -8,7 +8,7 @@ class Marca {
         char pais[20];
         bool estado;
     public:
-        Marca();
+        Marca(int d=0, const char *n="Una Marca", const char *p="Un pais");
         void setId(int i);
         void setNombre(const char *n);
         void setPais(const char *p);
@@ -17,7 +17,7 @@ class Marca {
         const char *getNombre();
         const char *getPais();
         bool getEstado();
-        void Cargar();
+        void Cargar(int d);
         void Mostrar();
         ~Marca();
 };

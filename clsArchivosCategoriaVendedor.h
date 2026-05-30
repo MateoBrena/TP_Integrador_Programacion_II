@@ -12,13 +12,16 @@ class ArchivoCategorias {
         bool grabarRegistro(CategoriaVendedor obj);
         bool modificarRegistro(CategoriaVendedor obj, int pos);
         int contarRegistros();
-        int buscarRegistro(int idCat);
+        int contarRegistrosActivos(int ca);
+        int buscarRegistro(int d);
+        int buscarRegistroActivo(int d);
         void listarRegistros();
         void altaCategoria();
         void buscarPorId();
         void modificarDescripcion();
         void modificarComision();
         void bajaCategoria();
+        ~ArchivoCategorias();
 };
 
 #endif // CLSARCHIVOSCATEGORIAS_H_INCLUDED
