@@ -274,6 +274,36 @@ void ArchivoVendedores::modificarDomicilio(){
     }
 }
 
+void ArchivoVendedores::modifcarCategoria(){
+    int d;
+    cout << "Ingrese el DNI del vendedor a modificar: ";
+    cin >> d;
+
+    int posVen = buscarRegistro(d);
+    if(posVen < 0){
+        cout << "El DNI ingresado no existe en el archivo." << endl;
+        return;
+    }
+    Vendedor obj = leerRegistro(posVen);
+
+    int nuevaCat;
+    cout << "Ingrese el ID de la nueva categoria: ";
+    cin >> nuevaCat;
+
+    ArchivoCategorias arcCat;
+    int posCat = arcCat.buscarRegistroActivo(nuevaCat);
+    if(posCat == -1){
+        cout << "Error: La categoria con ID " << nuevaCat << " no existe o esta dada de baja." << endl;
+        return;
+    }
+    obj.setCategoria(nuevaCat);
+
+    if(modificarRegistro(obj, posVen)){
+        cout << endl << "Categoria modificada con exito!" << endl;
+    } else {
+        cout << endl << "Error al guardar la modificacion en el archivo." << endl;
+    }
+}
 
 void ArchivoVendedores::bajaVendedor(){
     ArchivoVendedores arcVen;
@@ -298,6 +328,8 @@ void ArchivoVendedores::bajaVendedor(){
         cout<<"Error al realizar la baja"<<endl;
     }
 }
+
+
 
 ArchivoVendedores::~ArchivoVendedores(){
 }

@@ -214,5 +214,6 @@ void ArchivoCategorias::bajaCategoria(){
     }
 }
 
+
 ArchivoCategorias::~ArchivoCategorias(){
 }

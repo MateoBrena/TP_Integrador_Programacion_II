@@ -7,6 +7,9 @@ class menuVendedor {
     public:
         menuVendedor();
         void iniciar();
+        void subMenuModificarVendedor();
+        static void mostrarCabeceraTabla(int posX, int posY);
+        void tablaVendedores(int posX, int posY);
         ~menuVendedor();
 };
 
