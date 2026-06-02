@@ -5,6 +5,7 @@
 #include "clsMenu.h"
 #include "clsMenuVendedor.h"
 #include "clsArchivosVendedores.h"
+#include "clsArchivosCategoriaVendedor.h"
 using namespace std;
 
 menuVendedor::menuVendedor(){
@@ -15,26 +16,27 @@ void menuVendedor::mostrarCabeceraTabla(int posX, int posY) {
     rlutil::locate(posX, posY);
     // Dibujamos la línea superior del cuadro adaptada a vendedores
     cout << (char)218<<"----"<<(char)194<<"--------------"<<(char)194<<"--------------"<<(char)194<<"----------"<<(char)194;
-    cout << "-----------"<<(char)194<<"------------"<<(char)194<<"------------------------"<<(char)191;
+    cout << "------------"<<(char)194<<"------------"<<(char)194<<"------------------------"<<(char)191;
 
     rlutil::locate(posX, posY + 1);
     cout << "| " << left << setw(2) << "NV"
          << " | " << setw(12) << "NOMBRE"
          << " | " << setw(12) << "APELLIDO"
          << " | " << setw(8) << "D.N.I"
-         << " | " << setw(9) << "CATEGORIA"
-         << " | " << setw(10) << "FEC. CONTR"
+         << " | " << setw(10) << "CATEGORIA"
+         << " | " << setw(10) << "FEC.CONTR."
          << " | " << setw(22) << "MAIL" << " |";
 
     rlutil::locate(posX, posY + 2);
     cout <<(char)195<<"----"<<(char)197<<"--------------"<<(char)197<<"--------------"<<(char)197<<"----------"<<(char)197;
-    cout << "-----------"<<(char)197<<"------------"<<(char)197<<"------------------------|";
+    cout << "------------"<<(char)197<<"------------"<<(char)197<<"------------------------|";
 
     rlutil::setColor(rlutil::WHITE);
 }
 
 void menuVendedor::tablaVendedores(int posX, int posY){
     ArchivoVendedores arc;
+    ArchivoCategorias arc2;
     int cant = arc.contarRegistros();
     if(cant <= 0){
         cout << "No hay vendedores cargados." << endl;
@@ -44,28 +46,30 @@ void menuVendedor::tablaVendedores(int posX, int posY){
     mostrarCabeceraTabla(posX, posY);
     int filaActual = posY + 3;
     Vendedor v;
-
+    CategoriaVendedor c;
+    int pC;
     for(int i = 0; i < cant; i++){
         v = arc.leerRegistro(i);
+        pC = v.getCategoria()-1;
+        c = arc2.leerRegistro(pC);
         if(v.getEstado()){
             rlutil::locate(posX, filaActual);
             cout << "| " << left << setw(2) << v.getNroVendedor()
                  << " | " << setw(12) << v.getNombre()
                  << " | " << setw(12) << v.getApellido()
                  << " | " << setw(8) << v.getDni()
-                 << " | Cat. " << setw(4) << v.getCategoria() // Muestra el ID de la relación
+                 << " | " << setw(10) << c.getDescripcion()
                  << " | " << setw(10) << v.getFechaContratacion().mostrarFechaFormato();
             cout << " | " << setw(22) << v.getMail() << " |";
 
-            // Dibujamos el cierre de la celda actual
             if(i == cant - 1){
                 rlutil::locate(posX, filaActual + 1);
                 cout <<(char)192<<"----"<<(char)193<<"--------------"<<(char)193<<"--------------"<<(char)193<<"----------"<<(char)193;
-                cout<<"-----------"<<(char)193<<"------------"<<(char)193<<"------------------------"<<(char)217;
+                cout<<"------------"<<(char)193<<"------------"<<(char)193<<"------------------------"<<(char)217;
             }else{
                 rlutil::locate(posX, filaActual + 1);
                 cout <<(char)195<<"----"<<(char)197<<"--------------"<<(char)197<<"--------------"<<(char)197<<"----------"<<(char)197;
-                cout << "-----------"<<(char)197<<"------------"<<(char)197<<"------------------------|";
+                cout << "------------"<<(char)197<<"------------"<<(char)197<<"------------------------|";
             }
             filaActual += 2;
         }
@@ -169,11 +173,12 @@ void menuVendedor::iniciar(){
                 arc.buscarPorDni();
                 break;
             case 2:
-                arc.listarRegistros();
+                //arc.listarRegistros();
+                tablaVendedores(2,2);
                 break;
             case 3:
                 subMenuModificarVendedor();
-                break;
+                continue;
             case 4:
                 arc.bajaVendedor();
                 break;

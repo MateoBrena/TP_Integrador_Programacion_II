@@ -75,6 +75,19 @@ int ArchivoVendedores::buscarRegistro(int d){
     return -1;
 }
 
+int ArchivoVendedores::buscarRegistroPorNv(int d){
+
+    int cantReg = contarRegistros();
+    for(int i=0; i<cantReg; i++){
+        Vendedor obj = leerRegistro(i);
+        if(obj.getNroVendedor() == d){
+            return i;
+        }
+    }
+
+    return -1;
+}
+
 void ArchivoVendedores::listarRegistros(){
 
     int cantReg = contarRegistros();
@@ -93,14 +106,14 @@ void ArchivoVendedores::buscarPorDni(){
     cin>>d;
     int pos = buscarRegistro(d);
     if(pos < 0){
-        cout << "El DNI ingresado no existe en el archivo" << endl;
+        cout << endl << "El DNI ingresado no existe en el archivo" << endl;
         return;
     }
     Vendedor obj = leerRegistro(pos);
     if(obj.getEstado()){
         obj.Mostrar();
     }else{
-        cout << "Error: el vendedor con DNI " << d << " se encuentra dado de baja.";
+        cout << endl << "Error: el vendedor con DNI " << d << " se encuentra dado de baja.";
     }
 }
 
@@ -110,13 +123,12 @@ void ArchivoVendedores::altaVendedor(){
     cout << "Ingrese el DNI del vendedor: ";
     cin >> d;
     if(d <= 0){
-        cout << "Error: No se puede ingresar un DNI igual o menor a cero" << endl;
+        cout << endl << "Error: No se puede ingresar un DNI igual o menor a cero" << endl;
         return;
     }
-    ArchivoVendedores arcVen;
-    int pos = arcVen.buscarRegistro(d);
+    int pos = buscarRegistro(d);
     if(pos >= 0){
-        cout << endl << "Error: Ya existe un cliente con ese DNI" << endl;
+        cout << endl << "Error: Ya existe un vendedor con ese DNI" << endl;
         return;
     }
     int cat;
@@ -125,15 +137,17 @@ void ArchivoVendedores::altaVendedor(){
     ArchivoCategorias arcCat;
     pos = arcCat.buscarRegistroActivo(cat);
     if(pos == -1){
-        cout << "Error: no existe categoria con ese ID" << endl;
+        cout << endl << "Error: no existe una categoria con ese ID" << endl;
         return;
     }
-    int cant = arcVen.contarRegistros();
+    int cant = contarRegistros();
     if(cant <0) cant = 0;
     int nro = cant + 1;
     obj.Cargar(d, nro, cat);
-    if(arcVen.grabarRegistro(obj)==false){
-        cout<<"Error al grabar el registro"<<endl;
+    if(grabarRegistro(obj)){
+        cout<< endl <<"Registro grabado exitosamente!"<<endl;
+    }else{
+        cout<< endl <<"Error al grabar el registro"<<endl;
     }
 }
 
@@ -141,19 +155,18 @@ void ArchivoVendedores::modificarNombre(){
     int d;
     cout<<"Ingrese el DNI del vendedor: ";
     cin>>d;
-    ArchivoVendedores arcVen;
-    int pos = arcVen.buscarRegistro(d);
+    int pos = buscarRegistro(d);
     if(pos < 0){
-        cout << "El DNI ingresado no existe en el archivo" << endl;
+        cout << endl << "El DNI ingresado no existe en el archivo" << endl;
         return;
     }
     Vendedor obj;
-    obj = arcVen.leerRegistro(pos);
+    obj = leerRegistro(pos);
     char nomAux[50];
     cout << "Ingrese el nuevo nombre: ";
     cargarCadena(nomAux, 50);
     obj.setNombre(nomAux);
-    if(arcVen.modificarRegistro(obj, pos)){
+    if(modificarRegistro(obj, pos)){
         cout << endl << "Nombre modificado!" << endl;
     }else{
         cout << endl << "Error al modificar el nombre" << endl;
@@ -164,19 +177,18 @@ void ArchivoVendedores::modificarApellido(){
     int d;
     cout<<"Ingrese el DNI del vendedor: ";
     cin>>d;
-    ArchivoVendedores arcVen;
-    int pos = arcVen.buscarRegistro(d);
+    int pos = buscarRegistro(d);
     if(pos < 0){
-        cout << "El DNI ingresado no existe en el archivo" << endl;
+        cout << endl << "El DNI ingresado no existe en el archivo" << endl;
         return;
     }
     Vendedor obj;
-    obj = arcVen.leerRegistro(pos);
+    obj = leerRegistro(pos);
     char apAux[50];
     cout << "Ingrese el nuevo apellido: ";
     cargarCadena(apAux, 50);
     obj.setApellido(apAux);
-    if(arcVen.modificarRegistro(obj, pos)){
+    if(modificarRegistro(obj, pos)){
         cout << endl << "Apellido modificado!" << endl;
     }else{
         cout << endl << "Error al modificar el apellido" << endl;
@@ -187,19 +199,18 @@ void ArchivoVendedores::modificarFechaNacimiento(){
     int d;
     cout<<"Ingrese el DNI del vendedor: ";
     cin>>d;
-    ArchivoVendedores arcVen;
-    int pos = arcVen.buscarRegistro(d);
+    int pos = buscarRegistro(d);
     if(pos < 0){
-        cout << "El DNI ingresado no existe en el archivo" << endl;
+        cout << endl << "El DNI ingresado no existe en el archivo" << endl;
         return;
     }
     Vendedor obj;
-    obj = arcVen.leerRegistro(pos);
+    obj = leerRegistro(pos);
     Fecha faux;
     cout << "Ingrese la nueva fecha de nacimiento: " << endl;
     faux.cargarFecha();
     obj.setFechaNacimiento(faux);
-    if(arcVen.modificarRegistro(obj, pos)){
+    if(modificarRegistro(obj, pos)){
         cout << endl << "Fecha de nacimiento modificada!" << endl;
     }else{
         cout << endl << "Error al modificar la fecha de nacimiento" << endl;
@@ -210,19 +221,18 @@ void ArchivoVendedores::modificarFechaContratacion(){
     int d;
     cout<<"Ingrese el DNI del vendedor: ";
     cin>>d;
-    ArchivoVendedores arcVen;
-    int pos = arcVen.buscarRegistro(d);
+    int pos = buscarRegistro(d);
     if(pos < 0){
         cout << "El DNI ingresado no existe en el archivo" << endl;
         return;
     }
     Vendedor obj;
-    obj = arcVen.leerRegistro(pos);
+    obj = leerRegistro(pos);
     Fecha faux;
     cout << "Ingrese la nueva Fecha de Contratacion: " << endl;
     faux.cargarFecha();
     obj.setFechaContratacion(faux);
-    if(arcVen.modificarRegistro(obj, pos)){
+    if(modificarRegistro(obj, pos)){
         cout << endl << "Fecha de Contratacion modificada!" << endl;
     }else{
         cout << endl << "Error al modificar la fecha de Contratacion" << endl;
@@ -233,19 +243,18 @@ void ArchivoVendedores::modificarMail(){
     int d;
     cout<<"Ingrese el DNI del vendedor: ";
     cin>>d;
-    ArchivoVendedores arcVen;
-    int pos = arcVen.buscarRegistro(d);
+    int pos = buscarRegistro(d);
     if(pos < 0){
-        cout << "El DNI ingresado no existe en el archivo" << endl;
+        cout << endl << "El DNI ingresado no existe en el archivo" << endl;
         return;
     }
     Vendedor obj;
-    obj = arcVen.leerRegistro(pos);
+    obj = leerRegistro(pos);
     char mAux[30];
     cout << "Ingrese el nuevo mail: ";
     cargarCadena(mAux, 30);
     obj.setMail(mAux);
-    if(arcVen.modificarRegistro(obj, pos)){
+    if(modificarRegistro(obj, pos)){
         cout << endl << "Mail modificado!" << endl;
     }else{
         cout << endl << "Error al modificar el mail" << endl;
@@ -256,18 +265,17 @@ void ArchivoVendedores::modificarDomicilio(){
     int d;
     cout<<"Ingrese el DNI del vendedor: ";
     cin>>d;
-    ArchivoVendedores arcVec;
-    int pos = arcVec.buscarRegistro(d);
+    int pos = buscarRegistro(d);
     if(pos < 0){
-        cout << "El DNI ingresado no existe en el archivo" << endl;
+        cout << endl << "El DNI ingresado no existe en el archivo" << endl;
         return;
     }
     Vendedor obj;
-    obj = arcVec.leerRegistro(pos);
+    obj = leerRegistro(pos);
     Domicilio dAux;
     dAux.Cargar();
     obj.setDomicilio(dAux);
-    if(arcVec.modificarRegistro(obj, pos)){
+    if(modificarRegistro(obj, pos)){
         cout << endl << "Domicilio modificado!" << endl;
     }else{
         cout << endl << "Error al modificar el domicilio" << endl;
@@ -278,26 +286,22 @@ void ArchivoVendedores::modifcarCategoria(){
     int d;
     cout << "Ingrese el DNI del vendedor a modificar: ";
     cin >> d;
-
     int posVen = buscarRegistro(d);
     if(posVen < 0){
-        cout << "El DNI ingresado no existe en el archivo." << endl;
+        cout << endl << "El DNI ingresado no existe en el archivo." << endl;
         return;
     }
     Vendedor obj = leerRegistro(posVen);
-
     int nuevaCat;
     cout << "Ingrese el ID de la nueva categoria: ";
     cin >> nuevaCat;
-
     ArchivoCategorias arcCat;
     int posCat = arcCat.buscarRegistroActivo(nuevaCat);
     if(posCat == -1){
-        cout << "Error: La categoria con ID " << nuevaCat << " no existe o esta dada de baja." << endl;
+        cout << endl << "Error: La categoria con ID " << nuevaCat << " no existe o esta dada de baja." << endl;
         return;
     }
     obj.setCategoria(nuevaCat);
-
     if(modificarRegistro(obj, posVen)){
         cout << endl << "Categoria modificada con exito!" << endl;
     } else {
@@ -306,30 +310,27 @@ void ArchivoVendedores::modifcarCategoria(){
 }
 
 void ArchivoVendedores::bajaVendedor(){
-    ArchivoVendedores arcVen;
     cout<<"Ingrese el DNI del vendedor: ";
     int d;
     cin>>d;
-    int pos = arcVen.buscarRegistro(d);
+    int pos = buscarRegistro(d);
     if(pos < 0){
-        cout<<"El DNI ingresado no existe en el archivo"<<endl;
+        cout << endl <<"El DNI ingresado no existe en el archivo"<<endl;
         return;
     }
     Vendedor obj;
-    obj = arcVen.leerRegistro(pos);
+    obj = leerRegistro(pos);
     if(obj.getEstado() == false){
-        cout<<"El vendedor ya se encuentra dado de baja"<<endl;
+        cout << endl <<"El vendedor ya se encuentra dado de baja"<<endl;
         return;
     }
     obj.setEstado(false);
-    if(arcVen.modificarRegistro(obj, pos)){
-        cout<<"Baja realizada correctamente"<<endl;
+    if(modificarRegistro(obj, pos)){
+        cout << endl <<"Baja realizada correctamente"<<endl;
     }else{
-        cout<<"Error al realizar la baja"<<endl;
+        cout << endl <<"Error al realizar la baja"<<endl;
     }
 }
-
-
 
 ArchivoVendedores::~ArchivoVendedores(){
 }

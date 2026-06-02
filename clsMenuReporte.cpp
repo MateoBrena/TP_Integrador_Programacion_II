@@ -5,6 +5,13 @@
 #include "clsMenuReporte.h"
 using namespace std;
 
+/*  1-Cliente que más compró (puede ser en cantidad de autos o monto en $)
+    2-Cantidad de vendedores que no tuvieron ventas en un mes y año que se ingresa por teclado.
+    3-Vendedor que más cobró (ventas x porc.comisión)
+    4-Marca más vendida. (unidades)
+    5-Monto total de ventas por cada mes (entre todos los años)
+*/
+
 menuReporte::menuReporte(){
 }
 

@@ -6,7 +6,7 @@
 class Vehiculo {
     private:
         int id;
-        char patente[8];
+        char patente[10];
         int idMarca;
         char modelo[20];
         int anio;
@@ -18,7 +18,9 @@ class Vehiculo {
         bool estado;
     public:
         Vehiculo(int d=0, const char *p="AAA123", int iM=1, const char *m="Un modelo", int a=1900, const char *c="Negro",
-        int k=0, float pr=100.00, const char *co="Nafta", Fecha fI=Fecha());
+        int k=0, float pr=0.00, const char *co="Nafta", Fecha fI=Fecha());
+        void hacerMayusculas(char *p);
+        bool validarPatente(const char *p);
         void setId(int i);
         void setPatente(const char *p);
         void setIdMarca(int iM);
@@ -41,7 +43,7 @@ class Vehiculo {
         const char *getCombustible();
         Fecha getFechaIngreso();
         bool getEstado();
-        void Cargar();
+        void Cargar(int d, const char *p, int iM);
         void Mostrar();
         ~Vehiculo();
 

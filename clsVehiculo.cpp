@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include <cctype>
 #include "clsVehiculo.h"
 #include "cargarCadena.h"
 using namespace std;
@@ -15,6 +16,40 @@ Vehiculo::Vehiculo(int d, const char *p, int iM, const char *m, int a, const cha
     precio = pr;
     strcpy(combustible, co);
     fechaIngreso = fI;
+    estado = true;
+}
+
+void Vehiculo::hacerMayusculas(char *p){
+    for (int i = 0; p[i] != '\0'; ++i) {
+        p[i] = toupper(p[i]);
+    }
+}
+
+bool Vehiculo::validarPatente(const char *p){
+    int longitud = strlen(p);
+
+    // Verificamos el formato antiguo: AAA111 (Longitud 6)
+    if (longitud == 6) {
+        return isupper(p[0]) &&
+               isupper(p[1]) &&
+               isupper(p[2]) &&
+               isdigit(p[3]) &&
+               isdigit(p[4]) &&
+               isdigit(p[5]);
+    }
+    // Verificamos el formato nuevo: AA111AA (Longitud 7)
+    else if (longitud == 7) {
+        return isupper(p[0]) &&
+               isupper(p[1]) &&
+               isdigit(p[2]) &&
+               isdigit(p[3]) &&
+               isdigit(p[4]) &&
+               isupper(p[5]) &&
+               isupper(p[6]);
+    }
+
+    // Si no tiene longitud 6 ni 7, es invalida
+    return false;
 }
 
 void Vehiculo::setId(int i){
@@ -105,11 +140,10 @@ bool Vehiculo::getEstado(){
     return estado;
 }
 
-void Vehiculo::Cargar(){
-    cout << "Patente: ";
-    cargarCadena(patente,8);
-    cout << "ID de marca: ";
-    cin >> idMarca;
+void Vehiculo::Cargar(int d, const char *p, int iM){
+    id = d;
+    strcpy(patente,p);
+    idMarca = iM;
     cout << "Modelo: ";
     cargarCadena(modelo,20);
     cout << "Anio: ";

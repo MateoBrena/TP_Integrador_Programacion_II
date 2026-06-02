@@ -14,6 +14,7 @@ class ArchivoClientes {
         int contarRegistros();
         int contarRegistrosActivos(int ca);
         int buscarRegistro(int);
+        int buscarRegistroxCUIT(const char *d);
         void listarRegistros();
         void altaCliente();
         void buscarPorDni();

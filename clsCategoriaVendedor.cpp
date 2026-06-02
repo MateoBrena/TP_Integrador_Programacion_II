@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <cstring>
 #include "clsCategoriaVendedor.h"
 #include "cargarCadena.h"
@@ -52,20 +53,14 @@ void CategoriaVendedor::Cargar(int id){
     }
     cout << "Descripcion: ";
     cargarCadena(descripcion, 30);
-    int pC;
-    cout << "Porcentaje de comision: (Ingresar numero entero. Ej: 3): ";
-    cin >> pC;
-    porcentajeComision = (float)pC / 100;
+    cout << "Porcentaje de comision: (numero flotante max 2 decimales o numero entero): ";
+    cin >> porcentajeComision;
 }
 
 void CategoriaVendedor::Mostrar(){
     cout << "ID de Categoria: " << idCategoria << endl;
     cout << "Descripcion: " << descripcion << endl;
-    cout << "Comision: " << porcentajeComision*100 << "%" <<endl;
-}
-
-string CategoriaVendedor::PorcFormato(){
-    return to_string(porcentajeComision*100) + "%";
+    cout << "Comision: " << porcentajeComision << "%" <<endl;
 }
 
 CategoriaVendedor::~CategoriaVendedor(){

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <sstream>
 #include "rlutil.h"
 #include "clsMenu.h"
 #include "clsMenuCategoriaVendedor.h"
@@ -13,7 +14,7 @@ menuCategoriaVendedor::menuCategoriaVendedor(){
 void menuCategoriaVendedor::mostrarCabeceraTabla(int posX, int posY) {
     rlutil::setColor(rlutil::CYAN);
     rlutil::locate(posX, posY);
-    cout << (char)218<<"-----"<<(char)194<<"----------------------"<<(char)194<<"-----------"<<(char)191;
+    cout << (char)218<<"-----"<<(char)194<<"----------------------"<<(char)194<<"------------"<<(char)191;
 
     rlutil::locate(posX, posY + 1);
     cout << "| " << left << setw(3) << "ID"
@@ -45,10 +46,12 @@ void menuCategoriaVendedor::tablaCategorias(int posX, int posY){
     for(int i=0; i<cant; i++){
         rlutil::locate(posX, filaActual);
         c = arc.leerRegistro(i);
+        stringstream porcFormato;
+        porcFormato << fixed << setprecision(2) << c.getPorcentajeComision() << "%";
         if(c.getEstado()){
             cout << "| " << left << setw(3) << c.getIdCategoria()
             << " | " << setw(20) << c.getDescripcion()
-            << " | " << setw(10) << c.PorcFormato() << " |";
+            << " | " << setw(10) << porcFormato.str() << " |";
             if(i == cant-1){
                 rlutil::locate(posX, filaActual + 1);
                 cout <<(char)192<<"-----"<<(char)193<<"----------------------"<<(char)193<<"------------"<<(char)217;
@@ -139,7 +142,7 @@ void menuCategoriaVendedor::iniciar(){
                 break;
             case 3:
                 subMenuModificarCategoria();
-                break;
+                continue;
             case 4:
                 arc.bajaCategoria();
                 break;

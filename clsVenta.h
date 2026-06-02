@@ -7,28 +7,28 @@ class Venta {
     private:
         int nroVenta;
         Fecha fechaVenta;
-        int cuitCliente;
+        char cuitCliente[12];
         int nroVendedor;
-        int idVehiculo;
+        char patenteVehiculo[10];
         float monto;
         bool estado;
     public:
-        Venta();
+        Venta(int n=0, Fecha f=Fecha(), const char *cc="201111111100", int nV=0, const char *v="AAA123", float m=0.00);
         void setNroVenta(int nV);
         void setFechaVenta(Fecha fV);
-        void setCuitCliente(int cC);
+        void setCuitCliente(const char *cC);
         void setNroVendedor(int nV);
-        void setidVehiculo(int iV);
+        void setPatenteVehiculo(const char *pV);
         void setMonto(float m);
         void setEstado(bool e);
         int getNroVenta();
         Fecha getFechaVenta();
-        int getCuitCliente();
+        const char * getCuitCliente();
         int getNroVendedor();
-        int getIdVehiculo();
+        const char * getPatenteVehiculo();
         float getMonto();
         bool getEstado();
-        void Cargar();
+        void Cargar(int n, Fecha f, const char *cC, int nV, const char *pV, float m);
         void Mostrar();
         ~Venta();
 };

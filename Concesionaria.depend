@@ -17,11 +17,11 @@
 
 1779547095 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\cargarcadena.h
 
-1780010130 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsfecha.cpp
+1780368874 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsfecha.cpp
 	<iostream>
 	"clsFecha.h"
 
-1780010034 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsfecha.h
+1780368897 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsfecha.h
 	<iostream>
 	<cstring>
 
@@ -47,7 +47,7 @@
 	<sys/types.h>
 	<sys/time.h>
 
-1780066331 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clscliente.cpp
+1780371804 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clscliente.cpp
 	<iostream>
 	<cstring>
 	"clsCliente.h"
@@ -56,15 +56,14 @@
 1780066407 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clscliente.h
 	"clsPersona.h"
 
-1780110204 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clscategoriavendedor.cpp
+1780374737 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clscategoriavendedor.cpp
 	<iostream>
+	<iomanip>
 	<cstring>
 	"clsCategoriaVendedor.h"
 	"cargarCadena.h"
 
-1780110139 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clscategoriavendedor.h
-	<iostream>
-	<cstring>
+1780374019 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clscategoriavendedor.h
 
 1780022548 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clspersona.cpp
 	<iostream>
@@ -106,20 +105,23 @@
 1780111030 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsvendedor.h
 	"clsPersona.h"
 
-1780098472 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsvehiculo.cpp
+1780364655 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsvehiculo.cpp
 	<iostream>
 	<cstring>
+	<cctype>
 	"clsVehiculo.h"
 	"cargarCadena.h"
 
-1780098442 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsvehiculo.h
+1780364900 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsvehiculo.h
 	"clsFecha.h"
 
-1779752831 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsventa.cpp
+1780370457 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsventa.cpp
 	<iostream>
+	<cstring>
+	<iomanip>
 	"clsVenta.h"
 
-1779752476 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsventa.h
+1780370261 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsventa.h
 	"clsFecha.h"
 
 1779753711 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\menucliente.cpp
@@ -131,7 +133,7 @@
 
 1779753512 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\menucliente.h
 
-1780110606 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsmenucliente.cpp
+1780371932 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsmenucliente.cpp
 	<iostream>
 	<string>
 	<iomanip>
@@ -142,20 +144,23 @@
 
 1780066423 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsmenucliente.h
 
-1780111698 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsmenuvendedor.cpp
+1780352645 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsmenuvendedor.cpp
 	<iostream>
 	<string>
+	<iomanip>
 	"rlutil.h"
 	"clsMenu.h"
 	"clsMenuVendedor.h"
 	"clsArchivosVendedores.h"
+	"clsArchivosCategoriaVendedor.h"
 
-1780024792 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsmenuvendedor.h
+1780350526 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsmenuvendedor.h
 
-1780110549 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsmenucategoriavendedor.cpp
+1780374909 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsmenucategoriavendedor.cpp
 	<iostream>
 	<string>
 	<iomanip>
+	<sstream>
 	"rlutil.h"
 	"clsMenu.h"
 	"clsMenuCategoriaVendedor.h"
@@ -174,37 +179,42 @@
 
 1780106397 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsmenumarca.h
 
-1780066604 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsmenuvehiculo.cpp
+1780370533 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsmenuvehiculo.cpp
 	<iostream>
 	<string>
+	<iomanip>
 	"rlutil.h"
 	"clsMenu.h"
 	"clsMenuVehiculo.h"
+	"clsArchivoVehiculos.h"
+	"clsArchivoMarcas.h"
 
-1780024733 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsmenuvehiculo.h
+1780351917 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsmenuvehiculo.h
 
-1780024830 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsmenuventa.cpp
+1780372898 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsmenuventa.cpp
 	<iostream>
 	<string>
+	<iomanip>
 	"rlutil.h"
 	"clsMenu.h"
 	"clsMenuVenta.h"
+	"clsArchivoVentas.h"
 
-1780024815 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsmenuventa.h
+1780371969 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsmenuventa.h
 
 1780024661 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsmenureporte.h
 
-1780024683 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsmenureporte.cpp
+1780365394 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsmenureporte.cpp
 	<iostream>
 	<string>
 	"rlutil.h"
 	"clsMenu.h"
 	"clsMenuReporte.h"
 
-1780094013 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsarchivoclientes.h
+1780367670 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsarchivoclientes.h
 	"clsCliente.h"
 
-1780107983 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsarchivoclientes.cpp
+1780375584 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsarchivoclientes.cpp
 	<iostream>
 	<cstring>
 	"clsArchivoClientes.h"
@@ -432,17 +442,17 @@
 1780343378 c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsarchivoscategoriavendedor.h
 	"clsCategoriaVendedor.h"
 
-1780112483 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsarchivosvendedores.cpp
+1780375490 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsarchivosvendedores.cpp
 	<iostream>
 	<cstring>
 	"clsArchivosVendedores.h"
 	"clsArchivosCategoriaVendedor.h"
 	"cargarCadena.h"
 
-1780094146 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsarchivosvendedores.h
+1780370113 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsarchivosvendedores.h
 	"clsVendedor.h"
 
-1780109454 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsarchivomarcas.cpp
+1780375441 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsarchivomarcas.cpp
 	<iostream>
 	<cstring>
 	"clsArchivoMarcas.h"
@@ -451,7 +461,7 @@
 1780098603 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsarchivomarcas.h
 	"clsMarca.h"
 
-1780112034 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsarchivoscategoriavendedor.cpp
+1780375468 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsarchivoscategoriavendedor.cpp
 	<iostream>
 	<cstring>
 	"clsArchivosCategoriaVendedor.h"
@@ -478,4 +488,26 @@
 
 1780345533 c:\users\totom\onedrive\escritorio\consesonaria++\tp_integrador_programacion_ii\clsarchivovehiculos.h
 	"clsVehiculo.h"
+
+1780375512 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsarchivovehiculo.cpp
+	<iostream>
+	<cstring>
+	"clsArchivoVehiculos.h"
+	"clsArchivoMarcas.h"
+	"cargarCadena.h"
+
+1780360040 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsarchivovehiculos.h
+	"clsVehiculo.h"
+
+1780375536 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsarchivoventas.cpp
+	<iostream>
+	<cstring>
+	"clsArchivoVentas.h"
+	"clsArchivoClientes.h"
+	"clsArchivosVendedores.h"
+	"clsArchivoVehiculos.h"
+	"cargarCadena.h"
+
+1780371185 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsarchivoventas.h
+	"clsVenta.h"
 

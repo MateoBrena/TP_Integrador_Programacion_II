@@ -128,6 +128,20 @@ bool Fecha::operator<=(Fecha obj){
     return false;
 }
 
+bool Fecha::operator>(Fecha obj){
+    if(anio > obj.anio or (anio == obj.anio and mes > obj.mes) or (anio == obj.anio and mes == obj.mes and dia > obj.dia)){
+        return true;
+    }
+    return false;
+}
+
+bool Fecha::operator>=(Fecha obj){
+    if(anio > obj.anio or (anio == obj.anio and mes > obj.mes) or (anio == obj.anio and mes == obj.mes and dia >= obj.dia)){
+        return true;
+    }
+    return false;
+}
+
 Fecha::~Fecha(){
 
 }

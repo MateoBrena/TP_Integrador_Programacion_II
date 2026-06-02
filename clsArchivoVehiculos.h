@@ -16,8 +16,6 @@ class ArchivoVehiculos {
         void listarRegistros();
         void altaVehiculo();
         void buscarPorPatente();
-        void bajaVehiculo();
-
         void modificarMarca();
         void modificarModelo();
         void modificarAnio();
@@ -26,7 +24,7 @@ class ArchivoVehiculos {
         void modificarPrecio();
         void modificarCombustible();
         void modificarFechaIngreso();
-
+        void bajaVehiculo();
         ~ArchivoVehiculos();
 };
 

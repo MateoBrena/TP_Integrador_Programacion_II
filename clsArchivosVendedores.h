@@ -8,11 +8,12 @@ class ArchivoVendedores {
         char nombre[30];
     public:
         ArchivoVendedores(const char *n = "Vendedores.dat");
-        Vendedor leerRegistro(int);
+        Vendedor leerRegistro(int pos);
         bool grabarRegistro(Vendedor);
-        bool modificarRegistro(Vendedor, int);
+        bool modificarRegistro(Vendedor, int pos);
         int contarRegistros();
-        int buscarRegistro(int);
+        int buscarRegistro(int d);
+        int buscarRegistroPorNv(int d);
         void listarRegistros();
         void altaVendedor();
         void buscarPorDni();

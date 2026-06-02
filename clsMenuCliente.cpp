@@ -10,7 +10,7 @@ using namespace std;
 menuCliente::menuCliente(){
 }
 
-void menuCliente::mostrarCabeceraTabla(int posX, int posY) {
+void menuCliente::mostrarCabeceraTabla(int posX, int posY){
     rlutil::setColor(rlutil::CYAN);
     rlutil::locate(posX, posY);
     cout << (char)218<<"----"<<(char)194<<"--------------"<<(char)194<<"--------------"<<(char)194<<"----------"<<(char)194;
@@ -155,7 +155,7 @@ void menuCliente::iniciar(){
         switch(opc){
             case 0:
                 arc.altaCliente();
-                continue;
+                break;
             case 1:
                 arc.buscarPorDni();
                 break;

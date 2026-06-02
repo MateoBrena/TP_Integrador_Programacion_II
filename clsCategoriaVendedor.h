@@ -1,8 +1,6 @@
 #ifndef CLSCATEGORIAVENDEDOR_H_INCLUDED
 #define CLSCATEGORIAVENDEDOR_H_INCLUDED
 
-#include <iostream>
-#include <cstring>
 
 class CategoriaVendedor {
     private:
@@ -22,7 +20,6 @@ class CategoriaVendedor {
         bool getEstado();
         void Cargar(int id);
         void Mostrar();
-        std::string PorcFormato();
         ~CategoriaVendedor();
 };
 

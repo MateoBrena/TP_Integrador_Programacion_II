@@ -5,7 +5,7 @@
 #include "clsMenu.h"
 #include "clsMenuVehiculo.h"
 #include "clsArchivoVehiculos.h"
-#include "clsVehiculo.h"
+#include "clsArchivoMarcas.h"
 using namespace std;
 
 menuVehiculo::menuVehiculo(){
@@ -14,61 +14,65 @@ menuVehiculo::menuVehiculo(){
 void menuVehiculo::mostrarCabeceraTabla(int posX, int posY) {
     rlutil::setColor(rlutil::CYAN);
     rlutil::locate(posX, posY);
-    // Dibujamos la línea superior adaptada al ancho total de las columnas de un vehículo
-    cout << (char)218<<"----------"<<(char)194<<"--------"<<(char)194<<"--------------------"<<(char)194;
-    cout << "------"<<(char)194<<"--------------------"<<(char)194<<"----------"<<(char)194<<"------------"<<(char)194<<"----------"<<(char)191;
+
+    cout << (char)218<<"-----"<<(char)194<<"----------"<<(char)194<<"--------------"<<(char)194<<"--------------------"<<(char)194;
+    cout << "------"<<(char)194<<"----------------"<<(char)194<<"--------"<<(char)194<<"--------------"<<(char)194<<"--------------"<<(char)191;
 
     rlutil::locate(posX, posY + 1);
-    cout << "| " << left << setw(8) << "PATENTE"
-         << " | " << setw(6) << "MARCA"
-         << " | " << setw(18) << "MODELO"
-         << " | " << setw(4) << "ANIO"
-         << " | " << setw(18) << "COLOR"
-         << " | " << setw(8) << "KMS"
-         << " | " << setw(10) << "PRECIO"
-         << " | " << setw(8) << "NAFTA/DS" << " |";
+    cout << "| " << left << setw(3) << "ID"
+        << " | " << setw(8) << "PATENTE"
+        << " | " << setw(12) << "MARCA"
+        << " | " << setw(18) << "MODELO"
+        << " | " << setw(4) << "ANIO"
+        << " | " << setw(14) << "COLOR"
+        << " | " << setw(6) << "KMS"
+        << " | " << setw(12) << "PRECIO"
+        << " | " << setw(12) << "COMBUSTIBLE" << " |";
 
     rlutil::locate(posX, posY + 2);
-    cout << (char)195<<"----------"<<(char)197<<"--------"<<(char)197<<"--------------------"<<(char)197;
-    cout << "------"<<(char)197<<"--------------------"<<(char)197<<"----------"<<(char)197<<"------------"<<(char)197<<"----------|";
-
+    cout << (char)195<<"-----"<<(char)197<<"----------"<<(char)197<<"--------------"<<(char)197<<"--------------------"<<(char)197;
+    cout << "------"<<(char)197<<"----------------"<<(char)197<<"--------"<<(char)197<<"--------------"<<(char)197<<"--------------|";
     rlutil::setColor(rlutil::WHITE);
 }
 
 void menuVehiculo::tablaVehiculos(int posX, int posY){
     ArchivoVehiculos arc;
+    ArchivoMarcas arc2;
     int cant = arc.contarRegistros();
     if(cant <= 0){
         cout << "No hay vehiculos cargados." << endl;
         return;
     }
-
     mostrarCabeceraTabla(posX, posY);
     int filaActual = posY + 3;
     Vehiculo v;
-
+    Marca m;
+    int pM;
+    cout << fixed << setprecision(2);
     for(int i = 0; i < cant; i++){
         v = arc.leerRegistro(i);
+        pM = v.getIdMarca()-1;
+        m = arc2.leerRegistro(pM);
         if(v.getEstado()){
             rlutil::locate(posX, filaActual);
-            cout << "| " << left << setw(8) << v.getPatente()
-                 << " | Id: " << setw(2) << v.getIdMarca()
-                 << " | " << setw(18) << v.getModelo()
-                 << " | " << setw(4) << v.getAnio()
-                 << " | " << setw(18) << v.getColor()
-                 << " | " << setw(8) << v.getKilometros()
-                 << " | $" << setw(9) << v.getPrecio()
-                 << " | " << setw(8) << v.getCombustible() << " |";
+            cout << "| " << left << setw(3) << v.getId()
+                << " | " << setw(8) << v.getPatente()
+                << " | " << setw(12) << m.getNombre()
+                << " | " << setw(18) << v.getModelo()
+                << " | " << setw(4) << v.getAnio()
+                << " | " << setw(14) << v.getColor()
+                << " | " << setw(6) << v.getKilometros()
+                << " | $" << setw(11) << v.getPrecio()
+                << " | " << setw(12) << v.getCombustible() << " |";
 
-            // Dibujamos el piso del cuadro
             if(i == cant - 1){
                 rlutil::locate(posX, filaActual + 1);
-                cout << (char)192<<"----------"<<(char)193<<"--------"<<(char)193<<"--------------------"<<(char)193;
-                cout << "------"<<(char)193<<"--------------------"<<(char)193<<"----------"<<(char)193<<"------------"<<(char)193<<"----------"<<(char)217;
+                cout << (char)192<<"-----"<<(char)193<<"----------"<<(char)193<<"--------------"<<(char)193<<"--------------------"<<(char)193;
+                cout << "------"<<(char)193<<"----------------"<<(char)193<<"--------"<<(char)193<<"--------------"<<(char)193<<"--------------"<<(char)217;
             } else {
                 rlutil::locate(posX, filaActual + 1);
-                cout << (char)195<<"----------"<<(char)197<<"--------"<<(char)197<<"--------------------"<<(char)197;
-                cout << "------"<<(char)197<<"--------------------"<<(char)197<<"----------"<<(char)197<<"------------"<<(char)197<<"----------|";
+                cout << (char)195<<"-----"<<(char)197<<"----------"<<(char)197<<"--------------"<<(char)197<<"--------------------"<<(char)197;
+                cout << "------"<<(char)197<<"----------------"<<(char)197<<"--------"<<(char)197<<"--------------"<<(char)197<<"--------------|";
             }
             filaActual += 2;
         }
@@ -162,7 +166,7 @@ void menuVehiculo::iniciar(){
         rlutil::locate(posX, posY);
         cout << "================================";
         rlutil::locate(posX, posY + 1);
-        cout << "|      SUBMENU DE VEHICULOS    |";
+        cout << "|     SUBMENU DE VEHICULOS     |";
         rlutil::locate(posX, posY + 2);
         cout << "================================";
         int opc = m.mostrarMenu(opcionesMenu, cantidadOpciones, posX, posY + 4, anchoMenu);
@@ -170,7 +174,7 @@ void menuVehiculo::iniciar(){
         switch(opc){
             case 0:
                 arc.altaVehiculo();
-                continue;
+                break;
             case 1:
                 arc.buscarPorPatente();
                 break;

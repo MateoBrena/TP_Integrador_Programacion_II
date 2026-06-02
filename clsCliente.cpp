@@ -43,7 +43,7 @@ void Cliente::Cargar(int d, int n){
 }
 
 void Cliente::cuitFormato(const char *c){
-    if (c== nullptr) return;
+    if (c == nullptr) return;
     cout << c[0] << c[1] << "-";
 
     for (int i = 2; i < 10; ++i) {

@@ -40,6 +40,8 @@
 		<Unit filename="clsArchivoMarcas.h" />
 		<Unit filename="clsArchivoVehiculo.cpp" />
 		<Unit filename="clsArchivoVehiculos.h" />
+		<Unit filename="clsArchivoVentas.cpp" />
+		<Unit filename="clsArchivoVentas.h" />
 		<Unit filename="clsArchivosCategoriaVendedor.cpp" />
 		<Unit filename="clsArchivosCategoriaVendedor.h" />
 		<Unit filename="clsArchivosVendedores.cpp" />

@@ -102,17 +102,16 @@ void ArchivoMarcas::buscarPorId(){
     int d;
     cout<<"Ingrese el ID de la marca: ";
     cin>>d;
-    ArchivoMarcas arcMar;
-    int pos = arcMar.buscarRegistro(d);
+    int pos = buscarRegistro(d);
     if(pos < 0){
-        cout << "El ID ingresado no existe en el archivo" << endl;
+        cout << endl << "El ID ingresado no existe en el archivo" << endl;
         return;
     }
-    Marca obj = arcMar.leerRegistro(pos);
+    Marca obj = leerRegistro(pos);
     if(obj.getEstado()){
         obj.Mostrar();
     }else{
-        cout << "Error: la marca con ID " << d << " se encuentra dada de baja.";
+        cout << endl << "Error: la marca con ID " << d << " se encuentra dada de baja.";
     }
 
 }
@@ -123,8 +122,10 @@ void ArchivoMarcas::altaMarca(){
     if(cant <0) cant = 0;
     int nro = cant + 1;
     obj.Cargar(nro);
-    if(grabarRegistro(obj)==false){
-        cout<<"Error al grabar el registro"<<endl;
+    if(grabarRegistro(obj)){
+        cout<< endl <<"Registro grabado exitosamente!"<<endl;
+    }else{
+        cout<< endl <<"Error al grabar el registro"<<endl;
     }
 }
 
@@ -132,19 +133,18 @@ void ArchivoMarcas::modificarNombre(){
     int d;
     cout<<"Ingrese el ID de la marca: ";
     cin>>d;
-    ArchivoMarcas arcMar;
-    int pos = arcMar.buscarRegistro(d);
+    int pos = buscarRegistro(d);
     if(pos < 0){
-        cout << "El ID ingresado no existe en el archivo" << endl;
+        cout << endl << "El ID ingresado no existe en el archivo" << endl;
         return;
     }
     Marca obj;
-    obj = arcMar.leerRegistro(pos);
+    obj = leerRegistro(pos);
     char nomAux[20];
     cout << "Ingrese el nuevo nombre: ";
     cargarCadena(nomAux, 20);
     obj.setNombre(nomAux);
-    if(arcMar.modificarRegistro(obj, pos)){
+    if(modificarRegistro(obj, pos)){
         cout << endl << "Nombre modificado!" << endl;
     }else{
         cout << endl << "Error al modificar el nombre" << endl;
@@ -155,19 +155,18 @@ void ArchivoMarcas::modificarPais(){
     int d;
     cout<<"Ingrese el ID de la marca: ";
     cin>>d;
-    ArchivoMarcas arcMar;
-    int pos = arcMar.buscarRegistro(d);
+    int pos = buscarRegistro(d);
     if(pos < 0){
-        cout << "El ID ingresado no existe en el archivo" << endl;
+        cout << endl << "El ID ingresado no existe en el archivo" << endl;
         return;
     }
     Marca obj;
-    obj = arcMar.leerRegistro(pos);
+    obj = leerRegistro(pos);
     char pAux[20];
     cout << "Ingrese el nuevo pais: ";
     cargarCadena(pAux, 20);
     obj.setPais(pAux);
-    if(arcMar.modificarRegistro(obj, pos)){
+    if(modificarRegistro(obj, pos)){
         cout << endl << "Pais modificado!" << endl;
     }else{
         cout << endl << "Error al modificar el apellido" << endl;
@@ -175,26 +174,25 @@ void ArchivoMarcas::modificarPais(){
 }
 
 void ArchivoMarcas::bajaMarca(){
-    ArchivoMarcas arcMar;
     cout<<"Ingrese el ID de la marca: ";
     int d;
     cin>>d;
-    int pos = arcMar.buscarRegistro(d);
+    int pos = buscarRegistro(d);
     if(pos < 0){
-        cout<<"El ID ingresado no existe en el archivo"<<endl;
+        cout << endl <<"El ID ingresado no existe en el archivo"<<endl;
         return;
     }
     Marca obj;
-    obj = arcMar.leerRegistro(pos);
+    obj = leerRegistro(pos);
     if(obj.getEstado() == false){
-        cout<<"La marca ya se encuentra dado de baja"<<endl;
+        cout << endl <<"La marca ya se encuentra dada de baja"<<endl;
         return;
     }
     obj.setEstado(false);
-    if(arcMar.modificarRegistro(obj, pos)){
-        cout<<"Baja realizada correctamente"<<endl;
+    if(modificarRegistro(obj, pos)){
+        cout << endl <<"Baja realizada correctamente"<<endl;
     }else{
-        cout<<"Error al realizar la baja"<<endl;
+        cout << endl <<"Error al realizar la baja"<<endl;
     }
 }
 

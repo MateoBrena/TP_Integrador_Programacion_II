@@ -23,6 +23,8 @@ class Fecha{
         std::string mostrarFechaFormato();
         bool operator<(Fecha);
         bool operator<=(Fecha);
+        bool operator>(Fecha);
+        bool operator>=(Fecha);
         ~Fecha();
 };
 

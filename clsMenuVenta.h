@@ -6,6 +6,9 @@ class menuVenta {
 
     public:
         menuVenta();
+        void mostrarCabeceraTabla(int posX, int posY);
+        void tablaVentas(int posX, int posY);
+        void subMenuModificarVenta();
         void iniciar();
         ~menuVenta();
 };

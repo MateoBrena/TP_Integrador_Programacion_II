@@ -6,7 +6,7 @@ class menuVehiculo {
 
     public:
         menuVehiculo();
-        static void mostrarCabeceraTabla(int posX, int posY);
+        void mostrarCabeceraTabla(int posX, int posY);
         void tablaVehiculos(int posX, int posY);
         void subMenuModificarVehiculo();
         void iniciar();
