@@ -22,6 +22,7 @@ class ArchivoVentas {
         void modificarCuitCliente();
         void modificarNroVendedor();
         void modificarPatenteVehiculo();
+        void modificarMarcaVehiculo();
         void modificarMonto();
         void bajaVenta();
         ~ArchivoVentas();

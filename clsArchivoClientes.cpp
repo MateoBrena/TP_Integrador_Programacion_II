@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include "clsArchivoClientes.h"
+#include "clsArchivosVendedores.h"
 #include "cargarCadena.h"
 using namespace std;
 
@@ -125,6 +126,7 @@ void ArchivoClientes::buscarPorDni(){
         obj.Mostrar();
     }else{
         cout << endl << "Error: el cliente con DNI " << d << " se encuentra dado de baja.";
+        return;
     }
 
 }
@@ -139,18 +141,31 @@ void ArchivoClientes::altaCliente(){
         return;
     }
     int pos = buscarRegistro(d);
-    if(pos >= 0){
-        cout << endl << "Error: Ya existe un cliente con ese DNI" << endl;
+    ArchivoVendedores arcVen;
+    int pos2 = arcVen.buscarRegistro(d);
+    if(pos >= 0 || pos2 >= 0){
+        cout << endl << "Error: Ya existe una persona con ese DNI" << endl;
+        return;
+    }
+    Fecha fN;
+    Fecha hoy;
+    hoy.setHoy();
+    cout << "Ingrese la fecha de nacimiento:" << endl;
+    fN.cargarFecha();
+    if(fN > hoy){
+        cout << endl << "Error: No se puede ingresar una fecha futura." << endl;
         return;
     }
     int cant = contarRegistros();
     if(cant <0) cant = 0;
     int nro = cant + 1;
-    obj.Cargar(d, nro);
+    obj.Cargar(d, nro, fN);
     if(grabarRegistro(obj)){
         cout << endl << "Registro grabado exitosamente!" << endl;
+        return;
     }else{
         cout << endl <<"Error al grabar el registro"<<endl;
+        return;
     }
 }
 
@@ -171,8 +186,10 @@ void ArchivoClientes::modificarNombre(){
     obj.setNombre(nomAux);
     if(modificarRegistro(obj, pos)){
         cout << endl << "Nombre modificado!" << endl;
+        return;
     }else{
         cout << endl << "Error al modificar el nombre" << endl;
+        return;
     }
 }
 
@@ -193,8 +210,10 @@ void ArchivoClientes::modificarApellido(){
     obj.setApellido(apAux);
     if(modificarRegistro(obj, pos)){
         cout << endl << "Apellido modificado!" << endl;
+        return;
     }else{
         cout << endl << "Error al modificar el apellido" << endl;
+        return;
     }
 }
 
@@ -215,8 +234,10 @@ void ArchivoClientes::modificarFechaNacimiento(){
     obj.setFechaNacimiento(faux);
     if(modificarRegistro(obj, pos)){
         cout << endl << "Fecha de nacimiento modificada!" << endl;
+        return;
     }else{
         cout << endl << "Error al modificar la fecha de nacimiento" << endl;
+        return;
     }
 }
 
@@ -237,8 +258,10 @@ void ArchivoClientes::modificarMail(){
     obj.setMail(mAux);
     if(modificarRegistro(obj, pos)){
         cout << endl << "Mail modificado!" << endl;
+        return;
     }else{
         cout << endl << "Error al modificar el mail" << endl;
+        return;
     }
 }
 
@@ -258,8 +281,34 @@ void ArchivoClientes::modificarDomicilio(){
     obj.setDomicilio(dAux);
     if(modificarRegistro(obj, pos)){
         cout << endl << "Domicilio modificado!" << endl;
+        return;
     }else{
         cout << endl << "Error al modificar el domicilio" << endl;
+        return;
+    }
+}
+
+void ArchivoClientes::modificarCuit(){
+    int d;
+    cout<<"Ingrese el DNI del cliente: ";
+    cin>>d;
+    int pos = buscarRegistro(d);
+    if(pos < 0){
+        cout << endl << "El DNI ingresado no existe en el archivo" << endl;
+        return;
+    }
+    Cliente obj;
+    obj = leerRegistro(pos);
+    char cAux[12];
+    cout << "Ingrese el nuevo numero de CUIT (Sin espacios): ";
+    cin >> cAux;
+    obj.setCuit(cAux);
+    if(modificarRegistro(obj, pos)){
+        cout << endl << "CUIT modificado!" << endl;
+        return;
+    }else{
+        cout << endl << "Error al modificar el CUIT" << endl;
+        return;
     }
 }
 
@@ -280,8 +329,10 @@ void ArchivoClientes::modificarTelefono(){
     obj.setTelefono(tAux);
     if(modificarRegistro(obj, pos)){
         cout << endl << "Telefono modificado!" << endl;
+        return;
     }else{
         cout << endl << "Error al modificar el telefono" << endl;
+        return;
     }
 }
 
@@ -303,8 +354,10 @@ void ArchivoClientes::bajaCliente(){
     obj.setEstado(false);
     if(modificarRegistro(obj, pos)){
         cout << endl <<"Baja realizada correctamente"<<endl;
+        return;
     }else{
         cout << endl <<"Error al realizar la baja"<<endl;
+        return;
     }
 }
 

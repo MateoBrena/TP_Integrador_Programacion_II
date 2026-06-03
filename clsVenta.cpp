@@ -4,12 +4,13 @@
 #include "clsVenta.h"
 using namespace std;
 
-Venta::Venta(int n, Fecha f, const char * cc, int nV, const char *v, float m){
+Venta::Venta(int n, Fecha f, const char * cc, int nV, const char *v, int iM, float m){
     nroVenta = n;
     fechaVenta = f;
     strcpy(cuitCliente, cc);
     nroVendedor = nV;
     strcpy(patenteVehiculo, v);
+    idMarcaVehiculo = iM;
     monto = m;
     estado = true;
 }
@@ -32,6 +33,10 @@ void Venta::setNroVendedor(int nV){
 
 void Venta::setPatenteVehiculo(const char *pV){
     strcpy(patenteVehiculo,pV);
+}
+
+void Venta::setIdMarcaVehiculo(int d){
+    idMarcaVehiculo = d;
 }
 
 void Venta::setMonto(float m){
@@ -62,6 +67,10 @@ const char * Venta::getPatenteVehiculo(){
     return patenteVehiculo;
 }
 
+int Venta::getIdMarcaVehiculo(){
+    return idMarcaVehiculo;
+}
+
 float Venta::getMonto(){
     return monto;
 }
@@ -70,12 +79,13 @@ bool Venta::getEstado(){
     return estado;
 }
 
-void Venta::Cargar(int n, Fecha f, const char *cC, int nV, const char *pV, float m){
+void Venta::Cargar(int n, Fecha f, const char *cC, int nV, const char *pV, int iM, float m){
     nroVenta = n;
     fechaVenta = f;
     strcpy(cuitCliente, cC);
     nroVendedor = nV;
     strcpy(patenteVehiculo, pV);
+    idMarcaVehiculo = iM;
     monto = m;
 }
 
@@ -86,6 +96,7 @@ void Venta::Mostrar(){
     cout << "CUIT del cliente: " << cuitCliente << endl;
     cout << "Numero de vendedor: " << nroVendedor << endl;
     cout << "Patente del vehiculo: " << patenteVehiculo << endl;
+    cout << "ID marca de vehiculo: " << idMarcaVehiculo << endl;
     cout << "Monto: $" << monto << endl;
 }
 

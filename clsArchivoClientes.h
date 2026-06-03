@@ -23,6 +23,7 @@ class ArchivoClientes {
         void modificarFechaNacimiento();
         void modificarMail();
         void modificarDomicilio();
+        void modificarCuit();
         void modificarTelefono();
         void bajaCliente();
         ~ArchivoClientes();

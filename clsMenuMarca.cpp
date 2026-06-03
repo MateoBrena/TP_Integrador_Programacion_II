@@ -122,7 +122,7 @@ void menuMarca::iniciar(){
         rlutil::locate(posX, posY);
         cout << "================================";
         rlutil::locate(posX, posY + 1);
-        cout << "|       SUBMENU DE MARCAS       |";
+        cout << "|       SUBMENU DE MARCAS      |";
         rlutil::locate(posX, posY + 2);
         cout << "================================";
         int opc = m.mostrarMenu(opcionesMenu, cantidadOpciones, posX, posY + 4, anchoMenu);

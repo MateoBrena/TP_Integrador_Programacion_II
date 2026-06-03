@@ -16,6 +16,7 @@ class ArchivoVehiculos {
         void listarRegistros();
         void altaVehiculo();
         void buscarPorPatente();
+        void modificarPatente();
         void modificarMarca();
         void modificarModelo();
         void modificarAnio();

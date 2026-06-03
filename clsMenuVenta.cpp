@@ -5,6 +5,7 @@
 #include "clsMenu.h"
 #include "clsMenuVenta.h"
 #include "clsArchivoVentas.h"
+#include "clsArchivoMarcas.h"
 using namespace std;
 
 menuVenta::menuVenta(){
@@ -14,7 +15,7 @@ void menuVenta::mostrarCabeceraTabla(int posX, int posY){
     rlutil::setColor(rlutil::CYAN);
     rlutil::locate(posX, posY);
     cout << (char)218<<"----"<<(char)194<<"------------"<<(char)194<<"--------------"<<(char)194<<"------------"<<(char)194;
-    cout << "----------"<<(char)194<<"--------------"<<(char)191;
+    cout << "----------"<<(char)194<<"------------------"<<(char)194<<"--------------"<<(char)191;
 
     rlutil::locate(posX, posY + 1);
     cout << "| " << left << setw(2) << "ID"
@@ -22,11 +23,12 @@ void menuVenta::mostrarCabeceraTabla(int posX, int posY){
          << " | " << setw(12) << "CUIT"
          << " | " << setw(10) << "NRO VEND."
          << " | " << setw(8) << "PATENTE"
+         << " | " << setw(16) << "MARCA"
          << " | " << setw(12) << "MONTO" << " |";
 
     rlutil::locate(posX, posY + 2);
     cout << (char)195<<"----"<<(char)197<<"------------"<<(char)197<<"--------------"<<(char)197<<"------------"<<(char)197;
-    cout << "----------"<<(char)197<<"--------------|";
+    cout << "----------"<<(char)197<<"------------------"<<(char)197<<"--------------|";
 
     rlutil::setColor(rlutil::WHITE);
 }
@@ -47,25 +49,29 @@ void menuVenta::tablaVentas(int posX, int posY){
     mostrarCabeceraTabla(posX,posY);
     int filaActual = posY + 3;
     Venta v;
+    ArchivoMarcas arcMar;
+    Marca m;
     cout << fixed << setprecision(2);
     for(int i=0; i<cant; i++){
         rlutil::locate(posX, filaActual);
         v = arc.leerRegistro(i);
+        m = arcMar.leerRegistro(v.getIdMarcaVehiculo()-1);
         if(v.getEstado()){
             cout << "| " << left << setw(2) << v.getNroVenta()
             << " | " << setw(10) << v.getFechaVenta().mostrarFechaFormato()
             << " | " << setw(12) << v.getCuitCliente()
             << " | " << setw(10) << v.getNroVendedor()
             << " | " << setw(8) << v.getPatenteVehiculo()
+            << " | " << setw(16) << m.getNombre()
             << " | " << setw(12) << v.getMonto() << " |";
             if(i == cant-1){
                 rlutil::locate(posX, filaActual + 1);
                 cout <<(char)192<<"----"<<(char)193<<"------------"<<(char)193<<"--------------"<<(char)193<<"------------"<<(char)193;
-                cout<<"----------"<<(char)193<<"--------------"<<(char)217;
+                cout<<"----------"<<(char)193<<"------------------"<<(char)193<<"--------------"<<(char)217;
             }else{
                 rlutil::locate(posX, filaActual + 1);
                 cout <<(char)195<<"----"<<(char)197<<"------------"<<(char)197<<"--------------"<<(char)197<<"------------"<<(char)197;
-                cout <<"----------"<<(char)197<<"--------------|";
+                cout <<"----------"<<(char)197<<"------------------"<<(char)197<<"--------------|";
             }
             filaActual += 2;
         }
@@ -76,9 +82,9 @@ void menuVenta::tablaVentas(int posX, int posY){
 void menuVenta::subMenuModificarVenta(){
     rlutil::hidecursor();
     string opcionesMenu[] = {"Modificar fecha", "Modificar CUIT", "Modificar numero de vendedor",
-    "Modificar patente", "Modificar monto", "Volver"};
+    "Modificar patente", "Modificar marca", "Modificar monto", "Volver"};
     int anchoMenu = 32;
-    int cantidadOpciones = 6;
+    int cantidadOpciones = 7;
 
     int consolaAncho = rlutil::tcols();
     int consolaAlto = rlutil::trows();
@@ -113,9 +119,12 @@ void menuVenta::subMenuModificarVenta(){
                 arc.modificarPatenteVehiculo();
                 break;
             case 4:
-                arc.modificarMonto();
+                arc.modificarMarcaVehiculo();
                 break;
             case 5:
+                arc.modificarMonto();
+                break;
+            case 6:
                 return;
         }
         system("pause>nul");
@@ -143,7 +152,7 @@ void menuVenta::iniciar(){
         rlutil::locate(posX, posY);
         cout << "================================";
         rlutil::locate(posX, posY + 1);
-        cout << "|       SUBMENU DE VENTAS       |";
+        cout << "|       SUBMENU DE VENTAS      |";
         rlutil::locate(posX, posY + 2);
         cout << "================================";
         int opc = m.mostrarMenu(opcionesMenu, cantidadOpciones, posX, posY + 4, anchoMenu);

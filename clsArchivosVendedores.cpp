@@ -2,6 +2,7 @@
 #include <cstring>
 #include "clsArchivosVendedores.h"
 #include "clsArchivosCategoriaVendedor.h"
+#include "clsArchivoClientes.h"
 #include "cargarCadena.h"
 using namespace std;
 
@@ -114,6 +115,7 @@ void ArchivoVendedores::buscarPorDni(){
         obj.Mostrar();
     }else{
         cout << endl << "Error: el vendedor con DNI " << d << " se encuentra dado de baja.";
+        return;
     }
 }
 
@@ -127,8 +129,19 @@ void ArchivoVendedores::altaVendedor(){
         return;
     }
     int pos = buscarRegistro(d);
-    if(pos >= 0){
-        cout << endl << "Error: Ya existe un vendedor con ese DNI" << endl;
+    ArchivoClientes arcCli;
+    int pos2 = arcCli.buscarRegistro(d);
+    if(pos >= 0 || pos2 >= 0){
+        cout << endl << "Error: Ya existe una persona con ese DNI" << endl;
+        return;
+    }
+    Fecha fN;
+    Fecha hoy;
+    hoy.setHoy();
+    cout << "Ingrese la fecha de nacimiento:" << endl;
+    fN.cargarFecha();
+    if(fN > hoy){
+        cout << endl << "Error: No se puede ingresar una fecha futura." << endl;
         return;
     }
     int cat;
@@ -140,14 +153,23 @@ void ArchivoVendedores::altaVendedor(){
         cout << endl << "Error: no existe una categoria con ese ID" << endl;
         return;
     }
+    Fecha fC;
+    cout << "Ingrese la fecha de contratacion:" << endl;
+    fC.cargarFecha();
+    if(fC > hoy){
+        cout << endl << "Error: No se puede ingresar una fecha futura." << endl;
+        return;
+    }
     int cant = contarRegistros();
     if(cant <0) cant = 0;
     int nro = cant + 1;
-    obj.Cargar(d, nro, cat);
+    obj.Cargar(d, nro, cat, fN, fC);
     if(grabarRegistro(obj)){
         cout<< endl <<"Registro grabado exitosamente!"<<endl;
+        return;
     }else{
         cout<< endl <<"Error al grabar el registro"<<endl;
+        return;
     }
 }
 
@@ -168,8 +190,10 @@ void ArchivoVendedores::modificarNombre(){
     obj.setNombre(nomAux);
     if(modificarRegistro(obj, pos)){
         cout << endl << "Nombre modificado!" << endl;
+        return;
     }else{
         cout << endl << "Error al modificar el nombre" << endl;
+        return;
     }
 }
 
@@ -190,8 +214,10 @@ void ArchivoVendedores::modificarApellido(){
     obj.setApellido(apAux);
     if(modificarRegistro(obj, pos)){
         cout << endl << "Apellido modificado!" << endl;
+        return;
     }else{
         cout << endl << "Error al modificar el apellido" << endl;
+        return;
     }
 }
 
@@ -212,8 +238,10 @@ void ArchivoVendedores::modificarFechaNacimiento(){
     obj.setFechaNacimiento(faux);
     if(modificarRegistro(obj, pos)){
         cout << endl << "Fecha de nacimiento modificada!" << endl;
+        return;
     }else{
         cout << endl << "Error al modificar la fecha de nacimiento" << endl;
+        return;
     }
 }
 
@@ -234,8 +262,10 @@ void ArchivoVendedores::modificarFechaContratacion(){
     obj.setFechaContratacion(faux);
     if(modificarRegistro(obj, pos)){
         cout << endl << "Fecha de Contratacion modificada!" << endl;
+        return;
     }else{
         cout << endl << "Error al modificar la fecha de Contratacion" << endl;
+        return;
     }
 }
 
@@ -256,8 +286,10 @@ void ArchivoVendedores::modificarMail(){
     obj.setMail(mAux);
     if(modificarRegistro(obj, pos)){
         cout << endl << "Mail modificado!" << endl;
+        return;
     }else{
         cout << endl << "Error al modificar el mail" << endl;
+        return;
     }
 }
 
@@ -277,8 +309,10 @@ void ArchivoVendedores::modificarDomicilio(){
     obj.setDomicilio(dAux);
     if(modificarRegistro(obj, pos)){
         cout << endl << "Domicilio modificado!" << endl;
+        return;
     }else{
         cout << endl << "Error al modificar el domicilio" << endl;
+        return;
     }
 }
 
@@ -304,8 +338,10 @@ void ArchivoVendedores::modifcarCategoria(){
     obj.setCategoria(nuevaCat);
     if(modificarRegistro(obj, posVen)){
         cout << endl << "Categoria modificada con exito!" << endl;
+        return;
     } else {
         cout << endl << "Error al guardar la modificacion en el archivo." << endl;
+        return;
     }
 }
 
@@ -327,8 +363,10 @@ void ArchivoVendedores::bajaVendedor(){
     obj.setEstado(false);
     if(modificarRegistro(obj, pos)){
         cout << endl <<"Baja realizada correctamente"<<endl;
+        return;
     }else{
         cout << endl <<"Error al realizar la baja"<<endl;
+        return;
     }
 }
 

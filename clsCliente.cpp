@@ -33,12 +33,12 @@ const char* Cliente::getTelefono(){
     return telefono;
 }
 
-void Cliente::Cargar(int d, int n){
-    Persona::Cargar(d);
+void Cliente::Cargar(int d, int n, Fecha fN){
+    Persona::Cargar(d, fN);
     nroCliente = n;
-    cout << "CUIT: ";
-    cargarCadena(cuit,12);
-    cout << "Telefono: ";
+    cout << "Ingrese el numero de CUIT (Sin espacios): ";
+    cin >> cuit;
+    cout << "Ingrese el numero de telefono: ";
     cargarCadena(telefono,12);
 }
 

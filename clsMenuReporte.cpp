@@ -3,6 +3,7 @@
 #include "rlutil.h"
 #include "clsMenu.h"
 #include "clsMenuReporte.h"
+#include "clsReporte.h"
 using namespace std;
 
 /*  1-Cliente que más compró (puede ser en cantidad de autos o monto en $)
@@ -17,9 +18,10 @@ menuReporte::menuReporte(){
 
 void menuReporte::iniciar(){
     rlutil::hidecursor();
-    string opcionesMenu[] = {"Reporte 1", "Reporte 2", "Reporte 3", "Reporte 4", "Reporte 5", "Volver" };
+    string opcionesMenu[] = {"Mayor cliente por unidades", "Mayor cliente por monto", "Vendedores sin ventas", "Mayor vendedor",
+     "Marca mas vendida", "Ventas por mes", "Volver" };
     int anchoMenu = 32;
-    int cantidadOpciones = 6;
+    int cantidadOpciones = 7;
 
     int consolaAncho = rlutil::tcols();
     int consolaAlto = rlutil::trows();
@@ -29,38 +31,37 @@ void menuReporte::iniciar(){
     if (posX < 1) posX = 1;
     if (posY < 1) posY = 1;
     Menu m;
+    Reporte r;
     while(true){
         system("cls");
         rlutil::locate(posX, posY);
         cout << "================================";
         rlutil::locate(posX, posY + 1);
-        cout << "|      SUBMENU DE REPORTES      |";
+        cout << "|      SUBMENU DE REPORTES     |";
         rlutil::locate(posX, posY + 2);
         cout << "================================";
         int opc = m.mostrarMenu(opcionesMenu, cantidadOpciones, posX, posY + 4, anchoMenu);
         system("cls");
         switch(opc){
             case 0:
-                //reporte1();
-                cout << "Reporte 1";
+                r.clienteMasComproUnidades();
                 break;
             case 1:
-                //reporte2();
-                cout << "Reporte 2";
+                r.clienteMasComproMonto();
                 break;
             case 2:
-                //reporte3();
-                cout << "Reporte 3";
+                r.cantVendedoresSinventas();
                 break;
             case 3:
-                //reporte4();
-                cout << "Reporte 4";
+                r.mayorVendedor();
                 break;
             case 4:
-                //reporte5();
-                cout << "Reporte 5";
+                r.marcaMasVendida();
                 break;
             case 5:
+                r.ventasxMes();
+                break;
+            case 6:
                 return;
         }
         system("pause>nul");

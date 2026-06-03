@@ -82,6 +82,7 @@ void menuVehiculo::tablaVehiculos(int posX, int posY){
 void menuVehiculo::subMenuModificarVehiculo(){
     rlutil::hidecursor();
     string opcionesMenu[] = {
+        "Modificar Patente",
         "Modificar Marca",
         "Modificar Modelo",
         "Modificar Anio",
@@ -93,7 +94,7 @@ void menuVehiculo::subMenuModificarVehiculo(){
         "Volver"
     };
     int anchoMenu = 32;
-    int cantidadOpciones = 9;
+    int cantidadOpciones = 10;
 
     int consolaAncho = rlutil::tcols();
     int consolaAlto = rlutil::trows();
@@ -116,30 +117,33 @@ void menuVehiculo::subMenuModificarVehiculo(){
         system("cls");
         switch(opc){
             case 0:
-                arc.modificarMarca();
+                arc.modificarPatente();
                 break;
             case 1:
-                arc.modificarModelo();
+                arc.modificarMarca();
                 break;
             case 2:
-                arc.modificarAnio();
+                arc.modificarModelo();
                 break;
             case 3:
-                arc.modificarColor();
+                arc.modificarAnio();
                 break;
             case 4:
-                arc.modificarKilometros();
+                arc.modificarColor();
                 break;
             case 5:
-                arc.modificarPrecio();
+                arc.modificarKilometros();
                 break;
             case 6:
-                arc.modificarCombustible();
+                arc.modificarPrecio();
                 break;
             case 7:
-                arc.modificarFechaIngreso();
+                arc.modificarCombustible();
                 break;
             case 8:
+                arc.modificarFechaIngreso();
+                break;
+            case 9:
                 return;
         }
         system("pause>nul");

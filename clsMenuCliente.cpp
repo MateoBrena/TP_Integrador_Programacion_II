@@ -77,9 +77,9 @@ void menuCliente::tablaClientes(int posX, int posY){
 void menuCliente::subMenuModificarCliente(){
     rlutil::hidecursor();
     string opcionesMenu[] = {"Modificar Nombre", "Modificar Apellido", "Modificar Mail", "Modificar fecha de nac.",
-    "Modificar domicilio", "Modificar telefono" ,"Volver" };
+    "Modificar domicilio", "Modificar CUIT" , "Modificar telefono", "Volver" };
     int anchoMenu = 32;
-    int cantidadOpciones = 7;
+    int cantidadOpciones = 8;
 
     int consolaAncho = rlutil::tcols();
     int consolaAlto = rlutil::trows();
@@ -117,9 +117,11 @@ void menuCliente::subMenuModificarCliente(){
                 arc.modificarDomicilio();
                 break;
             case 5:
+                arc.modificarCuit();
+            case 6:
                 arc.modificarTelefono();
                 break;
-            case 6:
+            case 7:
                 return;
         }
         system("pause>nul");
@@ -147,7 +149,7 @@ void menuCliente::iniciar(){
         rlutil::locate(posX, posY);
         cout << "================================";
         rlutil::locate(posX, posY + 1);
-        cout << "|      SUBMENU DE CLIENTES      |";
+        cout << "|      SUBMENU DE CLIENTES     |";
         rlutil::locate(posX, posY + 2);
         cout << "================================";
         int opc = m.mostrarMenu(opcionesMenu, cantidadOpciones, posX, posY + 4, anchoMenu);

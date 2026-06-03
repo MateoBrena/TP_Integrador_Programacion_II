@@ -118,6 +118,7 @@ void ArchivoCategorias::buscarPorId(){
         obj.Mostrar();
     }else{
         cout << endl << "Error: la categoria con ID " << d << " se encuentra dada de baja.";
+        return;
     }
 }
 
@@ -129,8 +130,10 @@ void ArchivoCategorias::altaCategoria(){
     obj.Cargar(nro);
     if(grabarRegistro(obj)){
         cout<< endl <<"Registro grabado exitosamente!"<<endl;
+        return;
     }else{
         cout<< endl <<"Error al grabar el registro"<<endl;
+        return;
     }
 }
 
@@ -151,8 +154,10 @@ void ArchivoCategorias::modificarDescripcion(){
     obj.setDescripcion(descAux);
     if(modificarRegistro(obj, pos)){
         cout << endl << "Descripcion modificada correctamente!" << endl;
+        return;
     }else{
         cout << "Error al modificar la descripcion." << endl;
+        return;
     }
 }
 
@@ -172,8 +177,10 @@ void ArchivoCategorias::modificarComision(){
     obj.setComision(pC);
     if(modificarRegistro(obj, pos)){
         cout << endl << "Comision modificada correctamente!" << endl;
+        return;
     }else{
         cout << endl << "Error al modificar la comision." << endl;
+        return;
     }
 }
 
@@ -194,8 +201,10 @@ void ArchivoCategorias::bajaCategoria(){
     obj.setEstado(false);
     if(modificarRegistro(obj, pos)){
         cout << endl << "Baja realizada con exito." << endl;
+        return;
     }else{
         cout << endl << "Error al procesar la baja." << endl;
+        return;
     }
 }
 

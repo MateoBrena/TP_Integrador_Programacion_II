@@ -70,21 +70,20 @@ bool Persona::getEstado(){
     return estado;
 }
 
-void Persona::Cargar(int d){
+void Persona::Cargar(int d, Fecha fN){
     if(d == -1){
         cout<<"DNI: ";
         cin>>dni;
     }else{
         dni = d;
     }
+    fechaNacimiento = fN;
     cout<<"Nombre: ";
     cargarCadena(nombre, 20);
     cout<<"Apellido: ";
     cargarCadena(apellido, 20);
     cout<<"Mail: ";
     cargarCadena(mail, 30);
-    cout<<"Fecha de nacimiento: " << endl;
-    fechaNacimiento.cargarFecha();
     cout<<"Domicilio: " << endl;
     domicilio.Cargar();
 }

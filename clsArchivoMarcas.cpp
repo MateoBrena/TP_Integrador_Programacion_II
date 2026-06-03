@@ -112,6 +112,7 @@ void ArchivoMarcas::buscarPorId(){
         obj.Mostrar();
     }else{
         cout << endl << "Error: la marca con ID " << d << " se encuentra dada de baja.";
+        return;
     }
 
 }
@@ -124,8 +125,10 @@ void ArchivoMarcas::altaMarca(){
     obj.Cargar(nro);
     if(grabarRegistro(obj)){
         cout<< endl <<"Registro grabado exitosamente!"<<endl;
+        return;
     }else{
         cout<< endl <<"Error al grabar el registro"<<endl;
+        return;
     }
 }
 
@@ -146,8 +149,10 @@ void ArchivoMarcas::modificarNombre(){
     obj.setNombre(nomAux);
     if(modificarRegistro(obj, pos)){
         cout << endl << "Nombre modificado!" << endl;
+        return;
     }else{
         cout << endl << "Error al modificar el nombre" << endl;
+        return;
     }
 }
 
@@ -168,8 +173,10 @@ void ArchivoMarcas::modificarPais(){
     obj.setPais(pAux);
     if(modificarRegistro(obj, pos)){
         cout << endl << "Pais modificado!" << endl;
+        return;
     }else{
         cout << endl << "Error al modificar el apellido" << endl;
+        return;
     }
 }
 
@@ -191,8 +198,10 @@ void ArchivoMarcas::bajaMarca(){
     obj.setEstado(false);
     if(modificarRegistro(obj, pos)){
         cout << endl <<"Baja realizada correctamente"<<endl;
+        return;
     }else{
         cout << endl <<"Error al realizar la baja"<<endl;
+        return;
     }
 }
 

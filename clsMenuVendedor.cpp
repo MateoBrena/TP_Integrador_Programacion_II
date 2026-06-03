@@ -160,7 +160,7 @@ void menuVendedor::iniciar(){
         rlutil::locate(posX, posY);
         cout << "================================";
         rlutil::locate(posX, posY + 1);
-        cout << "|     SUBMENU DE VENDEDORES     |";
+        cout << "|     SUBMENU DE VENDEDORES    |";
         rlutil::locate(posX, posY + 2);
         cout << "================================";
         int opc = m.mostrarMenu(opcionesMenu, cantidadOpciones, posX, posY + 4, anchoMenu);

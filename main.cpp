@@ -1,9 +1,8 @@
 #include <iostream>
-using namespace std;
 #include "clsMenu.h"
+using namespace std;
 
-int main()
-{
+int main(){
     Menu menuPrincipal;
     menuPrincipal.iniciar();
     return 0;

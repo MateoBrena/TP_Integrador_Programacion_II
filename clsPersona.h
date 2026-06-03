@@ -29,7 +29,7 @@ class Persona{
         Fecha getFechaNacimiento();
         Domicilio getDomicilio();
         bool getEstado();
-        void Cargar(int d);
+        void Cargar(int d, Fecha fN);
         void Mostrar();
         ~Persona();
 };

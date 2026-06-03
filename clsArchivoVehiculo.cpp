@@ -100,6 +100,7 @@ void ArchivoVehiculos::buscarPorPatente(){
         obj.Mostrar();
     } else {
         cout << endl << "Error: El vehiculo con patente " << auxPatente << " se encuentra dado de baja." << endl;
+        return;
     }
 }
 
@@ -123,7 +124,9 @@ void ArchivoVehiculos::altaVehiculo(){
     cin >> idMarca;
     ArchivoMarcas arcMarcas;
     int posMarca = arcMarcas.buscarRegistro(idMarca);
-    if(posMarca == -1){
+    Marca m;
+    m = arcMarcas.leerRegistro(posMarca);
+    if(posMarca == -1 || !m.getEstado()){
         cout << endl << "Error: La marca con ID " << idMarca << " no existe o esta dado de baja. Alta cancelada." << endl;
         return;
     }
@@ -133,15 +136,56 @@ void ArchivoVehiculos::altaVehiculo(){
     obj.Cargar(nro, patente, idMarca);
     if(grabarRegistro(obj)){
         cout<< endl <<"Registro grabado exitosamente!"<<endl;
+        return;
     }else{
         cout<< endl <<"Error al grabar el registro"<<endl;
+        return;
+    }
+}
+
+void ArchivoVehiculos::modificarPatente(){
+    Vehiculo obj;
+    char patente[10];
+    cout << "Ingrese la patente del vehiculo a modificar (Sin espacios): ";
+    cin >> patente;
+    obj.hacerMayusculas(patente);
+    if(!obj.validarPatente(patente)){
+        cout << endl << "Error: Patente ingresada con formato invalido." << endl;
+        return;
+    }
+    int pos = buscarRegistro(patente);
+    if(pos < 0){
+        cout << endl << "La patente ingresada no existe en el archivo." << endl;
+        return;
+    }
+    cout << "Ingrese la nueva patente (Sin espacios): ";
+    char patenteAux[10];
+    cin >> patenteAux;
+    obj.hacerMayusculas(patenteAux);
+    if(!obj.validarPatente(patenteAux)){
+        cout << endl << "Error: Patente ingresada con formato invalido." << endl;
+        return;
+    }
+    int pos2 = buscarRegistro(patenteAux);
+    if(pos2 > 0){
+        cout << endl << "Error: Ya existe un vehiculo con esa patente." << endl;
+        return;
+    }
+    obj = leerRegistro(pos);
+    obj.setPatente(patenteAux);
+    if(modificarRegistro(obj, pos)){
+        cout << endl << "Patente modificada con exito!" << endl;
+        return;
+    } else {
+        cout << endl << "Error al guardar la modificacion." << endl;
+        return;
     }
 }
 
 void ArchivoVehiculos::modificarMarca(){
     Vehiculo obj;
     char auxPatente[10];
-    cout << "Ingrese la patente del vehiculo a dar de baja (Sin espacios): ";
+    cout << "Ingrese la patente del vehiculo a modificar (Sin espacios): ";
     cin >> auxPatente;
     obj.hacerMayusculas(auxPatente);
     if(!obj.validarPatente(auxPatente)){
@@ -150,10 +194,9 @@ void ArchivoVehiculos::modificarMarca(){
     }
     int pos = buscarRegistro(auxPatente);
     if(pos < 0){
-        cout << "La patente ingresada no existe." << endl;
+        cout << endl << "La patente ingresada no existe en el archivo." << endl;
         return;
     }
-
     obj = leerRegistro(pos);
     int nuevaMarca;
     cout << "Ingrese el ID de la nueva marca: ";
@@ -161,22 +204,24 @@ void ArchivoVehiculos::modificarMarca(){
     ArchivoMarcas arcMarcas;
     int posMarca = arcMarcas.buscarRegistro(nuevaMarca);
     if(posMarca == -1){
-        cout << "Error: La marca con ID " << nuevaMarca << " no existe o esta dada de baja." << endl;
+        cout << endl << "Error: La marca con ID " << nuevaMarca << " no existe o esta dada de baja." << endl;
         return;
     }
 
     obj.setIdMarca(nuevaMarca);
     if(modificarRegistro(obj, pos)){
-        cout << "Marca modificada con exito!" << endl;
+        cout << endl << "Marca modificada con exito!" << endl;
+        return;
     } else {
-        cout << "Error al guardar la modificacion." << endl;
+        cout << endl << "Error al guardar la modificacion." << endl;
+        return;
     }
 }
 
 void ArchivoVehiculos::modificarModelo(){
     Vehiculo obj;
     char auxPatente[10];
-    cout << "Ingrese la patente del vehiculo a dar de baja (Sin espacios): ";
+    cout << "Ingrese la patente del vehiculo a modificar (Sin espacios): ";
     cin >> auxPatente;
     obj.hacerMayusculas(auxPatente);
     if(!obj.validarPatente(auxPatente)){
@@ -185,27 +230,27 @@ void ArchivoVehiculos::modificarModelo(){
     }
     int pos = buscarRegistro(auxPatente);
     if(pos < 0){
-        cout << "La patente ingresada no existe." << endl;
+        cout << endl << "La patente ingresada no existe en el archivo." << endl;
         return;
     }
-
     obj = leerRegistro(pos);
     char nuevoModelo[20];
     cout << "Ingrese el nuevo modelo: ";
     cargarCadena(nuevoModelo, 20);
-
     obj.setModelo(nuevoModelo);
     if(modificarRegistro(obj, pos)){
-        cout << "Modelo modificado con exito!" << endl;
+        cout << endl << "Modelo modificado con exito!" << endl;
+        return;
     } else {
-        cout << "Error al guardar la modificacion." << endl;
+        cout << endl << "Error al guardar la modificacion." << endl;
+        return;
     }
 }
 
 void ArchivoVehiculos::modificarAnio(){
     Vehiculo obj;
     char auxPatente[10];
-    cout << "Ingrese la patente del vehiculo a dar de baja (Sin espacios): ";
+    cout << "Ingrese la patente del vehiculo a modificar (Sin espacios): ";
     cin >> auxPatente;
     obj.hacerMayusculas(auxPatente);
     if(!obj.validarPatente(auxPatente)){
@@ -214,7 +259,7 @@ void ArchivoVehiculos::modificarAnio(){
     }
     int pos = buscarRegistro(auxPatente);
     if(pos < 0){
-        cout << "La patente ingresada no existe." << endl;
+        cout << endl  << "La patente ingresada no existe en el archivo." << endl;
         return;
     }
     obj = leerRegistro(pos);
@@ -223,16 +268,18 @@ void ArchivoVehiculos::modificarAnio(){
     cin >> nuevoAnio;
     obj.setAnio(nuevoAnio);
     if(modificarRegistro(obj, pos)){
-        cout << "Anio modificado con exito!" << endl;
+        cout << endl << "Anio modificado con exito!" << endl;
+        return;
     } else {
-        cout << "Error al guardar la modificacion." << endl;
+        cout << endl << "Error al guardar la modificacion." << endl;
+        return;
     }
 }
 
 void ArchivoVehiculos::modificarColor(){
     Vehiculo obj;
     char auxPatente[10];
-    cout << "Ingrese la patente del vehiculo a dar de baja (Sin espacios): ";
+    cout << "Ingrese la patente del vehiculo a modificar (Sin espacios): ";
     cin >> auxPatente;
     obj.hacerMayusculas(auxPatente);
     if(!obj.validarPatente(auxPatente)){
@@ -241,26 +288,27 @@ void ArchivoVehiculos::modificarColor(){
     }
     int pos = buscarRegistro(auxPatente);
     if(pos < 0){
-        cout << "La patente ingresada no existe." << endl;
+        cout << endl << "La patente ingresada no existe en el archivo." << endl;
         return;
     }
-
     obj = leerRegistro(pos);
     char nuevoColor[20];
     cout << "Ingrese el nuevo color: ";
     cargarCadena(nuevoColor, 20);
     obj.setColor(nuevoColor);
     if(modificarRegistro(obj, pos)){
-        cout << "Color modificado con exito!" << endl;
+        cout << endl << "Color modificado con exito!" << endl;
+        return;
     } else {
-        cout << "Error al guardar la modificacion." << endl;
+        cout << endl << "Error al guardar la modificacion." << endl;
+        return;
     }
 }
 
 void ArchivoVehiculos::modificarKilometros(){
     Vehiculo obj;
     char auxPatente[10];
-    cout << "Ingrese la patente del vehiculo a dar de baja (Sin espacios): ";
+    cout << "Ingrese la patente del vehiculo a modificar (Sin espacios): ";
     cin >> auxPatente;
     obj.hacerMayusculas(auxPatente);
     if(!obj.validarPatente(auxPatente)){
@@ -269,7 +317,7 @@ void ArchivoVehiculos::modificarKilometros(){
     }
     int pos = buscarRegistro(auxPatente);
     if(pos < 0){
-        cout << "La patente ingresada no existe." << endl;
+        cout << endl << "La patente ingresada no existe en el archivo." << endl;
         return;
     }
 
@@ -279,16 +327,18 @@ void ArchivoVehiculos::modificarKilometros(){
     cin >> nuevosKms;
     obj.setKilometros(nuevosKms);
     if(modificarRegistro(obj, pos)){
-        cout << "Kilometros modificados con exito!" << endl;
+        cout << endl << "Kilometros modificados con exito!" << endl;
+        return;
     } else {
-        cout << "Error al guardar la modificacion." << endl;
+        cout << endl << "Error al guardar la modificacion." << endl;
+        return;
     }
 }
 
 void ArchivoVehiculos::modificarPrecio(){
     Vehiculo obj;
     char auxPatente[10];
-    cout << "Ingrese la patente del vehiculo a dar de baja (Sin espacios): ";
+    cout << "Ingrese la patente del vehiculo a modificar (Sin espacios): ";
     cin >> auxPatente;
     obj.hacerMayusculas(auxPatente);
     if(!obj.validarPatente(auxPatente)){
@@ -297,7 +347,7 @@ void ArchivoVehiculos::modificarPrecio(){
     }
     int pos = buscarRegistro(auxPatente);
     if(pos < 0){
-        cout << "La patente ingresada no existe." << endl;
+        cout << endl << "La patente ingresada no existe en el archivo." << endl;
         return;
     }
 
@@ -307,16 +357,18 @@ void ArchivoVehiculos::modificarPrecio(){
     cin >> nuevoPrecio;
     obj.setPrecio(nuevoPrecio);
     if(modificarRegistro(obj, pos)){
-        cout << "Precio modificado con exito!" << endl;
+        cout << endl << "Precio modificado con exito!" << endl;
+        return;
     } else {
-        cout << "Error al guardar la modificacion." << endl;
+        cout << endl << "Error al guardar la modificacion." << endl;
+        return;
     }
 }
 
 void ArchivoVehiculos::modificarCombustible(){
     Vehiculo obj;
     char auxPatente[10];
-    cout << "Ingrese la patente del vehiculo a dar de baja (Sin espacios): ";
+    cout << "Ingrese la patente del vehiculo a modificar (Sin espacios): ";
     cin >> auxPatente;
     obj.hacerMayusculas(auxPatente);
     if(!obj.validarPatente(auxPatente)){
@@ -325,7 +377,7 @@ void ArchivoVehiculos::modificarCombustible(){
     }
     int pos = buscarRegistro(auxPatente);
     if(pos < 0){
-        cout << "La patente ingresada no existe." << endl;
+        cout << endl << "La patente ingresada no existe en el archivo." << endl;
         return;
     }
     obj = leerRegistro(pos);
@@ -334,16 +386,18 @@ void ArchivoVehiculos::modificarCombustible(){
     cargarCadena(nuevoCombustible, 10);
     obj.setCombustible(nuevoCombustible);
     if(modificarRegistro(obj, pos)){
-        cout << "Tipo de combustible modificado con exito!" << endl;
+        cout << endl << "Tipo de combustible modificado con exito!" << endl;
+        return;
     } else {
-        cout << "Error al guardar la modificacion." << endl;
+        cout << endl << "Error al guardar la modificacion." << endl;
+        return;
     }
 }
 
 void ArchivoVehiculos::modificarFechaIngreso(){
     Vehiculo obj;
     char auxPatente[10];
-    cout << "Ingrese la patente del vehiculo a dar de baja (Sin espacios): ";
+    cout << "Ingrese la patente del vehiculo a modificar (Sin espacios): ";
     cin >> auxPatente;
     obj.hacerMayusculas(auxPatente);
     if(!obj.validarPatente(auxPatente)){
@@ -352,7 +406,7 @@ void ArchivoVehiculos::modificarFechaIngreso(){
     }
     int pos = buscarRegistro(auxPatente);
     if(pos < 0){
-        cout << "La patente ingresada no existe." << endl;
+        cout << endl << "La patente ingresada no existe en el archivo." << endl;
         return;
     }
     obj = leerRegistro(pos);
@@ -361,9 +415,11 @@ void ArchivoVehiculos::modificarFechaIngreso(){
     nuevaFecha.cargarFecha();
     obj.setFechaIngreso(nuevaFecha);
     if(modificarRegistro(obj, pos)){
-        cout << "Fecha de ingreso modificada con exito!" << endl;
+        cout << endl << "Fecha de ingreso modificada con exito!" << endl;
+        return;
     } else {
-        cout << "Error al guardar la modificacion." << endl;
+        cout << endl << "Error al guardar la modificacion." << endl;
+        return;
     }
 }
 
@@ -390,8 +446,10 @@ void ArchivoVehiculos::bajaVehiculo(){
     obj.setEstado(false);
     if(modificarRegistro(obj, pos)){
         cout << endl << "Baja del vehiculo realizada." << endl;
+        return;
     } else {
         cout << endl << "Error al procesar la baja en el archivo." << endl;
+        return;
     }
 }
 

@@ -16,7 +16,7 @@ class Cliente : public Persona {
         int getNroCliente();
         const char * getCuit();
         const char * getTelefono();
-        void Cargar(int d, int n);
+        void Cargar(int d, int n, Fecha fN);
         void cuitFormato(const char *c);
         void Mostrar();
         ~Cliente();

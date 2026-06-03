@@ -4,6 +4,7 @@
 #include "clsArchivoClientes.h"
 #include "clsArchivosVendedores.h"
 #include "clsArchivoVehiculos.h"
+#include "clsArchivoMarcas.h"
 #include "cargarCadena.h"
 using namespace std;
 
@@ -141,6 +142,17 @@ void ArchivoVentas::altaVenta(){
         cout << endl << "Error: No existe un vehiculo con la patente ingresada." << endl;
         return;
     }
+    obj = arcVeh.leerRegistro(pos);
+    int idMarca = obj.getIdMarca();
+    ArchivoMarcas arcMar;
+    Marca mar;
+    int posMarca = arcMar.buscarRegistro(idMarca);
+    mar = arcMar.leerRegistro(posMarca);
+    if(!mar.getEstado()){
+        cout << endl << "Error: No se puede vender un vehiculo con una marca invalida o dada de baja." << endl;
+        return;
+    }
+    idMarca = mar.getId();
     Fecha f;
     Fecha hoy;
     hoy.setHoy();
@@ -155,11 +167,13 @@ void ArchivoVentas::altaVenta(){
     if(cant <0) cant = 0;
     int nro = cant + 1;
     Venta v;
-    v.Cargar(nro, f, cc, nv, patente, m);
+    v.Cargar(nro, f, cc, nv, patente, idMarca, m);
     if(grabarRegistro(v)){
         cout<< endl <<"Registro grabado exitosamente!"<<endl;
+        return;
     }else{
         cout<< endl <<"Error al grabar el registro"<<endl;
+        return;
     }
 }
 
@@ -170,25 +184,187 @@ void ArchivoVentas::buscarPorId(){
     int pos = buscarRegistroActivo(d);
     if(pos < 0){
         cout << endl << "Error: No existe una venta con el ID ingresado" << endl;
+        return;
     }
     Venta v = leerRegistro(pos);
     v.Mostrar();
 }
 
 void ArchivoVentas::modificarFechaVenta(){
-    cout << "Modificar fecha venta" << endl;
+    int id;
+    cout << "Ingrese el ID de la venta a modificar: ";
+    cin >> id;
+    int pos = buscarRegistro(id);
+    if(pos < 0){
+        cout << endl << "Error: No existe una venta con el ID ingresado" << endl;
+        return;
+    }
+    cout << "Ingrese la nueva fecha: " << endl;
+    Fecha fAux;
+    fAux.cargarFecha();
+    Venta v;
+    v = leerRegistro(pos);
+    v.setFechaVenta(fAux);
+    if(modificarRegistro(v,pos)){
+        cout<< endl <<"Registro grabado exitosamente!"<<endl;
+        return;
+    }else{
+        cout<< endl <<"Error al grabar el registro"<<endl;
+        return;
+    }
+
 }
 void ArchivoVentas::modificarCuitCliente(){
-    cout << "Modificar cuit venta" << endl;
+    int id;
+    cout << "Ingrese el ID de la venta a modificar: ";
+    cin >> id;
+    int pos = buscarRegistro(id);
+    if(pos < 0){
+        cout << endl << "Error: No existe una venta con el ID ingresado" << endl;
+        return;
+    }
+    cout << "Ingrese el nuevo CUIT (Sin espacios): " << endl;
+    char cuitAux[12];
+    cin >> cuitAux;
+    ArchivoClientes arcCli;
+    int pos2 = arcCli.buscarRegistroxCUIT(cuitAux);
+    if(pos2 < 0){
+        cout << endl << "Error: No existe un cliente con el CUIT ingresado" << endl;
+        return;
+    }
+    Venta v;
+    v = leerRegistro(pos);
+    v.setCuitCliente(cuitAux);
+    if(modificarRegistro(v,pos)){
+        cout<< endl <<"Registro grabado exitosamente!"<<endl;
+        return;
+    }else{
+        cout<< endl <<"Error al grabar el registro"<<endl;
+        return;
+    }
 }
 void ArchivoVentas::modificarNroVendedor(){
-    cout << "Modificar nro vendedor venta" << endl;
+    int id;
+    cout << "Ingrese el ID de la venta a modificar: ";
+    cin >> id;
+    int pos = buscarRegistro(id);
+    if(pos < 0){
+        cout << endl << "Error: No existe una venta con el ID ingresado" << endl;
+        return;
+    }
+    cout << "Ingrese el nuevo numero de vendedor: ";
+    int nvAux;
+    cin >> nvAux;
+    ArchivoVendedores arcVen;
+    int pos2 = arcVen.buscarRegistroPorNv(nvAux);
+    if(pos2 < 0){
+        cout << endl << "Error: No existe un vendedor con el ID ingresado" << endl;
+        return;
+    }
+    Venta v;
+    v = leerRegistro(pos);
+    v.setNroVendedor(nvAux);
+    if(modificarRegistro(v,pos)){
+        cout<< endl <<"Registro grabado exitosamente!"<<endl;
+        return;
+    }else{
+        cout<< endl <<"Error al grabar el registro"<<endl;
+        return;
+    }
+
 }
 void ArchivoVentas::modificarPatenteVehiculo(){
-    cout << "Modificar patente venta" << endl;
+    int id;
+    cout << "Ingrese el ID de la venta a modificar: ";
+    cin >> id;
+    int pos = buscarRegistro(id);
+    if(pos < 0){
+        cout << endl << "Error: No existe una venta con el ID ingresado" << endl;
+        return;
+    }
+    ArchivoVehiculos arcVeh;
+    Vehiculo veh;
+    cout << "Ingrese la nueva patente (Sin espacios): ";
+    char patente[10];
+    cin >> patente;
+    veh.hacerMayusculas(patente);
+    if(!veh.validarPatente(patente)){
+        cout << endl << "Error: Patente ingresada con formato invalido." << endl;
+        return;
+    }
+    int pos2 = arcVeh.buscarRegistro(patente);
+    if(pos2 < 0){
+        cout << endl << "Error: La patente ingresada no existe en el archivo." << endl;
+        return;
+    }
+    Venta v;
+    v = leerRegistro(pos);
+    v.setPatenteVehiculo(patente);
+    if(modificarRegistro(v,pos)){
+        cout<< endl <<"Registro grabado exitosamente!"<<endl;
+        return;
+    }else{
+        cout<< endl <<"Error al grabar el registro"<<endl;
+        return;
+    }
 }
+
+void ArchivoVentas::modificarMarcaVehiculo(){
+    int id;
+    cout << "Ingrese el ID de la venta a modificar: ";
+    cin >> id;
+    int pos = buscarRegistro(id);
+    if(pos < 0){
+        cout << endl << "Error: No existe una venta con el ID ingresado" << endl;
+        return;
+    }
+    cout << "Ingrese el ID de la nueva marca: ";
+    int idAux;
+    cin >> idAux;
+    ArchivoMarcas arcMar;
+    int pos2 = arcMar.buscarRegistro(idAux);
+    if(pos2 < 0){
+        cout << endl << "Error: No existe una marca con el ID ingresado" << endl;
+        return;
+    }
+    Venta v;
+    v = leerRegistro(pos);
+    v.setIdMarcaVehiculo(idAux);
+    if(modificarRegistro(v,pos)){
+        cout<< endl <<"Registro grabado exitosamente!"<<endl;
+        return;
+    }else{
+        cout<< endl <<"Error al grabar el registro"<<endl;
+        return;
+    }
+}
+
 void ArchivoVentas::modificarMonto(){
-    cout << "Modificar monto venta" << endl;
+    int id;
+    cout << "Ingrese el ID de la venta a modificar: ";
+    cin >> id;
+    int pos = buscarRegistro(id);
+    if(pos < 0){
+        cout << endl << "Error: No existe una venta con el ID ingresado" << endl;
+        return;
+    }
+    cout << "Ingrese el nuevo monto: ";
+    int mAux;
+    cin >> mAux;
+    if(mAux < 0){
+        cout << endl << "Error: La venta no puede tener un monto negativo" << endl;
+        return;
+    }
+    Venta v;
+    v = leerRegistro(pos);
+    v.setMonto(mAux);
+    if(modificarRegistro(v,pos)){
+        cout<< endl <<"Registro grabado exitosamente!"<<endl;
+        return;
+    }else{
+        cout<< endl <<"Error al grabar el registro"<<endl;
+        return;
+    }
 }
 
 void ArchivoVentas::bajaVenta(){
@@ -209,8 +385,10 @@ void ArchivoVentas::bajaVenta(){
     obj.setEstado(false);
     if(modificarRegistro(obj, pos)){
         cout << endl <<"Baja realizada correctamente"<<endl;
+        return;
     }else{
         cout << endl <<"Error al realizar la baja"<<endl;
+        return;
     }
 }
 
