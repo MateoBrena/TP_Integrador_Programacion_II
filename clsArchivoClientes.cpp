@@ -14,10 +14,10 @@ Cliente ArchivoClientes::leerRegistro(int pos){
     FILE *p = fopen(nombre,"rb");
     Cliente obj;
     if(p == nullptr){
-        obj.setDni(-2);
+        obj.setNroCliente(-2);
         return obj;
     }
-    obj.setDni(-1);
+    obj.setNroCliente(-1);
     fseek(p,  sizeof obj * pos, 0);
     fread(&obj, sizeof obj, 1, p);
     fclose(p);
@@ -62,7 +62,6 @@ int ArchivoClientes::contarRegistros(){
 }
 
 int ArchivoClientes::contarRegistrosActivos(int ca){
-
     int cantActivos = 0;
     for(int i=0; i<ca; i++){
         Cliente c = leerRegistro(i);
@@ -70,33 +69,61 @@ int ArchivoClientes::contarRegistrosActivos(int ca){
             cantActivos++;
         }
     }
-
     return cantActivos;
 }
 
 int ArchivoClientes::buscarRegistro(int d){
-
     int cantReg = contarRegistros();
     for(int i=0; i<cantReg; i++){
         Cliente obj = leerRegistro(i);
-        if(obj.getDni() == d){
+        if(obj.getNroCliente() == d && obj.getEstado()){
             return i;
         }
     }
-
     return -1;
 }
 
-int ArchivoClientes::buscarRegistroxCUIT(const char *d){
-
+int ArchivoClientes::buscarRegistroxDNI(const char *d){
     int cantReg = contarRegistros();
     for(int i=0; i<cantReg; i++){
         Cliente obj = leerRegistro(i);
-        if(strcmp(obj.getCuit(),d) == 0){
+        if(strcmp(obj.getDni(),d) == 0){
             return i;
         }
     }
+    return -1;
+}
 
+int ArchivoClientes::buscarRegistroxCUIT(const char *c){
+    int cantReg = contarRegistros();
+    for(int i=0; i<cantReg; i++){
+        Cliente obj = leerRegistro(i);
+        if(strcmp(obj.getCuit(),c) == 0){
+            return i;
+        }
+    }
+    return -1;
+}
+
+int ArchivoClientes::buscarRegistroxMail(const char *m){
+    int cantReg = contarRegistros();
+    for(int i=0; i<cantReg; i++){
+        Cliente obj = leerRegistro(i);
+        if(strcmp(obj.getMail(),m) == 0){
+            return i;
+        }
+    }
+    return -1;
+}
+
+int ArchivoClientes::buscarRegistroxTelefono(const char *t){
+    int cantReg = contarRegistros();
+    for(int i=0; i<cantReg; i++){
+        Cliente obj = leerRegistro(i);
+        if(strcmp(obj.getTelefono(),t) == 0){
+            return i;
+        }
+    }
     return -1;
 }
 
@@ -112,39 +139,31 @@ void ArchivoClientes::listarRegistros(){
     }
 }
 
-void ArchivoClientes::buscarPorDni(){
-    int d;
-    cout<<"Ingrese el DNI del cliente: ";
-    cin>>d;
-    int pos = buscarRegistro(d);
-    if(pos < 0){
-        cout << endl << "El DNI ingresado no existe en el archivo" << endl;
-        return;
-    }
-    Cliente obj = leerRegistro(pos);
-    if(obj.getEstado()){
-        obj.Mostrar();
-    }else{
-        cout << endl << "Error: el cliente con DNI " << d << " se encuentra dado de baja.";
-        return;
-    }
-
-}
-
 void ArchivoClientes::altaCliente(){
     Cliente obj;
-    int d;
+    char d[9];
     cout << "Ingrese el DNI del cliente: ";
-    cin >> d;
-    if(d <= 0){
-        cout << endl << "Error: No se puede ingresar un DNI igual o menor a cero" << endl;
+    cargarCadena(d,9);
+    if(strlen(d) < 8){
+        cout << endl << "Error: El DNI debe contener 8 caracteres. Si contiene 7, coloque un 0 adelante y luego el DNI" << endl;
         return;
     }
-    int pos = buscarRegistro(d);
+    if(!obj.validarDni(d)){
+        cout << "Error: DNI ingresado en formato invalido" << endl;
+        return;
+    }
+    int pos = buscarRegistroxDNI(d);
     ArchivoVendedores arcVen;
-    int pos2 = arcVen.buscarRegistro(d);
+    int pos2 = arcVen.buscarRegistroxDNI(d);
     if(pos >= 0 || pos2 >= 0){
         cout << endl << "Error: Ya existe una persona con ese DNI" << endl;
+        return;
+    }
+    cout << "Ingrese el numero de CUIT (Formato: XX-XXXXXXXX-X): ";
+    char c[15];
+    cargarCadena(c,15);
+    if(!obj.validarCuit(c,d)){
+        cout << "Error: Verifique el formato y contenido del CUIT ingresado" << endl;
         return;
     }
     Fecha fN;
@@ -159,7 +178,7 @@ void ArchivoClientes::altaCliente(){
     int cant = contarRegistros();
     if(cant <0) cant = 0;
     int nro = cant + 1;
-    obj.Cargar(d, nro, fN);
+    obj.Cargar(d, nro, c, fN);
     if(grabarRegistro(obj)){
         cout << endl << "Registro grabado exitosamente!" << endl;
         return;
@@ -169,20 +188,235 @@ void ArchivoClientes::altaCliente(){
     }
 }
 
-void ArchivoClientes::modificarNombre(){
-    int d;
-    cout<<"Ingrese el DNI del cliente: ";
-    cin>>d;
+void ArchivoClientes::listadoFiltrado(int *l, const int TAM){
+    Cliente veh;
+    for(int i=0; i<TAM; i++){
+        veh = leerRegistro(l[i]);
+        veh.Mostrar();
+    }
+}
+
+void ArchivoClientes::buscarPorId(){
+    int d = cargarEntero("Ingrese el ID del cliente: ");
     int pos = buscarRegistro(d);
     if(pos < 0){
-        cout << endl << "El DNI ingresado no existe en el archivo" << endl;
+        cout << endl << "No existe ningun cliente con el ID ingresado" << endl;
+        return;
+    }
+    Cliente c;
+    c = leerRegistro(pos);
+    c.Mostrar();
+}
+
+void ArchivoClientes::buscarPorDni(){
+    char d[9];
+    cout<<"Ingrese el DNI del cliente: ";
+    cargarCadena(d,9);
+    if(strlen(d) < 8){
+        cout << endl << "Error: El DNI debe contener 8 caracteres. Si contiene 7, coloque un 0 adelante y luego el DNI" << endl;
+        return;
+    }
+    Cliente c;
+    if(!c.validarDni(d)){
+        cout << endl << "Error: DNI ingresado en formato invalido" << endl;
+        return;
+    }
+    int pos = buscarRegistroxDNI(d);
+    if(pos < 0){
+        cout << endl << "No existe ningun cliente con el DNI ingresado" << endl;
+        return;
+    }
+    c = leerRegistro(pos);
+    c.Mostrar();
+}
+
+void  ArchivoClientes::buscarPorNombre(){
+    cout << "Ingrese el nombre: ";
+    char nombre[20];
+    cargarCadena(nombre, 20);
+    int cant = contarRegistros();
+    Cliente c;
+    int coinciden = 0;
+    for(int i=0; i<cant; i++){
+        c = leerRegistro(i);
+        if(strcmp(c.getNombre(),nombre) == 0 && c.getEstado()){
+            coinciden++;
+        }
+    }
+    if(coinciden == 0){
+        cout << endl << "No existe ningun cliente con el nombre " << nombre << endl;
+        return;
+    }
+    const int TAM = coinciden;
+    int *posCoinciden;
+    posCoinciden = new int[TAM]{};
+    if(posCoinciden==NULL){
+        cout << endl << "ERROR DE ASIGNACION DE MEMORIA";
+        return;
+    }
+    int posAsignadas = 0;
+    for(int i=0; i<cant; i++){
+        c = leerRegistro(i);
+        if(strcmp(c.getNombre(),nombre) == 0 && c.getEstado()){
+            posCoinciden[posAsignadas] = i;
+            posAsignadas++;
+        }
+    }
+    cout << "Cantidad de clientes con el nombre "<< nombre <<": " << TAM << endl;
+    listadoFiltrado(posCoinciden, TAM);
+    delete[] posCoinciden;
+}
+
+void  ArchivoClientes::buscarPorApellido(){
+    cout << "Ingrese el apellido: ";
+    char apellido[20];
+    cargarCadena(apellido, 20);
+    int cant = contarRegistros();
+    Cliente c;
+    int coinciden = 0;
+    for(int i=0; i<cant; i++){
+        c = leerRegistro(i);
+        if(strcmp(c.getApellido(),apellido) == 0 && c.getEstado()){
+            coinciden++;
+        }
+    }
+    if(coinciden == 0){
+        cout << endl << "No existe ningun cliente con el apellido " << apellido << endl;
+        return;
+    }
+    const int TAM = coinciden;
+    int *posCoinciden;
+    posCoinciden = new int[TAM]{};
+    if(posCoinciden==NULL){
+        cout << endl << "ERROR DE ASIGNACION DE MEMORIA";
+        return;
+    }
+    int posAsignadas = 0;
+    for(int i=0; i<cant; i++){
+        c = leerRegistro(i);
+        if(strcmp(c.getApellido(),apellido) == 0 && c.getEstado()){
+            posCoinciden[posAsignadas] = i;
+            posAsignadas++;
+        }
+    }
+    cout << "Cantidad de clientes con el apellido "<< apellido <<": " << TAM << endl;
+    listadoFiltrado(posCoinciden, TAM);
+    delete[] posCoinciden;
+}
+
+void  ArchivoClientes::buscarPorMail(){
+    cout << "Ingrese el mail: ";
+    char mail[20];
+    cargarCadena(mail, 20);
+    int pos = buscarRegistroxMail(mail);
+    if(pos < 0){
+        cout << endl << "No existe un cliente con el mail ingresado" << endl;
+        return;
+    }
+    Cliente c;
+    c = leerRegistro(pos);
+    c.Mostrar();
+}
+
+void  ArchivoClientes::buscarPorFechaNac(){
+    cout << "Ingresar rango de fechas: " << endl;
+    cout << endl << "Desde: " << endl;
+    Fecha desde;
+    desde.cargarFecha();
+    Fecha hoy;
+    hoy.setHoy();
+    if(desde > hoy){
+        cout << endl << "Error: No se puede ingresar una fecha futura a la de hoy" << endl;
+        return;
+    }
+    cout << endl << "Hasta" << endl;
+    Fecha hasta;
+    hasta.cargarFecha();
+    if(hasta > hoy){
+        cout << endl << "Error: No se puede ingresar una fecha futura a la de hoy" << endl;
+        return;
+    }
+    if(hasta < desde){
+        cout << endl << "Error: El rango de fechas ingresado es invalido" << endl;
+        return;
+    }
+    int cant = contarRegistros();
+    int coinciden = 0;
+    Cliente c;
+    for(int i=0; i<cant; i++){
+        c = leerRegistro(i);
+        if(c.getFechaNacimiento() >= desde && c.getFechaNacimiento() <= hasta && c.getEstado()){
+            coinciden++;
+        }
+    }
+    if(coinciden == 0){
+        cout << endl << "No existe ningun cliente nacido entre el " << desde.mostrarFechaFormato() << " y el " << hasta.mostrarFechaFormato() << endl;
+        return;
+    }
+    const int TAM = coinciden;
+    int *posCoinciden;
+    posCoinciden = new int[TAM]{};
+    if(posCoinciden==NULL){
+        cout << endl << "ERROR DE ASIGNACION DE MEMORIA";
+        return;
+    }
+    int posAsignadas = 0;
+    for(int i=0; i<cant; i++){
+        c = leerRegistro(i);
+        if(c.getFechaNacimiento() >= desde && c.getFechaNacimiento() <= hasta && c.getEstado()){
+            posCoinciden[posAsignadas] = i;
+            posAsignadas++;
+        }
+    }
+    cout << endl << "Cantidad de clientes nacidos entre el " << desde.mostrarFechaFormato() << " y el " << hasta.mostrarFechaFormato() << ": "<< TAM <<endl;
+    listadoFiltrado(posCoinciden, TAM);
+    delete[] posCoinciden;
+}
+
+void  ArchivoClientes::buscarPorCuit(){
+    cout << "Ingrese el numero de CUIT (Formato: XX-XXXXXXXX-X): ";
+    char cu[15];
+    cargarCadena(cu,15);
+    Cliente c;
+    if(!c.validarCuitFormato(cu)){
+        cout << endl << "Error: CUIT ingresado en formato invalido" << endl;
+        return;
+    }
+    int pos = buscarRegistroxCUIT(cu);
+    if(pos < 0){
+        cout << endl << "No existe ningun cliente con el CUIT ingresado" << endl;
+        return;
+    }
+    c = leerRegistro(pos);
+    c.Mostrar();
+}
+
+void  ArchivoClientes::buscarPorTelefono(){
+    cout << "Ingrese el telefono: ";
+    char t[12];
+    cargarCadena(t, 12);
+    int pos = buscarRegistroxTelefono(t);
+    if(pos < 0){
+        cout << endl << "No existe ningun cliente con el numero de telefono ingresado" << endl;
+        return;
+    }
+    Cliente c;
+    c = leerRegistro(pos);
+    c.Mostrar();
+}
+
+void ArchivoClientes::modificarNombre(){
+    int d = cargarEntero("Ingrese el ID del cliente a modificar: ");
+    int pos = buscarRegistro(d);
+    if(pos < 0){
+        cout << endl << "Error: No existe un cliente activo con el ID ingresado" << endl;
         return;
     }
     Cliente obj;
     obj = leerRegistro(pos);
-    char nomAux[50];
+    char nomAux[20];
     cout << "Ingrese el nuevo nombre: ";
-    cargarCadena(nomAux, 50);
+    cargarCadena(nomAux, 20);
     obj.setNombre(nomAux);
     if(modificarRegistro(obj, pos)){
         cout << endl << "Nombre modificado!" << endl;
@@ -194,19 +428,17 @@ void ArchivoClientes::modificarNombre(){
 }
 
 void ArchivoClientes::modificarApellido(){
-    int d;
-    cout<<"Ingrese el DNI del cliente: ";
-    cin>>d;
+    int d = cargarEntero("Ingrese el ID del cliente a modificar: ");
     int pos = buscarRegistro(d);
     if(pos < 0){
-        cout << endl << "El DNI ingresado no existe en el archivo" << endl;
+        cout << endl << "Error: No existe un cliente activo con el ID ingresado" << endl;
         return;
     }
     Cliente obj;
     obj = leerRegistro(pos);
-    char apAux[50];
+    char apAux[20];
     cout << "Ingrese el nuevo apellido: ";
-    cargarCadena(apAux, 50);
+    cargarCadena(apAux, 20);
     obj.setApellido(apAux);
     if(modificarRegistro(obj, pos)){
         cout << endl << "Apellido modificado!" << endl;
@@ -218,12 +450,10 @@ void ArchivoClientes::modificarApellido(){
 }
 
 void ArchivoClientes::modificarFechaNacimiento(){
-    int d;
-    cout<<"Ingrese el DNI del cliente: ";
-    cin>>d;
+    int d = cargarEntero("Ingrese el ID del cliente a modificar: ");
     int pos = buscarRegistro(d);
     if(pos < 0){
-        cout << endl << "El DNI ingresado no existe en el archivo" << endl;
+        cout << endl << "Error: No existe un cliente activo con el ID ingresado" << endl;
         return;
     }
     Cliente obj;
@@ -231,6 +461,12 @@ void ArchivoClientes::modificarFechaNacimiento(){
     Fecha faux;
     cout << "Ingrese la nueva fecha de nacimiento: " << endl;
     faux.cargarFecha();
+    Fecha hoy;
+    hoy.setHoy();
+    if(faux > hoy){
+        cout << endl << "Error: No puede ingresar una fecha futura a la de hoy" << endl;
+        return;
+    }
     obj.setFechaNacimiento(faux);
     if(modificarRegistro(obj, pos)){
         cout << endl << "Fecha de nacimiento modificada!" << endl;
@@ -242,19 +478,22 @@ void ArchivoClientes::modificarFechaNacimiento(){
 }
 
 void ArchivoClientes::modificarMail(){
-    int d;
-    cout<<"Ingrese el DNI del cliente: ";
-    cin>>d;
+    int d = cargarEntero("Ingrese el ID del cliente a modificar: ");
     int pos = buscarRegistro(d);
     if(pos < 0){
-        cout << endl << "El DNI ingresado no existe en el archivo" << endl;
+        cout << endl << "Error: No existe un cliente activo con el ID ingresado" << endl;
+        return;
+    }
+    char mAux[30];
+    cout << "Ingrese el nuevo mail: ";
+    cargarCadena(mAux, 30);
+    int pos2 = buscarRegistroxMail(mAux);
+    if(pos2 >= 0){
+        cout << endl << "Error: Ya existe un cliente con ese mail" << endl;
         return;
     }
     Cliente obj;
     obj = leerRegistro(pos);
-    char mAux[30];
-    cout << "Ingrese el nuevo mail: ";
-    cargarCadena(mAux, 30);
     obj.setMail(mAux);
     if(modificarRegistro(obj, pos)){
         cout << endl << "Mail modificado!" << endl;
@@ -266,12 +505,10 @@ void ArchivoClientes::modificarMail(){
 }
 
 void ArchivoClientes::modificarDomicilio(){
-    int d;
-    cout<<"Ingrese el DNI del cliente: ";
-    cin>>d;
+    int d = cargarEntero("Ingrese el ID del cliente a modificar: ");
     int pos = buscarRegistro(d);
     if(pos < 0){
-        cout << endl << "El DNI ingresado no existe en el archivo" << endl;
+        cout << endl << "Error: No existe un cliente activo con el ID ingresado" << endl;
         return;
     }
     Cliente obj;
@@ -289,19 +526,21 @@ void ArchivoClientes::modificarDomicilio(){
 }
 
 void ArchivoClientes::modificarCuit(){
-    int d;
-    cout<<"Ingrese el DNI del cliente: ";
-    cin>>d;
+    int d = cargarEntero("Ingrese el ID del cliente a modificar: ");
     int pos = buscarRegistro(d);
     if(pos < 0){
-        cout << endl << "El DNI ingresado no existe en el archivo" << endl;
+        cout << endl << "Error: No existe un cliente activo con el ID ingresado" << endl;
         return;
     }
     Cliente obj;
     obj = leerRegistro(pos);
-    char cAux[12];
-    cout << "Ingrese el nuevo numero de CUIT (Sin espacios): ";
-    cin >> cAux;
+    char cAux[15];
+    cout << "Ingrese el numero de CUIT (Formato: XX-XXXXXXXX-X): ";
+    cargarCadena(cAux,15);
+    if(!obj.validarCuit(cAux, obj.getDni())){
+        cout << endl << "Error: Verfique el formato o el contenido del CUIT ingresado" << endl;
+        return;
+    }
     obj.setCuit(cAux);
     if(modificarRegistro(obj, pos)){
         cout << endl << "CUIT modificado!" << endl;
@@ -313,19 +552,22 @@ void ArchivoClientes::modificarCuit(){
 }
 
 void ArchivoClientes::modificarTelefono(){
-    int d;
-    cout<<"Ingrese el DNI del cliente: ";
-    cin>>d;
+    int d = cargarEntero("Ingrese el ID del cliente a modificar: ");
     int pos = buscarRegistro(d);
     if(pos < 0){
-        cout << endl << "El DNI ingresado no existe en el archivo" << endl;
+        cout << endl << "Error: No existe un cliente activo con el ID ingresado" << endl;
+        return;
+    }
+    char tAux[12];
+    cout << "Ingrese el nuevo telefono: ";
+    cargarCadena(tAux, 12);
+    int pos2 = buscarRegistroxTelefono(tAux);
+    if(pos2 >= 0){
+        cout << endl << "Error: Ya existe un cliente con ese numero de telefono" << endl;
         return;
     }
     Cliente obj;
     obj = leerRegistro(pos);
-    char tAux[12];
-    cout << "Ingrese el nuevo telefono: ";
-    cargarCadena(tAux, 12);
     obj.setTelefono(tAux);
     if(modificarRegistro(obj, pos)){
         cout << endl << "Telefono modificado!" << endl;
@@ -337,20 +579,14 @@ void ArchivoClientes::modificarTelefono(){
 }
 
 void ArchivoClientes::bajaCliente(){
-    cout<<"Ingrese el DNI del cliente: ";
-    int d;
-    cin>>d;
+    int d = cargarEntero("Ingrese el ID del cliente a dar de baja: ");
     int pos = buscarRegistro(d);
     if(pos < 0){
-        cout << endl <<"El DNI ingresado no existe en el archivo"<<endl;
+        cout << endl << "Error: No existe un cliente activo con el ID ingresado" << endl;
         return;
     }
     Cliente obj;
     obj = leerRegistro(pos);
-    if(obj.getEstado() == false){
-        cout << endl <<"El cliente ya se encuentra dado de baja"<<endl;
-        return;
-    }
     obj.setEstado(false);
     if(modificarRegistro(obj, pos)){
         cout << endl <<"Baja realizada correctamente"<<endl;

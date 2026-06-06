@@ -16,10 +16,10 @@ Vendedor ArchivoVendedores::leerRegistro(int pos){
     FILE *p = fopen(nombre,"rb");
     Vendedor obj;
     if(p == nullptr){
-        obj.setDni(-2);
+        obj.setNroVendedor(-2);
         return obj;
     }
-    obj.setDni(-1);
+    obj.setNroVendedor(-1);
     fseek(p,  sizeof obj * pos, 0);
     fread(&obj, sizeof obj, 1, p);
     fclose(p);
@@ -68,7 +68,7 @@ int ArchivoVendedores::buscarRegistro(int d){
     int cantReg = contarRegistros();
     for(int i=0; i<cantReg; i++){
         Vendedor obj = leerRegistro(i);
-        if(obj.getDni() == d){
+        if(obj.getNroVendedor() == d && obj.getEstado()){
             return i;
         }
     }
@@ -76,12 +76,12 @@ int ArchivoVendedores::buscarRegistro(int d){
     return -1;
 }
 
-int ArchivoVendedores::buscarRegistroPorNv(int d){
+int ArchivoVendedores::buscarRegistroxDNI(const char *d){
 
     int cantReg = contarRegistros();
     for(int i=0; i<cantReg; i++){
         Vendedor obj = leerRegistro(i);
-        if(obj.getNroVendedor() == d){
+        if(strcmp(obj.getDni(), d) == 0){
             return i;
         }
     }
@@ -101,36 +101,22 @@ void ArchivoVendedores::listarRegistros(){
     }
 }
 
-void ArchivoVendedores::buscarPorDni(){
-    int d;
-    cout<<"Ingrese el DNI del vendedor: ";
-    cin>>d;
-    int pos = buscarRegistro(d);
-    if(pos < 0){
-        cout << endl << "El DNI ingresado no existe en el archivo" << endl;
-        return;
-    }
-    Vendedor obj = leerRegistro(pos);
-    if(obj.getEstado()){
-        obj.Mostrar();
-    }else{
-        cout << endl << "Error: el vendedor con DNI " << d << " se encuentra dado de baja.";
-        return;
-    }
-}
-
 void ArchivoVendedores::altaVendedor(){
     Vendedor obj;
-    int d;
+    char d[9];
     cout << "Ingrese el DNI del vendedor: ";
-    cin >> d;
-    if(d <= 0){
-        cout << endl << "Error: No se puede ingresar un DNI igual o menor a cero" << endl;
+    cargarCadena(d,9);
+    if(strlen(d) < 8){
+        cout << endl << "Error: El DNI debe contener 8 caracteres. Si contiene 7, coloque un 0 adelante y luego el DNI" << endl;
         return;
     }
-    int pos = buscarRegistro(d);
+    if(!obj.validarDni(d)){
+        cout << "Error: DNI ingresado en formato invalido" << endl;
+        return;
+    }
+    int pos = buscarRegistroxDNI(d);
     ArchivoClientes arcCli;
-    int pos2 = arcCli.buscarRegistro(d);
+    int pos2 = arcCli.buscarRegistroxDNI(d);
     if(pos >= 0 || pos2 >= 0){
         cout << endl << "Error: Ya existe una persona con ese DNI" << endl;
         return;
@@ -144,11 +130,9 @@ void ArchivoVendedores::altaVendedor(){
         cout << endl << "Error: No se puede ingresar una fecha futura." << endl;
         return;
     }
-    int cat;
-    cout << "Ingrese el ID de categoria del vendedor: ";
-    cin >> cat;
+    int cat = cargarEntero("Ingrese el ID de categoria del vendedor: ");
     ArchivoCategorias arcCat;
-    pos = arcCat.buscarRegistroActivo(cat);
+    pos = arcCat.buscarRegistro(cat);
     if(pos == -1){
         cout << endl << "Error: no existe una categoria con ese ID" << endl;
         return;
@@ -173,13 +157,299 @@ void ArchivoVendedores::altaVendedor(){
     }
 }
 
-void ArchivoVendedores::modificarNombre(){
-    int d;
+void ArchivoVendedores::listadoFiltrado(int *l, const int TAM){
+    Vendedor ven;
+    for(int i=0; i<TAM; i++){
+        ven = leerRegistro(l[i]);
+        ven.Mostrar();
+    }
+}
+
+void ArchivoVendedores::buscarPorId(){
+    int d = cargarEntero("Ingrese el ID del vendedor: ");
+    int cantReg = contarRegistros();
+    for(int i = 0; i < cantReg; i++){
+        Vendedor obj = leerRegistro(i);
+        if(obj.getNroVendedor() == d && obj.getEstado()){
+            obj.Mostrar();
+            return;
+        }
+    }
+    cout << endl << "No existe un vendedor con el ID: " << d << endl;
+}
+
+void ArchivoVendedores::buscarPorDni(){
+    char d[9];
     cout<<"Ingrese el DNI del vendedor: ";
-    cin>>d;
+    cargarCadena(d,9);
+    if(strlen(d) < 8){
+        cout << endl << "Error: El DNI debe contener 8 caracteres. Si contiene 7, coloque un 0 adelante y luego el DNI" << endl;
+        return;
+    }
+    Vendedor obj;
+    if(!obj.validarDni(d)){
+        cout << endl << "Error: DNI ingresado en formato invalido" << endl;
+        return;
+    }
+    int cantReg = contarRegistros();
+    for(int i = 0; i < cantReg; i++){
+        obj = leerRegistro(i);
+        if(strcmp(obj.getDni(),d) == 0 && obj.getEstado()){
+            obj.Mostrar();
+            return;
+        }
+    }
+    cout << endl << "No existe un vendedor con el DNI: " << d << endl;
+}
+
+void ArchivoVendedores::buscarPorNombre(){
+    cout << "Ingrese el nombre: ";
+    char nombre[20];
+    cargarCadena(nombre, 20);
+    int cant = contarRegistros();
+    Vendedor v;
+    int coinciden = 0;
+    for(int i=0; i<cant; i++){
+        v = leerRegistro(i);
+        if(strcmp(v.getNombre(),nombre) == 0 && v.getEstado()){
+            coinciden++;
+        }
+    }
+    if(coinciden == 0){
+        cout << endl << "No existe ningun vendedor con el nombre " << nombre << endl;
+        return;
+    }
+    const int TAM = coinciden;
+    int *posCoinciden;
+    posCoinciden = new int[TAM]{};
+    if(posCoinciden==NULL){
+        cout << endl << "ERROR DE ASIGNACION DE MEMORIA";
+        return;
+    }
+    int posAsignadas = 0;
+    for(int i=0; i<cant; i++){
+        v = leerRegistro(i);
+        if(strcmp(v.getNombre(),nombre) == 0 && v.getEstado()){
+            posCoinciden[posAsignadas] = i;
+            posAsignadas++;
+        }
+    }
+    cout << "Cantidad de vendedores con el nombre "<< nombre <<": " << TAM << endl;
+    listadoFiltrado(posCoinciden, TAM);
+    delete[] posCoinciden;
+}
+
+void ArchivoVendedores::buscarPorApellido(){
+    cout << "Ingrese el apellido: ";
+    char apellido[20];
+    cargarCadena(apellido, 20);
+    int cant = contarRegistros();
+    Vendedor v;
+    int coinciden = 0;
+    for(int i=0; i<cant; i++){
+        v = leerRegistro(i);
+        if(strcmp(v.getApellido(),apellido) == 0 && v.getEstado()){
+            coinciden++;
+        }
+    }
+    if(coinciden == 0){
+        cout << endl << "No existe ningun vendedor con el apellido " << apellido << endl;
+        return;
+    }
+    const int TAM = coinciden;
+    int *posCoinciden;
+    posCoinciden = new int[TAM]{};
+    if(posCoinciden==NULL){
+        cout << endl << "ERROR DE ASIGNACION DE MEMORIA";
+        return;
+    }
+    int posAsignadas = 0;
+    for(int i=0; i<cant; i++){
+        v = leerRegistro(i);
+        if(strcmp(v.getApellido(),apellido) == 0 && v.getEstado()){
+            posCoinciden[posAsignadas] = i;
+            posAsignadas++;
+        }
+    }
+    cout << "Cantidad de vendedores con el apellido "<< apellido <<": " << TAM << endl;
+    listadoFiltrado(posCoinciden, TAM);
+    delete[] posCoinciden;
+}
+
+void ArchivoVendedores::buscarPorMail(){
+    cout << "Ingrese el mail: ";
+    char mail[20];
+    cargarCadena(mail, 20);
+    int cantReg = contarRegistros();
+    for(int i = 0; i < cantReg; i++){
+        Vendedor obj = leerRegistro(i);
+        if(strcmp(obj.getMail(), mail) == 0 && obj.getEstado()){
+            obj.Mostrar();
+            return;
+        }
+    }
+    cout << endl << "No existe un vendedor con el mail: " << mail << endl;
+}
+
+void ArchivoVendedores::buscarPorFechaNac(){
+    cout << "Ingresar rango de fechas: " << endl;
+    cout << endl << "Desde: " << endl;
+    Fecha desde;
+    desde.cargarFecha();
+    Fecha hoy;
+    hoy.setHoy();
+    if(desde > hoy){
+        cout << endl << "Error: No se puede ingresar una fecha futura a la de hoy" << endl;
+        return;
+    }
+    cout << endl << "Hasta" << endl;
+    Fecha hasta;
+    hasta.cargarFecha();
+    if(hasta > hoy){
+        cout << endl << "Error: No se puede ingresar una fecha futura a la de hoy" << endl;
+        return;
+    }
+    if(hasta < desde){
+        cout << endl << "Error: El rango de fechas ingresado es invalido" << endl;
+        return;
+    }
+    int cant = contarRegistros();
+    int coinciden = 0;
+    Vendedor v;
+    for(int i=0; i<cant; i++){
+        v = leerRegistro(i);
+        if(v.getFechaNacimiento() >= desde && v.getFechaNacimiento() <= hasta && v.getEstado()){
+            coinciden++;
+        }
+    }
+    if(coinciden == 0){
+        cout << endl << "No existe ningun vendedor nacido entre el " << desde.mostrarFechaFormato() << " y el " << hasta.mostrarFechaFormato() << endl;
+        return;
+    }
+    const int TAM = coinciden;
+    int *posCoinciden;
+    posCoinciden = new int[TAM]{};
+    if(posCoinciden==NULL){
+        cout << endl << "ERROR DE ASIGNACION DE MEMORIA";
+        return;
+    }
+    int posAsignadas = 0;
+    for(int i=0; i<cant; i++){
+        v = leerRegistro(i);
+        if(v.getFechaNacimiento() >= desde && v.getFechaNacimiento() <= hasta && v.getEstado()){
+            posCoinciden[posAsignadas] = i;
+            posAsignadas++;
+        }
+    }
+    cout << endl << "Cantidad de vendedores nacidos entre el " << desde.mostrarFechaFormato() << " y el " << hasta.mostrarFechaFormato() << ": "<< TAM <<endl;
+    listadoFiltrado(posCoinciden, TAM);
+    delete[] posCoinciden;
+}
+
+void ArchivoVendedores::buscarPorFechaCont(){
+   cout << "Ingresar rango de fechas: " << endl;
+    cout << endl << "Desde: " << endl;
+    Fecha desde;
+    desde.cargarFecha();
+    Fecha hoy;
+    hoy.setHoy();
+    if(desde > hoy){
+        cout << endl << "Error: No se puede ingresar una fecha futura a la de hoy" << endl;
+        return;
+    }
+    cout << endl << "Hasta" << endl;
+    Fecha hasta;
+    hasta.cargarFecha();
+    if(hasta > hoy){
+        cout << endl << "Error: No se puede ingresar una fecha futura a la de hoy" << endl;
+        return;
+    }
+    if(hasta < desde){
+        cout << endl << "Error: El rango de fechas ingresado es invalido" << endl;
+        return;
+    }
+    int cant = contarRegistros();
+    int coinciden = 0;
+    Vendedor v;
+    for(int i=0; i<cant; i++){
+        v = leerRegistro(i);
+        if(v.getFechaContratacion() >= desde && v.getFechaContratacion() <= hasta && v.getEstado()){
+            coinciden++;
+        }
+    }
+    if(coinciden == 0){
+        cout << endl << "No existe ningun vendedor contratado entre el " << desde.mostrarFechaFormato() << " y el " << hasta.mostrarFechaFormato() << endl;
+        return;
+    }
+    const int TAM = coinciden;
+    int *posCoinciden;
+    posCoinciden = new int[TAM]{};
+    if(posCoinciden==NULL){
+        cout << endl << "ERROR DE ASIGNACION DE MEMORIA";
+        return;
+    }
+    int posAsignadas = 0;
+    for(int i=0; i<cant; i++){
+        v = leerRegistro(i);
+        if(v.getFechaContratacion() >= desde && v.getFechaContratacion() <= hasta && v.getEstado()){
+            posCoinciden[posAsignadas] = i;
+            posAsignadas++;
+        }
+    }
+    cout << endl << "Cantidad de vendedores contratados entre el " << desde.mostrarFechaFormato() << " y el " << hasta.mostrarFechaFormato() << ": "<< TAM <<endl;
+    listadoFiltrado(posCoinciden, TAM);
+    delete[] posCoinciden;
+}
+
+void ArchivoVendedores::buscarPorCat(){
+    cout << "Ingrese el nombre de la categoria: ";
+    char categoria[30];
+    cargarCadena(categoria, 30);
+    ArchivoCategorias arcCat;
+    int pos = arcCat.buscarRegistroxNombre(categoria);
+    if(pos < 0){
+        cout << endl << "Error: El nombre de categoria ingresado no coincide con ninguna categoria en el archivo" << endl;
+        return;
+    }
+    int idCategoria = pos + 1;
+    int cant = contarRegistros();
+    Vendedor ven;
+    int coinciden = 0;
+    for(int i=0; i<cant; i++){
+        ven = leerRegistro(i);
+        if(ven.getCategoria() == idCategoria && ven.getEstado()){
+            coinciden++;
+        }
+    }
+    if(coinciden == 0){
+        cout << endl << "Actualmente no poseemos ningun vendedor con categoria " << categoria << endl;
+        return;
+    }
+    const int TAM = coinciden;
+    int *posCoinciden;
+    posCoinciden = new int[TAM]{};
+    if(posCoinciden==NULL){
+        cout << endl << "ERROR DE ASIGNACION DE MEMORIA";
+        return;
+    }
+    int posAsignadas = 0;
+    for(int i=0; i<cant; i++){
+        ven = leerRegistro(i);
+        if(ven.getCategoria() == idCategoria && ven.getEstado()){
+            posCoinciden[posAsignadas] = i;
+            posAsignadas++;
+        }
+    }
+    cout << "Cantidad de vendedores con la categoria "<< categoria <<": " << TAM << endl;
+    listadoFiltrado(posCoinciden, TAM);
+    delete[] posCoinciden;
+}
+
+void ArchivoVendedores::modificarNombre(){
+    int d = cargarEntero("Ingrese el ID del vendedor a modificar: ");
     int pos = buscarRegistro(d);
     if(pos < 0){
-        cout << endl << "El DNI ingresado no existe en el archivo" << endl;
+        cout << endl << "El ID ingresado no existe en el archivo" << endl;
         return;
     }
     Vendedor obj;
@@ -198,12 +468,10 @@ void ArchivoVendedores::modificarNombre(){
 }
 
 void ArchivoVendedores::modificarApellido(){
-    int d;
-    cout<<"Ingrese el DNI del vendedor: ";
-    cin>>d;
+    int d = cargarEntero("Ingrese el ID del vendedor a modificar: ");
     int pos = buscarRegistro(d);
     if(pos < 0){
-        cout << endl << "El DNI ingresado no existe en el archivo" << endl;
+        cout << endl << "El ID ingresado no existe en el archivo" << endl;
         return;
     }
     Vendedor obj;
@@ -222,12 +490,10 @@ void ArchivoVendedores::modificarApellido(){
 }
 
 void ArchivoVendedores::modificarFechaNacimiento(){
-    int d;
-    cout<<"Ingrese el DNI del vendedor: ";
-    cin>>d;
+    int d = cargarEntero("Ingrese el ID del vendedor a modificar: ");
     int pos = buscarRegistro(d);
     if(pos < 0){
-        cout << endl << "El DNI ingresado no existe en el archivo" << endl;
+        cout << endl << "El ID ingresado no existe en el archivo" << endl;
         return;
     }
     Vendedor obj;
@@ -246,12 +512,10 @@ void ArchivoVendedores::modificarFechaNacimiento(){
 }
 
 void ArchivoVendedores::modificarFechaContratacion(){
-    int d;
-    cout<<"Ingrese el DNI del vendedor: ";
-    cin>>d;
+    int d = cargarEntero("Ingrese el ID del vendedor a modificar: ");
     int pos = buscarRegistro(d);
     if(pos < 0){
-        cout << "El DNI ingresado no existe en el archivo" << endl;
+        cout << "El ID ingresado no existe en el archivo" << endl;
         return;
     }
     Vendedor obj;
@@ -270,12 +534,10 @@ void ArchivoVendedores::modificarFechaContratacion(){
 }
 
 void ArchivoVendedores::modificarMail(){
-    int d;
-    cout<<"Ingrese el DNI del vendedor: ";
-    cin>>d;
+    int d = cargarEntero("Ingrese el ID del vendedor a modificar: ");
     int pos = buscarRegistro(d);
     if(pos < 0){
-        cout << endl << "El DNI ingresado no existe en el archivo" << endl;
+        cout << endl << "El ID ingresado no existe en el archivo" << endl;
         return;
     }
     Vendedor obj;
@@ -294,12 +556,10 @@ void ArchivoVendedores::modificarMail(){
 }
 
 void ArchivoVendedores::modificarDomicilio(){
-    int d;
-    cout<<"Ingrese el DNI del vendedor: ";
-    cin>>d;
+    int d = cargarEntero("Ingrese el ID del vendedor a modificar: ");
     int pos = buscarRegistro(d);
     if(pos < 0){
-        cout << endl << "El DNI ingresado no existe en el archivo" << endl;
+        cout << endl << "El ID ingresado no existe en el archivo" << endl;
         return;
     }
     Vendedor obj;
@@ -317,20 +577,17 @@ void ArchivoVendedores::modificarDomicilio(){
 }
 
 void ArchivoVendedores::modifcarCategoria(){
-    int d;
-    cout << "Ingrese el DNI del vendedor a modificar: ";
-    cin >> d;
+    int d = cargarEntero("Ingrese el ID del vendedor a modificar: ");
     int posVen = buscarRegistro(d);
     if(posVen < 0){
-        cout << endl << "El DNI ingresado no existe en el archivo." << endl;
+        cout << endl << "El ID ingresado no existe en el archivo." << endl;
         return;
     }
     Vendedor obj = leerRegistro(posVen);
     int nuevaCat;
-    cout << "Ingrese el ID de la nueva categoria: ";
-    cin >> nuevaCat;
+    nuevaCat = cargarEntero("Ingrese el ID de la nueva categoria: ");
     ArchivoCategorias arcCat;
-    int posCat = arcCat.buscarRegistroActivo(nuevaCat);
+    int posCat = arcCat.buscarRegistro(nuevaCat);
     if(posCat == -1){
         cout << endl << "Error: La categoria con ID " << nuevaCat << " no existe o esta dada de baja." << endl;
         return;
@@ -346,9 +603,7 @@ void ArchivoVendedores::modifcarCategoria(){
 }
 
 void ArchivoVendedores::bajaVendedor(){
-    cout<<"Ingrese el DNI del vendedor: ";
-    int d;
-    cin>>d;
+    int d = cargarEntero("Ingrese el ID del vendedor a dar de baja: ");
     int pos = buscarRegistro(d);
     if(pos < 0){
         cout << endl <<"El DNI ingresado no existe en el archivo"<<endl;

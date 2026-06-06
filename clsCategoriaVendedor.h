@@ -18,7 +18,7 @@ class CategoriaVendedor {
         const char *getDescripcion();
         float getPorcentajeComision();
         bool getEstado();
-        void Cargar(int id);
+        void Cargar(int id, const char *d, float p);
         void Mostrar();
         ~CategoriaVendedor();
 };

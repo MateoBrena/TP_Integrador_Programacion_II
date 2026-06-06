@@ -8,6 +8,7 @@ class menuVehiculo {
         menuVehiculo();
         void mostrarCabeceraTabla(int posX, int posY);
         void tablaVehiculos(int posX, int posY);
+        void subMenuBuscarVehiculo();
         void subMenuModificarVehiculo();
         void iniciar();
         ~menuVehiculo();

@@ -10,19 +10,19 @@ class Domicilio{
         int altura;
         char localidad[30];
         char provincia[30];
-        int codigoPostal;
+        char codigoPostal[10];
     public:
-        Domicilio(const char *c = "Calle Falsa", int a = 123, const char *l = "Una localidad", const char *p = "Buenos Aires", int cp=1234);
+        Domicilio(const char *c = "Calle Falsa", int a = 123, const char *l = "Una localidad", const char *p = "Buenos Aires", const char *cp="B1234ABC");
         void setCalle(const char *c);
         void setLocalidad(const char *l);
         void setProvincia(const char *p);
         void setAltura(int a);
-        void setCodigoPostal(int cp);
+        void setCodigoPostal(const char *cp);
         const char *getCalle();
         const char *getLocalidad();
         const char *getProvincia();
         int getAltura();
-        int getCodigoPostal();
+        const char *getCodigoPostal();
         void Cargar();
         void Mostrar();
         std::string MostrarFormato();

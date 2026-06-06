@@ -8,6 +8,7 @@ class menuVenta {
         menuVenta();
         void mostrarCabeceraTabla(int posX, int posY);
         void tablaVentas(int posX, int posY);
+        void subMenuBuscarVenta();
         void subMenuModificarVenta();
         void iniciar();
         ~menuVenta();

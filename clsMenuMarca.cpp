@@ -13,7 +13,7 @@ menuMarca::menuMarca(){
 void menuMarca::mostrarCabeceraTabla(int posX, int posY) {
     rlutil::setColor(rlutil::CYAN);
     rlutil::locate(posX, posY);
-    cout << (char)218<<"-----"<<(char)194<<"----------------------"<<(char)194<<"----------------------"<<(char)191;
+    cout << (char)218<<"-----"<<(char)194<<"----------------------"<<(char)194<<"----------------------"<<(char)191 << endl;
 
     rlutil::locate(posX, posY + 1);
     cout << "| " << left << setw(3) << "ID"
@@ -21,7 +21,7 @@ void menuMarca::mostrarCabeceraTabla(int posX, int posY) {
          << " | " << setw(20) << "PAIS" << " |";
 
     rlutil::locate(posX, posY + 2);
-    cout <<(char)195<<"-----"<<(char)197<<"----------------------"<<(char)197<<"----------------------|";
+    cout <<(char)195<<"-----"<<(char)197<<"----------------------"<<(char)197<<"----------------------|" << endl;
 
     rlutil::setColor(rlutil::WHITE);
 }
@@ -40,31 +40,69 @@ void menuMarca::tablaMarcas(int posX, int posY){
         return;
     }
     mostrarCabeceraTabla(posX,posY);
-    int filaActual = posY + 3;
     Marca m;
     for(int i=0; i<cant; i++){
-        rlutil::locate(posX, filaActual);
         m = arc.leerRegistro(i);
         if(m.getEstado()){
             cout << "| " << left << setw(3) << m.getId()
             << " | " << setw(20) << m.getNombre()
-            << " | " << setw(20) << m.getPais() << " |";
+            << " | " << setw(20) << m.getPais() << " |" << endl;
             if(i == cant-1){
-                rlutil::locate(posX, filaActual + 1);
-                cout <<(char)192<<"-----"<<(char)193<<"----------------------"<<(char)193<<"----------------------"<<(char)217;
+                cout <<(char)192<<"-----"<<(char)193<<"----------------------"<<(char)193<<"----------------------"<<(char)217 << endl;
             }else{
-                rlutil::locate(posX, filaActual + 1);
-                cout <<(char)195<<"-----"<<(char)197<<"----------------------"<<(char)197<<"----------------------|";
+                cout <<(char)195<<"-----"<<(char)197<<"----------------------"<<(char)197<<"----------------------|" << endl;
             }
-            filaActual += 2;
         }
     }
 
 }
 
+void menuMarca::subMenuBuscarMarca(){
+    rlutil::hidecursor();
+    string opcionesMenu[] = {"Buscar por ID", "Buscar por nombre", "Buscar por pais" ,"Volver" };
+    int anchoMenu = 32;
+    int cantidadOpciones = 4;
+
+    int consolaAncho = rlutil::tcols();
+    int consolaAlto = rlutil::trows();
+    int posX = (consolaAncho - anchoMenu) / 2;
+    int posY = (consolaAlto - (cantidadOpciones + 4)) / 2;
+
+    if (posX < 1) posX = 1;
+    if (posY < 1) posY = 1;
+    Menu m;
+    ArchivoMarcas arc;
+    while(true){
+        system("cls");
+        rlutil::locate(posX, posY);
+        cout << "================================";
+        rlutil::locate(posX, posY + 1);
+        cout << "|         BUSCAR MARCAS        |";
+        rlutil::locate(posX, posY + 2);
+        cout << "================================";
+        int opc = m.mostrarMenu(opcionesMenu, cantidadOpciones, posX, posY + 4, anchoMenu);
+        system("cls");
+        switch(opc){
+            case 0:
+                arc.buscarPorId();
+                break;
+            case 1:
+                arc.buscarPorNombre();
+                break;
+            case 2:
+                arc.buscarPorPais();
+                break;
+            case 3:
+                return;
+                break;
+        }
+        system("pause>nul");
+    }
+}
+
 void menuMarca::subMenuModificarMarca(){
     rlutil::hidecursor();
-    string opcionesMenu[] = {"Modificar Nombre", "Modificar Pais" ,"Volver" };
+    string opcionesMenu[] = {"Modificar Nombre", "Modificar Pais", "Volver" };
     int anchoMenu = 32;
     int cantidadOpciones = 3;
 
@@ -132,11 +170,10 @@ void menuMarca::iniciar(){
                 arc.altaMarca();
                 break;
             case 1:
-                arc.buscarPorId();
-                break;
+                subMenuBuscarMarca();
+                continue;
             case 2:
-                //arc.listarRegistros();
-                tablaMarcas(4,2);
+                tablaMarcas(1,2);
                 break;
             case 3:
                 subMenuModificarMarca();

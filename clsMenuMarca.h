@@ -8,6 +8,7 @@ class menuMarca {
         menuMarca();
         void mostrarCabeceraTabla(int posX, int posY);
         void tablaMarcas(int posX, int posY);
+        void subMenuBuscarMarca();
         void subMenuModificarMarca();
         void iniciar();
         ~menuMarca();

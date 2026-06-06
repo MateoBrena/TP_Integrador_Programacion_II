@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include <cctype>
+#include <iomanip>
 #include "clsVehiculo.h"
 #include "cargarCadena.h"
 using namespace std;
@@ -28,7 +29,7 @@ void Vehiculo::hacerMayusculas(char *p){
 bool Vehiculo::validarPatente(const char *p){
     int longitud = strlen(p);
 
-    // Verificamos el formato antiguo: AAA111 (Longitud 6)
+    //verificamos el formato antiguo: AAA111
     if (longitud == 6) {
         return isupper(p[0]) &&
                isupper(p[1]) &&
@@ -37,7 +38,7 @@ bool Vehiculo::validarPatente(const char *p){
                isdigit(p[4]) &&
                isdigit(p[5]);
     }
-    // Verificamos el formato nuevo: AA111AA (Longitud 7)
+    //verificamos el formato nuevo: AA111AA
     else if (longitud == 7) {
         return isupper(p[0]) &&
                isupper(p[1]) &&
@@ -48,7 +49,7 @@ bool Vehiculo::validarPatente(const char *p){
                isupper(p[6]);
     }
 
-    // Si no tiene longitud 6 ni 7, es invalida
+    //si no tiene longitud 6 ni 7, es invalida
     return false;
 }
 
@@ -146,14 +147,11 @@ void Vehiculo::Cargar(int d, const char *p, int iM){
     idMarca = iM;
     cout << "Modelo: ";
     cargarCadena(modelo,20);
-    cout << "Anio: ";
-    cin >> anio;
+    anio = cargarEntero("Anio: ");
     cout << "Color: ";
     cargarCadena(color,20);
-    cout << "Kilometraje: ";
-    cin >> kilometros;
-    cout << "Precio: ";
-    cin >> precio;
+    kilometros = cargarEntero("Kilometraje: ");
+    precio = cargarFlotante("Precio: ");
     cout << "Combustible: ";
     cargarCadena(combustible,10);
     cout << "Fecha de ingreso: ";
@@ -161,7 +159,8 @@ void Vehiculo::Cargar(int d, const char *p, int iM){
 }
 
 void Vehiculo::Mostrar(){
-    cout << "N de Vehiculo: " << id << endl;
+    cout << fixed << setprecision(2);
+    cout << endl << "N de Vehiculo: " << id << endl;
     cout << "Patente: " << patente << endl;
     cout << "ID de marca: " << idMarca << endl;
     cout << "Modelo: " << modelo << endl;

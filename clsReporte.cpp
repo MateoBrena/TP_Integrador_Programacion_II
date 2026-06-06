@@ -2,7 +2,7 @@
 #include <cstring>
 #include <iomanip>
 #include "clsReporte.h"
-
+#include "cargarCadena.h"
 using namespace std;
 
 Reporte::Reporte(){
@@ -59,7 +59,7 @@ void Reporte::clienteMasComproUnidades(){
         c = arcCli.leerRegistro(i);
         for(int j=0; j<cantVentas; j++){
             v = arcVen.leerRegistro(j);
-            if((c.getEstado() && v.getEstado()) && strcmp(c.getCuit(),v.getCuitCliente()) == 0){
+            if((c.getEstado() && v.getEstado()) && c.getNroCliente() == v.getNroCliente()){
                 unidadesxCliente[i]++;
             }
         }
@@ -97,7 +97,7 @@ void Reporte::clienteMasComproMonto(){
         c = arcCli.leerRegistro(i);
         for(int j=0; j<cantVentas; j++){
             v = arcVen.leerRegistro(j);
-            if((c.getEstado() && v.getEstado()) && strcmp(c.getCuit(),v.getCuitCliente()) == 0){
+            if((c.getEstado() && v.getEstado()) && c.getNroCliente() == v.getNroCliente()){
                 montoxCliente[i]+=v.getMonto();
             }
         }
@@ -111,15 +111,12 @@ void Reporte::clienteMasComproMonto(){
 }
 
 void Reporte::cantVendedoresSinventas(){
-    int mes, anio;
-    cout << "Ingrese el mes del periodo a consultar: ";
-    cin >> mes;
+    int mes = cargarEntero("Ingrese el mes del periodo a consultar: ");
     if(mes < 1 || mes > 12){
         cout << endl << "Error: El mes ingresado no es valido" << endl;
         return;
     }
-    cout << "Ingrese el anio del periodo a consultar: ";
-    cin >> anio;
+    int anio = cargarEntero("Ingrese el anio del periodo a consultar: ");
     ArchivoVendedores arcVend;
     int cantVendedores = arcVend.contarRegistros();
     if(cantVendedores <= 0){
@@ -145,7 +142,7 @@ void Reporte::cantVendedoresSinventas(){
         for(int j=0; j<cantVentas; j++){
             v = arcVen.leerRegistro(j);
             if(v.getFechaVenta().getMes() == mes && v.getFechaVenta().getAnio() == anio){
-                if(v.getNroVendedor() == ve.getNroVendedor()){
+                if(v.getNroVendedor() == ve.getNroVendedor() && v.getEstado() && ve.getEstado()){
                     ventasxVend[ve.getNroVendedor()-1]++;
                 }
             }
@@ -160,7 +157,7 @@ void Reporte::cantVendedoresSinventas(){
     const int CANTMESES = 12;
     string meses[CANTMESES]{"Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"};
     cout << endl << "Cantidad de vendedores sin ventas en " << meses[mes-1] << " de " << anio << ": " << vendedoresSinVentas << endl;
-    cout << "Cantidad total de vendedores: " << cantVendedores << endl;
+    cout << endl << "Cantidad total de vendedores: " << cantVendedores << endl;
     delete[] ventasxVend;
 }
 
@@ -193,7 +190,6 @@ void Reporte::mayorVendedor(){
             v = arcVent.leerRegistro(j);
             if((ve.getEstado() && v.getEstado()) && ve.getNroVendedor() == v.getNroVendedor()){
                 int nroCat = ve.getCategoria();
-                //problema si el vendedor tuviese una categoria no activa, aunque no deberia pasar
                 c = arcCat.leerRegistro(nroCat-1);
                 float monto = v.getMonto() * (c.getPorcentajeComision()/100.00);
                 montoxVendedor[i]+=monto;
@@ -233,7 +229,7 @@ void Reporte::marcaMasVendida(){
         m = arcMar.leerRegistro(i);
         for(int j=0; j<cantVentas; j++){
             v = arcVen.leerRegistro(j);
-            if((m.getEstado() && v.getEstado()) && m.getId() == v.getIdMarcaVehiculo()){
+            if(v.getEstado() && m.getId() == v.getIdMarcaVehiculo()){
                 unidadesxMarca[i]++;
             }
         }
@@ -258,8 +254,10 @@ void Reporte::ventasxMes(){
     Venta v;
     for(int i=0; i<cantVentas; i++){
         v = arcVen.leerRegistro(i);
-        int mesVenta = v.getFechaVenta().getMes();
-        vxMes[mesVenta-1]++;
+        if(v.getEstado()){
+            int mesVenta = v.getFechaVenta().getMes();
+            vxMes[mesVenta-1]++;
+        }
     }
     cout << "Ventas por mes (historico):" << endl << endl;
     for(int i=0; i<CANTMESES; i++){

@@ -44,21 +44,14 @@ bool CategoriaVendedor::getEstado(){
     return estado;
 }
 
-void CategoriaVendedor::Cargar(int id){
-    if(id == -1){
-        cout << "ID de categoria: ";
-        cin >> idCategoria;
-    }else{
-        idCategoria = id;
-    }
-    cout << "Descripcion: ";
-    cargarCadena(descripcion, 30);
-    cout << "Porcentaje de comision: (numero flotante max 2 decimales o numero entero): ";
-    cin >> porcentajeComision;
+void CategoriaVendedor::Cargar(int id, const char *d, float p){
+    idCategoria = id;
+    strcpy(descripcion, d);
+    porcentajeComision = p;
 }
 
 void CategoriaVendedor::Mostrar(){
-    cout << "ID de Categoria: " << idCategoria << endl;
+    cout << endl << "ID de Categoria: " << idCategoria << endl;
     cout << "Descripcion: " << descripcion << endl;
     cout << "Comision: " << porcentajeComision << "%" <<endl;
 }

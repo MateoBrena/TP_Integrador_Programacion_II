@@ -1,17 +1,13 @@
-#include <iostream>
-#include <cstring>
-#include <iomanip>
-#include "rlutil.h"
 #include "clsDomicilio.h"
 #include "cargarCadena.h"
 using namespace std;
 
-Domicilio::Domicilio(const char *c, int a, const char *l, const char *p, int cp){
+Domicilio::Domicilio(const char *c, int a, const char *l, const char *p, const char *cp){
     strcpy(calle, c);
     altura = a;
     strcpy(localidad, l);
     strcpy(provincia, p);
-    codigoPostal = cp;
+    strcpy(codigoPostal,cp);
 }
 
 void Domicilio::setCalle(const char *c){
@@ -30,8 +26,8 @@ void Domicilio::setAltura(int a){
     altura = a;
 }
 
-void Domicilio::setCodigoPostal(int cp){
-    codigoPostal = cp;
+void Domicilio::setCodigoPostal(const char *cp){
+    strcpy(codigoPostal,cp);
 }
 
 const char* Domicilio::getCalle(){
@@ -50,21 +46,20 @@ int Domicilio::getAltura(){
     return altura;
 }
 
-int Domicilio::getCodigoPostal(){
+const char * Domicilio::getCodigoPostal(){
     return codigoPostal;
 }
 
 void Domicilio::Cargar(){
     cout << "Calle: ";
     cargarCadena(calle, 30);
-    cout << "Altura: ";
-    cin >> altura;
+    altura = cargarEntero("Altura: ");
     cout << "Localidad: ";
     cargarCadena(localidad, 30);
     cout << "Provincia: ";
     cargarCadena(provincia, 30);
     cout << "Codigo postal: ";
-    cin >> codigoPostal;
+    cargarCadena(codigoPostal, 10);
 }
 
 void Domicilio::Mostrar(){

@@ -16,20 +16,20 @@ void menuVendedor::mostrarCabeceraTabla(int posX, int posY) {
     rlutil::locate(posX, posY);
     // Dibujamos la línea superior del cuadro adaptada a vendedores
     cout << (char)218<<"----"<<(char)194<<"--------------"<<(char)194<<"--------------"<<(char)194<<"----------"<<(char)194;
-    cout << "------------"<<(char)194<<"------------"<<(char)194<<"------------------------"<<(char)191;
+    cout << "--------------"<<(char)194<<"------------"<<(char)194<<"------------------------"<<(char)191 << endl;
 
     rlutil::locate(posX, posY + 1);
     cout << "| " << left << setw(2) << "NV"
          << " | " << setw(12) << "NOMBRE"
          << " | " << setw(12) << "APELLIDO"
          << " | " << setw(8) << "D.N.I"
-         << " | " << setw(10) << "CATEGORIA"
+         << " | " << setw(12) << "CATEGORIA"
          << " | " << setw(10) << "FEC.CONTR."
          << " | " << setw(22) << "MAIL" << " |";
 
     rlutil::locate(posX, posY + 2);
     cout <<(char)195<<"----"<<(char)197<<"--------------"<<(char)197<<"--------------"<<(char)197<<"----------"<<(char)197;
-    cout << "------------"<<(char)197<<"------------"<<(char)197<<"------------------------|";
+    cout << "--------------"<<(char)197<<"------------"<<(char)197<<"------------------------|" << endl;
 
     rlutil::setColor(rlutil::WHITE);
 }
@@ -44,7 +44,6 @@ void menuVendedor::tablaVendedores(int posX, int posY){
     }
 
     mostrarCabeceraTabla(posX, posY);
-    int filaActual = posY + 3;
     Vendedor v;
     CategoriaVendedor c;
     int pC;
@@ -53,41 +52,88 @@ void menuVendedor::tablaVendedores(int posX, int posY){
         pC = v.getCategoria()-1;
         c = arc2.leerRegistro(pC);
         if(v.getEstado()){
-            rlutil::locate(posX, filaActual);
             cout << "| " << left << setw(2) << v.getNroVendedor()
                  << " | " << setw(12) << v.getNombre()
                  << " | " << setw(12) << v.getApellido()
                  << " | " << setw(8) << v.getDni()
-                 << " | " << setw(10) << c.getDescripcion()
+                 << " | " << setw(12) << c.getDescripcion()
                  << " | " << setw(10) << v.getFechaContratacion().mostrarFechaFormato();
-            cout << " | " << setw(22) << v.getMail() << " |";
+            cout << " | " << setw(22) << v.getMail() << " |" << endl;
 
             if(i == cant - 1){
-                rlutil::locate(posX, filaActual + 1);
                 cout <<(char)192<<"----"<<(char)193<<"--------------"<<(char)193<<"--------------"<<(char)193<<"----------"<<(char)193;
-                cout<<"------------"<<(char)193<<"------------"<<(char)193<<"------------------------"<<(char)217;
+                cout<<"--------------"<<(char)193<<"------------"<<(char)193<<"------------------------"<<(char)217 << endl;
             }else{
-                rlutil::locate(posX, filaActual + 1);
                 cout <<(char)195<<"----"<<(char)197<<"--------------"<<(char)197<<"--------------"<<(char)197<<"----------"<<(char)197;
-                cout << "------------"<<(char)197<<"------------"<<(char)197<<"------------------------|";
+                cout << "--------------"<<(char)197<<"------------"<<(char)197<<"------------------------|" << endl;
             }
-            filaActual += 2;
         }
+    }
+}
+
+void menuVendedor::subMenuBuscarVendedor(){
+    rlutil::hidecursor();
+    string opcionesMenu[] = {"Buscar por id","Buscar por DNI","Buscar por Nombre","Buscar por Apellido","Buscar por mail",
+    "Buscar por fecha de nac.","Buscar por fecha contr.","Buscar por categoria","Volver"};
+    int anchoMenu = 32;
+    int cantidadOpciones = 9;
+
+    int consolaAncho = rlutil::tcols();
+    int consolaAlto = rlutil::trows();
+    int posX = (consolaAncho - anchoMenu) / 2;
+    int posY = (consolaAlto - (cantidadOpciones + 4)) / 2;
+
+    if (posX < 1) posX = 1;
+    if (posY < 1) posY = 1;
+    Menu m;
+    ArchivoVendedores arc;
+    while(true){
+        system("cls");
+        rlutil::locate(posX, posY);
+        cout << "================================";
+        rlutil::locate(posX, posY + 1);
+        cout << "|       BUSCAR VENDEDORES      |";
+        rlutil::locate(posX, posY + 2);
+        cout << "================================";
+
+        int opc = m.mostrarMenu(opcionesMenu, cantidadOpciones, posX, posY + 4, anchoMenu);
+        system("cls");
+        switch(opc){
+            case 0:
+                arc.buscarPorId();
+                break;
+            case 1:
+                arc.buscarPorDni();
+                break;
+            case 2:
+                arc.buscarPorNombre();
+                break;
+            case 3:
+                arc.buscarPorApellido();
+                break;
+            case 4:
+                arc.buscarPorMail();
+                break;
+            case 5:
+                arc.buscarPorFechaNac();
+                break;
+            case 6:
+                arc.buscarPorFechaCont();
+                break;
+            case 7:
+                arc.buscarPorCat();
+                break;
+            case 8:
+                return;
+        }
+        system("pause>nul");
     }
 }
 
 void menuVendedor::subMenuModificarVendedor(){
     rlutil::hidecursor();
-    string opcionesMenu[] = {
-        "Modificar Nombre",
-        "Modificar Apellido",
-        "Modificar Mail",
-        "Modificar fecha de nac.",
-        "Modificar fecha contratacion",
-        "Modificar domicilio",
-        "Modificar categoria",
-        "Volver"
-    };
+    string opcionesMenu[] = {"Modificar Nombre","Modificar Apellido","Modificar mail","Modificar fecha de nac.",
+    "Modificar fecha contratacion","Modificar domicilio","Modificar categoria","Volver"};
     int anchoMenu = 32;
     int cantidadOpciones = 8;
 
@@ -170,11 +216,10 @@ void menuVendedor::iniciar(){
                 arc.altaVendedor();
                 break;
             case 1:
-                arc.buscarPorDni();
-                break;
+                subMenuBuscarVendedor();
+                continue;
             case 2:
-                //arc.listarRegistros();
-                tablaVendedores(2,2);
+                tablaVendedores(1,2);
                 break;
             case 3:
                 subMenuModificarVendedor();

@@ -15,13 +15,13 @@ void menuVehiculo::mostrarCabeceraTabla(int posX, int posY) {
     rlutil::setColor(rlutil::CYAN);
     rlutil::locate(posX, posY);
 
-    cout << (char)218<<"-----"<<(char)194<<"----------"<<(char)194<<"--------------"<<(char)194<<"--------------------"<<(char)194;
-    cout << "------"<<(char)194<<"----------------"<<(char)194<<"--------"<<(char)194<<"--------------"<<(char)194<<"--------------"<<(char)191;
+    cout << (char)218<<"-----"<<(char)194<<"----------"<<(char)194<<"----------------"<<(char)194<<"--------------------"<<(char)194;
+    cout << "------"<<(char)194<<"----------------"<<(char)194<<"--------"<<(char)194<<"--------------"<<(char)194<<"--------------"<<(char)191 << endl;
 
     rlutil::locate(posX, posY + 1);
     cout << "| " << left << setw(3) << "ID"
         << " | " << setw(8) << "PATENTE"
-        << " | " << setw(12) << "MARCA"
+        << " | " << setw(14) << "MARCA"
         << " | " << setw(18) << "MODELO"
         << " | " << setw(4) << "ANIO"
         << " | " << setw(14) << "COLOR"
@@ -30,8 +30,8 @@ void menuVehiculo::mostrarCabeceraTabla(int posX, int posY) {
         << " | " << setw(12) << "COMBUSTIBLE" << " |";
 
     rlutil::locate(posX, posY + 2);
-    cout << (char)195<<"-----"<<(char)197<<"----------"<<(char)197<<"--------------"<<(char)197<<"--------------------"<<(char)197;
-    cout << "------"<<(char)197<<"----------------"<<(char)197<<"--------"<<(char)197<<"--------------"<<(char)197<<"--------------|";
+    cout << (char)195<<"-----"<<(char)197<<"----------"<<(char)197<<"----------------"<<(char)197<<"--------------------"<<(char)197;
+    cout << "------"<<(char)197<<"----------------"<<(char)197<<"--------"<<(char)197<<"--------------"<<(char)197<<"--------------|" << endl;
     rlutil::setColor(rlutil::WHITE);
 }
 
@@ -44,7 +44,6 @@ void menuVehiculo::tablaVehiculos(int posX, int posY){
         return;
     }
     mostrarCabeceraTabla(posX, posY);
-    int filaActual = posY + 3;
     Vehiculo v;
     Marca m;
     int pM;
@@ -54,45 +53,96 @@ void menuVehiculo::tablaVehiculos(int posX, int posY){
         pM = v.getIdMarca()-1;
         m = arc2.leerRegistro(pM);
         if(v.getEstado()){
-            rlutil::locate(posX, filaActual);
             cout << "| " << left << setw(3) << v.getId()
                 << " | " << setw(8) << v.getPatente()
-                << " | " << setw(12) << m.getNombre()
+                << " | " << setw(14) << m.getNombre()
                 << " | " << setw(18) << v.getModelo()
                 << " | " << setw(4) << v.getAnio()
                 << " | " << setw(14) << v.getColor()
                 << " | " << setw(6) << v.getKilometros()
                 << " | $" << setw(11) << v.getPrecio()
-                << " | " << setw(12) << v.getCombustible() << " |";
+                << " | " << setw(12) << v.getCombustible() << " |" << endl;
 
             if(i == cant - 1){
-                rlutil::locate(posX, filaActual + 1);
-                cout << (char)192<<"-----"<<(char)193<<"----------"<<(char)193<<"--------------"<<(char)193<<"--------------------"<<(char)193;
-                cout << "------"<<(char)193<<"----------------"<<(char)193<<"--------"<<(char)193<<"--------------"<<(char)193<<"--------------"<<(char)217;
+                cout << (char)192<<"-----"<<(char)193<<"----------"<<(char)193<<"----------------"<<(char)193<<"--------------------"<<(char)193;
+                cout << "------"<<(char)193<<"----------------"<<(char)193<<"--------"<<(char)193<<"--------------"<<(char)193<<"--------------"<<(char)217 << endl;
             } else {
-                rlutil::locate(posX, filaActual + 1);
-                cout << (char)195<<"-----"<<(char)197<<"----------"<<(char)197<<"--------------"<<(char)197<<"--------------------"<<(char)197;
-                cout << "------"<<(char)197<<"----------------"<<(char)197<<"--------"<<(char)197<<"--------------"<<(char)197<<"--------------|";
+                cout << (char)195<<"-----"<<(char)197<<"----------"<<(char)197<<"----------------"<<(char)197<<"--------------------"<<(char)197;
+                cout << "------"<<(char)197<<"----------------"<<(char)197<<"--------"<<(char)197<<"--------------"<<(char)197<<"--------------|" << endl;
             }
-            filaActual += 2;
         }
+    }
+}
+
+void menuVehiculo::subMenuBuscarVehiculo(){
+    rlutil::hidecursor();
+    string opcionesMenu[] = {"Buscar por id","Buscar por patente","Buscar por marca","Buscar por modelo","Buscar por anio",
+    "Buscar por color","Buscar por kilometros","Buscar por precio","Buscar por combustible","Buscar por fecha de ingreso",
+    "Volver"};
+    int anchoMenu = 32;
+    int cantidadOpciones = 11;
+
+    int consolaAncho = rlutil::tcols();
+    int consolaAlto = rlutil::trows();
+    int posX = (consolaAncho - anchoMenu) / 2;
+    int posY = (consolaAlto - (cantidadOpciones + 4)) / 2;
+
+    if (posX < 1) posX = 1;
+    if (posY < 1) posY = 1;
+    Menu m;
+    ArchivoVehiculos arc;
+    while(true){
+        system("cls");
+        rlutil::locate(posX, posY);
+        cout << "================================";
+        rlutil::locate(posX, posY + 1);
+        cout << "|       BUSCAR VEHICULOS       |";
+        rlutil::locate(posX, posY + 2);
+        cout << "================================";
+        int opc = m.mostrarMenu(opcionesMenu, cantidadOpciones, posX, posY + 4, anchoMenu);
+        system("cls");
+        switch(opc){
+            case 0:
+                arc.buscarPorId();
+                break;
+            case 1:
+                arc.buscarPorPatente();
+                break;
+            case 2:
+                arc.buscarPorMarca();
+                break;
+            case 3:
+                arc.buscarPorModelo();
+                break;
+            case 4:
+                arc.buscarPorAnio();
+                break;
+            case 5:
+                arc.buscarPorColor();
+                break;
+            case 6:
+                arc.buscarPorKilometros();
+                break;
+            case 7:
+                arc.buscarPorPrecio();
+                break;
+            case 8:
+                arc.buscarPorCombustible();
+                break;
+            case 9:
+                arc.buscarPorFechaIngreso();
+                break;
+            case 10:
+                return;
+        }
+        system("pause>nul");
     }
 }
 
 void menuVehiculo::subMenuModificarVehiculo(){
     rlutil::hidecursor();
-    string opcionesMenu[] = {
-        "Modificar Patente",
-        "Modificar Marca",
-        "Modificar Modelo",
-        "Modificar Anio",
-        "Modificar Color",
-        "Modificar Kilometros",
-        "Modificar Precio",
-        "Modificar Combustible",
-        "Modificar Fecha Ingreso",
-        "Volver"
-    };
+    string opcionesMenu[] = {"Modificar patente","Modificar marca","Modificar modelo","Modificar anio","Modificar color",
+    "Modificar kilometros","Modificar precio","Modificar combustible","Modificar fecha de ingreso","Volver"};
     int anchoMenu = 32;
     int cantidadOpciones = 10;
 
@@ -180,10 +230,10 @@ void menuVehiculo::iniciar(){
                 arc.altaVehiculo();
                 break;
             case 1:
-                arc.buscarPorPatente();
-                break;
+                subMenuBuscarVehiculo();
+                continue;
             case 2:
-                tablaVehiculos(2, 2);
+                tablaVehiculos(1, 2);
                 break;
             case 3:
                 subMenuModificarVehiculo();

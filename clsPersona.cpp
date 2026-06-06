@@ -1,11 +1,12 @@
 #include <iostream>
 #include <cstring>
+#include <cctype>
 #include "clsPersona.h"
 #include "cargarCadena.h"
 using namespace std;
 
-Persona::Persona(int d, const char *n, const char *a, const char *m, Fecha fN, Domicilio dom){
-    dni = d;
+Persona::Persona(const char *d, const char *n, const char *a, const char *m, Fecha fN, Domicilio dom){
+    strcpy(dni, d);
     strcpy(nombre, n);
     strcpy(apellido, a);
     strcpy(mail, m);
@@ -14,8 +15,26 @@ Persona::Persona(int d, const char *n, const char *a, const char *m, Fecha fN, D
     estado = true;
 }
 
-void Persona::setDni(int d){
-    dni = d;
+bool Persona::validarDni(const char *d){
+    int longitud = strlen(d);
+
+    //verificamos longitud y que todos sean numeros
+    if (longitud == 8) {
+        return isdigit(d[0]) &&
+               isdigit(d[1]) &&
+               isdigit(d[2]) &&
+               isdigit(d[3]) &&
+               isdigit(d[4]) &&
+               isdigit(d[5]) &&
+               isdigit(d[6]) &&
+               isdigit(d[7]);
+    }else{
+        return false;
+    }
+}
+
+void Persona::setDni(const char *d){
+    strcpy(dni, d);
 }
 
 void Persona::setNombre(const char *n){
@@ -42,7 +61,7 @@ void Persona::setEstado(bool e){
     estado = e;
 }
 
-int Persona::getDni(){
+const char* Persona::getDni(){
     return dni;
 }
 
@@ -70,13 +89,8 @@ bool Persona::getEstado(){
     return estado;
 }
 
-void Persona::Cargar(int d, Fecha fN){
-    if(d == -1){
-        cout<<"DNI: ";
-        cin>>dni;
-    }else{
-        dni = d;
-    }
+void Persona::Cargar(const char *d, Fecha fN){
+    strcpy(dni, d);
     fechaNacimiento = fN;
     cout<<"Nombre: ";
     cargarCadena(nombre, 20);

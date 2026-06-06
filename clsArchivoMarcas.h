@@ -14,9 +14,13 @@ class ArchivoMarcas {
         int contarRegistros();
         int contarRegistrosActivos(int ca);
         int buscarRegistro(int);
+        int buscarRegistroxNombre(const char *n);
         void listarRegistros();
         void altaMarca();
+        void listadoFiltrado(int *l, const int TAM);
         void buscarPorId();
+        void buscarPorNombre();
+        void buscarPorPais();
         void modificarNombre();
         void modificarPais();
         void bajaMarca();

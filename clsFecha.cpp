@@ -1,5 +1,5 @@
-#include <iostream>
 #include "clsFecha.h"
+#include "cargarCadena.h"
 using namespace std;
 
 bool Fecha::esBisiesto(int a){
@@ -87,12 +87,9 @@ void Fecha::cargarFecha(){
     bool fechaCorrecta = false;
 
     do{
-        cout << "Ingrese el dia: ";
-        cin >> d;
-        cout << "Ingrese el mes: ";
-        cin >> m;
-        cout << "Ingrese el anio: ";
-        cin >> a;
+        d = cargarEntero("Ingrese el dia: ");
+        m = cargarEntero("Ingrese el mes: ");
+        a = cargarEntero("Ingrese el anio: ");
 
         if (esValida(d, m, a)){
             dia = d;
@@ -100,7 +97,7 @@ void Fecha::cargarFecha(){
             anio = a;
             fechaCorrecta = true;
         }else{
-            cout << "Error: La fecha ingresada no existe. Intente nuevamente.\n" << endl;
+            cout << endl << "Error: La fecha ingresada no existe. Intente nuevamente" << endl << endl;
         }
     }
     while (!fechaCorrecta);
@@ -137,6 +134,13 @@ bool Fecha::operator>(Fecha obj){
 
 bool Fecha::operator>=(Fecha obj){
     if(anio > obj.anio or (anio == obj.anio and mes > obj.mes) or (anio == obj.anio and mes == obj.mes and dia >= obj.dia)){
+        return true;
+    }
+    return false;
+}
+
+bool Fecha::operator==(Fecha obj){
+    if(anio == obj.anio and mes == obj.mes and dia == obj.dia){
         return true;
     }
     return false;

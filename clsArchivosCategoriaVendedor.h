@@ -14,10 +14,14 @@ class ArchivoCategorias {
         int contarRegistros();
         int contarRegistrosActivos(int ca);
         int buscarRegistro(int d);
-        int buscarRegistroActivo(int d);
+        int buscarRegistroxNombre(const char *n);
+        int buscarRegistroxComision(float c);
         void listarRegistros();
         void altaCategoria();
+        void listadoFiltrado(int *l, const int TAM);
         void buscarPorId();
+        void buscarPorNombre();
+        void buscarPorComision();
         void modificarDescripcion();
         void modificarComision();
         void bajaCategoria();

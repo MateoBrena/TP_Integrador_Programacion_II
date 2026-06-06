@@ -5,6 +5,8 @@
 #include "clsMenu.h"
 #include "clsMenuVenta.h"
 #include "clsArchivoVentas.h"
+#include "clsArchivoClientes.h"
+#include "clsArchivoVehiculos.h"
 #include "clsArchivoMarcas.h"
 using namespace std;
 
@@ -14,21 +16,21 @@ menuVenta::menuVenta(){
 void menuVenta::mostrarCabeceraTabla(int posX, int posY){
     rlutil::setColor(rlutil::CYAN);
     rlutil::locate(posX, posY);
-    cout << (char)218<<"----"<<(char)194<<"------------"<<(char)194<<"--------------"<<(char)194<<"------------"<<(char)194;
-    cout << "----------"<<(char)194<<"------------------"<<(char)194<<"--------------"<<(char)191;
+    cout << (char)218<<"----"<<(char)194<<"------------"<<(char)194<<"----------------"<<(char)194<<"------------"<<(char)194;
+    cout << "----------"<<(char)194<<"------------------"<<(char)194<<"--------------"<<(char)191 << endl;
 
     rlutil::locate(posX, posY + 1);
     cout << "| " << left << setw(2) << "ID"
          << " | " << setw(10) << "FECHA"
-         << " | " << setw(12) << "CUIT"
+         << " | " << setw(14) << "CUIT"
          << " | " << setw(10) << "NRO VEND."
          << " | " << setw(8) << "PATENTE"
          << " | " << setw(16) << "MARCA"
          << " | " << setw(12) << "MONTO" << " |";
 
     rlutil::locate(posX, posY + 2);
-    cout << (char)195<<"----"<<(char)197<<"------------"<<(char)197<<"--------------"<<(char)197<<"------------"<<(char)197;
-    cout << "----------"<<(char)197<<"------------------"<<(char)197<<"--------------|";
+    cout << (char)195<<"----"<<(char)197<<"------------"<<(char)197<<"----------------"<<(char)197<<"------------"<<(char)197;
+    cout << "----------"<<(char)197<<"------------------"<<(char)197<<"--------------|" << endl;
 
     rlutil::setColor(rlutil::WHITE);
 }
@@ -47,44 +49,99 @@ void menuVenta::tablaVentas(int posX, int posY){
         return;
     }
     mostrarCabeceraTabla(posX,posY);
-    int filaActual = posY + 3;
     Venta v;
+    ArchivoClientes arcCli;
+    ArchivoVehiculos arcVeh;
     ArchivoMarcas arcMar;
+    Cliente c;
+    Vehiculo veh;
     Marca m;
     cout << fixed << setprecision(2);
     for(int i=0; i<cant; i++){
-        rlutil::locate(posX, filaActual);
         v = arc.leerRegistro(i);
+        c = arcCli.leerRegistro(v.getNroCliente()-1);
+        veh = arcVeh.leerRegistro(v.getNroVehiculo()-1);
         m = arcMar.leerRegistro(v.getIdMarcaVehiculo()-1);
         if(v.getEstado()){
             cout << "| " << left << setw(2) << v.getNroVenta()
             << " | " << setw(10) << v.getFechaVenta().mostrarFechaFormato()
-            << " | " << setw(12) << v.getCuitCliente()
+            << " | " << setw(14) << c.getCuit()
             << " | " << setw(10) << v.getNroVendedor()
-            << " | " << setw(8) << v.getPatenteVehiculo()
+            << " | " << setw(8) << veh.getPatente()
             << " | " << setw(16) << m.getNombre()
-            << " | " << setw(12) << v.getMonto() << " |";
+            << " | $" << setw(11) << v.getMonto() << " |" << endl;
             if(i == cant-1){
-                rlutil::locate(posX, filaActual + 1);
-                cout <<(char)192<<"----"<<(char)193<<"------------"<<(char)193<<"--------------"<<(char)193<<"------------"<<(char)193;
-                cout<<"----------"<<(char)193<<"------------------"<<(char)193<<"--------------"<<(char)217;
+                cout <<(char)192<<"----"<<(char)193<<"------------"<<(char)193<<"----------------"<<(char)193<<"------------"<<(char)193;
+                cout<<"----------"<<(char)193<<"------------------"<<(char)193<<"--------------"<<(char)217 << endl;
             }else{
-                rlutil::locate(posX, filaActual + 1);
-                cout <<(char)195<<"----"<<(char)197<<"------------"<<(char)197<<"--------------"<<(char)197<<"------------"<<(char)197;
-                cout <<"----------"<<(char)197<<"------------------"<<(char)197<<"--------------|";
+                cout <<(char)195<<"----"<<(char)197<<"------------"<<(char)197<<"----------------"<<(char)197<<"------------"<<(char)197;
+                cout <<"----------"<<(char)197<<"------------------"<<(char)197<<"--------------|" << endl;
             }
-            filaActual += 2;
         }
     }
 
 }
 
+void menuVenta::subMenuBuscarVenta(){
+    rlutil::hidecursor();
+    string opcionesMenu[] = {"Buscar por id", "Buscar por fecha", "Buscar por id cliente" ,"Buscar por id vendedor",
+    "Buscar por id vehiculo", "Buscar por marca", "Buscar por monto", "Volver" };
+    int anchoMenu = 32;
+    int cantidadOpciones = 8;
+
+    int consolaAncho = rlutil::tcols();
+    int consolaAlto = rlutil::trows();
+    int posX = (consolaAncho - anchoMenu) / 2;
+    int posY = (consolaAlto - (cantidadOpciones + 4)) / 2;
+
+    if (posX < 1) posX = 1;
+    if (posY < 1) posY = 1;
+    Menu m;
+    ArchivoVentas arc;
+    while(true){
+        system("cls");
+        rlutil::locate(posX, posY);
+        cout << "================================";
+        rlutil::locate(posX, posY + 1);
+        cout << "|         BUSCAR VENTAS        |";
+        rlutil::locate(posX, posY + 2);
+        cout << "================================";
+        int opc = m.mostrarMenu(opcionesMenu, cantidadOpciones, posX, posY + 4, anchoMenu);
+        system("cls");
+        switch(opc){
+            case 0:
+                arc.buscarPorId();
+                break;
+            case 1:
+                arc.buscarPorFecha();
+                break;
+            case 2:
+                arc.buscarPorCliente();
+                break;
+            case 3:
+                arc.buscarPorVendedor();
+                break;
+            case 4:
+                arc.buscarPorVehiculo();
+                break;
+            case 5:
+                arc.buscarPorMarca();
+                break;
+            case 6:
+                arc.buscarPorMonto();
+                break;
+            case 7:
+                return;
+        }
+        system("pause>nul");
+    }
+}
+
 void menuVenta::subMenuModificarVenta(){
     rlutil::hidecursor();
-    string opcionesMenu[] = {"Modificar fecha", "Modificar CUIT", "Modificar numero de vendedor",
-    "Modificar patente", "Modificar marca", "Modificar monto", "Volver"};
+    string opcionesMenu[] = {"Modificar fecha", "Modificar ID cliente", "Modificar ID vendedor", "Modificar ID vehiculo", "Volver"};
     int anchoMenu = 32;
-    int cantidadOpciones = 7;
+    int cantidadOpciones = 5;
 
     int consolaAncho = rlutil::tcols();
     int consolaAlto = rlutil::trows();
@@ -110,21 +167,15 @@ void menuVenta::subMenuModificarVenta(){
                 arc.modificarFechaVenta();
                 break;
             case 1:
-                arc.modificarCuitCliente();
+                arc.modificarNroCliente();
                 break;
             case 2:
                 arc.modificarNroVendedor();
                 break;
             case 3:
-                arc.modificarPatenteVehiculo();
+                arc.modificarNroVehiculo();
                 break;
             case 4:
-                arc.modificarMarcaVehiculo();
-                break;
-            case 5:
-                arc.modificarMonto();
-                break;
-            case 6:
                 return;
         }
         system("pause>nul");
@@ -162,10 +213,10 @@ void menuVenta::iniciar(){
                 arc.altaVenta();
                 break;
             case 1:
-                arc.buscarPorId();
-                break;
+                subMenuBuscarVenta();
+                continue;
             case 2:
-                tablaVentas(2,2);
+                tablaVentas(1,2);
                 break;
             case 3:
                 subMenuModificarVenta();

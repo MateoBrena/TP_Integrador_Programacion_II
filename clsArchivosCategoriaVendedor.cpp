@@ -73,7 +73,7 @@ int ArchivoCategorias::buscarRegistro(int d){
     int cantReg = contarRegistros();
     for(int i=0; i<cantReg; i++){
         CategoriaVendedor obj = leerRegistro(i);
-        if(obj.getIdCategoria() == d){
+        if(obj.getIdCategoria() == d && obj.getEstado()){
             return i;
         }
     }
@@ -81,11 +81,25 @@ int ArchivoCategorias::buscarRegistro(int d){
     return -1;
 }
 
-int ArchivoCategorias::buscarRegistroActivo(int d){
+int ArchivoCategorias::buscarRegistroxNombre(const char *n){
+
     int cantReg = contarRegistros();
     for(int i=0; i<cantReg; i++){
         CategoriaVendedor obj = leerRegistro(i);
-        if(obj.getIdCategoria() == d && obj.getEstado()){
+        if(strcmp(obj.getDescripcion(), n) == 0 && obj.getEstado()){
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+int ArchivoCategorias::buscarRegistroxComision(float c){
+
+    int cantReg = contarRegistros();
+    for(int i=0; i<cantReg; i++){
+        CategoriaVendedor obj = leerRegistro(i);
+        if( obj.getPorcentajeComision() == c && obj.getEstado()){
             return i;
         }
     }
@@ -104,30 +118,26 @@ void ArchivoCategorias::listarRegistros(){
     }
 }
 
-void ArchivoCategorias::buscarPorId(){
-    int d;
-    cout<<"Ingrese el ID de la categoria: ";
-    cin>>d;
-    int pos = buscarRegistro(d);
-    if(pos < 0){
-        cout << endl << "El ID ingresado no existe en el archivo" << endl;
-        return;
-    }
-    CategoriaVendedor obj = leerRegistro(pos);
-    if(obj.getEstado()){
-        obj.Mostrar();
-    }else{
-        cout << endl << "Error: la categoria con ID " << d << " se encuentra dada de baja.";
-        return;
-    }
-}
-
 void ArchivoCategorias::altaCategoria(){
+    cout << "Ingrese el nombre de la categoria: ";
+    char nombre[20];
+    cargarCadena(nombre, 20);
+    int pos = buscarRegistroxNombre(nombre);
+    if(pos >= 0){
+        cout << endl << "Error: Ya hay una categoria llamada " << nombre << endl;
+        return;
+    }
+    float comision = cargarFlotante("Ingrese el porcentaje de comision de la categoria (numero flotante max 2 decimales o numero entero): ");
+    int pos2 = buscarRegistroxComision(comision);
+    if(pos2 >= 0){
+        cout << endl << "Error: Ya hay una categoria con " << comision << "% de comision" <<endl;
+        return;
+    }
     CategoriaVendedor obj;
     int cant = contarRegistros();
     if(cant <0) cant = 0;
     int nro = cant + 1;
-    obj.Cargar(nro);
+    obj.Cargar(nro, nombre, comision);
     if(grabarRegistro(obj)){
         cout<< endl <<"Registro grabado exitosamente!"<<endl;
         return;
@@ -137,20 +147,65 @@ void ArchivoCategorias::altaCategoria(){
     }
 }
 
+void ArchivoCategorias::listadoFiltrado(int *l, const int TAM){
+    CategoriaVendedor c;
+    for(int i=0; i<TAM; i++){
+        c = leerRegistro(l[i]);
+        c.Mostrar();
+    }
+}
 
-void ArchivoCategorias::modificarDescripcion(){
-    int idCat;
-    cout << "Ingrese el ID de la categoria a modificar: ";
-    cin >> idCat;
-    int pos = buscarRegistro(idCat);
+void ArchivoCategorias::buscarPorId(){
+    int d = cargarEntero("Ingrese el ID de la categoria: ");
+    int pos = buscarRegistro(d);
     if(pos < 0){
-        cout << endl << "El ID ingresado no existe." << endl;
+        cout << endl << "El ID ingresado no existe en el archivo" << endl;
         return;
     }
     CategoriaVendedor obj = leerRegistro(pos);
+    obj.Mostrar();
+}
+
+void ArchivoCategorias::buscarPorNombre(){
+    cout << "Ingrese el nombre de la categoria: ";
+    char nombre[20];
+    cargarCadena(nombre, 20);
+    int pos = buscarRegistroxNombre(nombre);
+    if(pos < 0){
+        cout << endl << "No hay ninguna categoria llamada " << nombre << endl;
+        return;
+    }
+    CategoriaVendedor obj = leerRegistro(pos);
+    obj.Mostrar();
+}
+
+void ArchivoCategorias::buscarPorComision(){
+    float comision=cargarFlotante("Ingrese el porcentaje de comision de la categoria (numero flotante max 2 decimales o numero entero): ");
+    int pos = buscarRegistroxComision(comision);
+    if(pos < 0){
+        cout << endl << "No hay ninguna categoria con " << comision << "% de comision" <<  endl;
+        return;
+    }
+    CategoriaVendedor obj = leerRegistro(pos);
+    obj.Mostrar();
+}
+
+void ArchivoCategorias::modificarDescripcion(){
+    int idCat = cargarEntero("Ingrese el ID de la categoria a modificar: ");
+    int pos = buscarRegistro(idCat);
+    if(pos < 0){
+        cout << endl << "No existe una categoria con el ID ingresado" << endl;
+        return;
+    }
     char descAux[30];
     cout << "Ingrese la nueva descripcion: ";
     cargarCadena(descAux, 30);
+    int pos2 = buscarRegistroxNombre(descAux);
+    if(pos2 >= 0){
+        cout << endl << "Error: Ya hay una categoria llamada " << descAux << endl;
+        return;
+    }
+    CategoriaVendedor obj = leerRegistro(pos);
     obj.setDescripcion(descAux);
     if(modificarRegistro(obj, pos)){
         cout << endl << "Descripcion modificada correctamente!" << endl;
@@ -162,18 +217,19 @@ void ArchivoCategorias::modificarDescripcion(){
 }
 
 void ArchivoCategorias::modificarComision(){
-    int idCat;
-    cout << "Ingrese el ID de la categoria a modificar: ";
-    cin >> idCat;
+    int idCat = cargarEntero("Ingrese el ID de la categoria a modificar: ");
     int pos = buscarRegistro(idCat);
     if(pos < 0){
-        cout << endl << "El ID ingresado no existe." << endl;
+        cout << endl << "No existe una categoria con el ID ingresado" << endl;
+        return;
+    }
+    float pC = cargarFlotante("Ingrese el nuevo porcentaje de comision (numero flotante max 2 decimales o numero entero): ");
+    int pos2 = buscarRegistroxComision(pC);
+    if(pos2 >= 0){
+        cout << endl << "Error: Ya hay una categoria con " << pC << "% de comision" <<  endl;
         return;
     }
     CategoriaVendedor obj = leerRegistro(pos);
-    float pC;
-    cout << "Ingrese el nuevo porcentaje de comision (numero flotante max 2 decimales o numero entero): ";
-    cin >> pC;
     obj.setComision(pC);
     if(modificarRegistro(obj, pos)){
         cout << endl << "Comision modificada correctamente!" << endl;
@@ -185,19 +241,13 @@ void ArchivoCategorias::modificarComision(){
 }
 
 void ArchivoCategorias::bajaCategoria(){
-    int idCat;
-    cout << "Ingrese el ID de la categoria a dar de baja: ";
-    cin >> idCat;
+    int idCat = cargarEntero("Ingrese el ID de la categoria a dar de baja: ");
     int pos = buscarRegistro(idCat);
     if(pos < 0){
-        cout << endl << "El ID ingresado no existe." << endl;
+        cout << endl << "No existe una categoria con el ID ingresado" << endl;
         return;
     }
     CategoriaVendedor obj = leerRegistro(pos);
-    if(!obj.getEstado()){
-        cout << endl << "La categoria ya se encuentra dada de baja." << endl;
-        return;
-    }
     obj.setEstado(false);
     if(modificarRegistro(obj, pos)){
         cout << endl << "Baja realizada con exito." << endl;

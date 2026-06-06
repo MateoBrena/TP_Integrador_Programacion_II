@@ -4,12 +4,12 @@
 #include "clsVenta.h"
 using namespace std;
 
-Venta::Venta(int n, Fecha f, const char * cc, int nV, const char *v, int iM, float m){
+Venta::Venta(int n, Fecha f, int nC, int nV, int nVeh, int iM, float m){
     nroVenta = n;
     fechaVenta = f;
-    strcpy(cuitCliente, cc);
+    nroCliente = nC;
     nroVendedor = nV;
-    strcpy(patenteVehiculo, v);
+    nroVehiculo = nVeh;
     idMarcaVehiculo = iM;
     monto = m;
     estado = true;
@@ -23,16 +23,16 @@ void Venta::setFechaVenta(Fecha fV){
     fechaVenta = fV;
 }
 
-void Venta::setCuitCliente(const char *cC){
-    strcpy(cuitCliente,cC);
+void Venta::setNroCliente(int nC){
+    nroCliente = nC;
 }
 
 void Venta::setNroVendedor(int nV){
     nroVendedor = nV;
 }
 
-void Venta::setPatenteVehiculo(const char *pV){
-    strcpy(patenteVehiculo,pV);
+void Venta::setNroVehiculo(int nVeh){
+    nroVehiculo = nVeh;
 }
 
 void Venta::setIdMarcaVehiculo(int d){
@@ -55,16 +55,16 @@ Fecha Venta::getFechaVenta(){
     return fechaVenta;
 }
 
-const char * Venta::getCuitCliente(){
-    return cuitCliente;
+int Venta::getNroCliente(){
+    return nroCliente;
 }
 
 int Venta::getNroVendedor(){
     return nroVendedor;
 }
 
-const char * Venta::getPatenteVehiculo(){
-    return patenteVehiculo;
+int Venta::getNroVehiculo(){
+    return nroVehiculo;
 }
 
 int Venta::getIdMarcaVehiculo(){
@@ -79,23 +79,23 @@ bool Venta::getEstado(){
     return estado;
 }
 
-void Venta::Cargar(int n, Fecha f, const char *cC, int nV, const char *pV, int iM, float m){
+void Venta::Cargar(int n, Fecha f, int nC, int nV, int nVeh, int iM, float m){
     nroVenta = n;
     fechaVenta = f;
-    strcpy(cuitCliente, cC);
+    nroCliente = nC;
     nroVendedor = nV;
-    strcpy(patenteVehiculo, pV);
+    nroVehiculo = nVeh;
     idMarcaVehiculo = iM;
     monto = m;
 }
 
 void Venta::Mostrar(){
     cout << fixed << setprecision(2);
-    cout << "Numero de venta: " << nroVenta << endl;
+    cout << endl << "Numero de venta: " << nroVenta << endl;
     cout << "Fecha: " << fechaVenta.mostrarFechaFormato() << endl;
-    cout << "CUIT del cliente: " << cuitCliente << endl;
-    cout << "Numero de vendedor: " << nroVendedor << endl;
-    cout << "Patente del vehiculo: " << patenteVehiculo << endl;
+    cout << "ID de cliente: " << nroCliente << endl;
+    cout << "ID de vendedor: " << nroVendedor << endl;
+    cout << "ID de vehiculo: " << nroVehiculo << endl;
     cout << "ID marca de vehiculo: " << idMarcaVehiculo << endl;
     cout << "Monto: $" << monto << endl;
 }

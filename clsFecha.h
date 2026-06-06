@@ -1,9 +1,9 @@
 #ifndef CLSFECHA_H_INCLUDED
 #define CLSFECHA_H_INCLUDED
 
-
 #include <iostream>
 #include <cstring>
+
 class Fecha{
     private:
         int dia, mes, anio;
@@ -25,6 +25,7 @@ class Fecha{
         bool operator<=(Fecha);
         bool operator>(Fecha);
         bool operator>=(Fecha);
+        bool operator==(Fecha);
         ~Fecha();
 };
 

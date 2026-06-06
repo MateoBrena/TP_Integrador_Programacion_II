@@ -8,6 +8,7 @@ class menuCliente {
         menuCliente();
         static void mostrarCabeceraTabla(int posX, int posY);
         void tablaClientes(int posX, int posY);
+        void subMenuBuscarCliente();
         void subMenuModificarCliente();
         void iniciar();
         ~menuCliente();

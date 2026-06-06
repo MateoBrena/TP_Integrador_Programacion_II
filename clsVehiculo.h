@@ -46,7 +46,6 @@ class Vehiculo {
         void Cargar(int d, const char *p, int iM);
         void Mostrar();
         ~Vehiculo();
-
 };
 
 #endif // CLSVEHICULO_H_INCLUDED

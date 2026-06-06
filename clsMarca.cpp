@@ -43,21 +43,15 @@ bool Marca::getEstado(){
     return estado;
 }
 
-void Marca::Cargar(int d){
-    if(d == -1){
-        cout << "ID de marca: ";
-        cin >> id;
-    }else{
-        id = d;
-    }
-    cout << "Nombre: ";
-    cargarCadena(nombre, 20);
+void Marca::Cargar(int d, const char *n){
+    id = d;
+    strcpy(nombre, n);
     cout << "Pais: ";
     cargarCadena(pais, 20);
 }
 
 void Marca::Mostrar(){
-    cout << "ID de marca: " << id << endl;
+    cout << endl << "ID de marca: " << id << endl;
     cout << "Nombre: " << nombre << endl;
     cout << "Pais: " << pais << endl;
 }

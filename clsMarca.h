@@ -17,7 +17,7 @@ class Marca {
         const char *getNombre();
         const char *getPais();
         bool getEstado();
-        void Cargar(int d);
+        void Cargar(int d, const char *n);
         void Mostrar();
         ~Marca();
 };
