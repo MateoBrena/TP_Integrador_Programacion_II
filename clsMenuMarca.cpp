@@ -11,19 +11,11 @@ menuMarca::menuMarca(){
 }
 
 void menuMarca::mostrarCabeceraTabla(int posX, int posY) {
-    rlutil::setColor(rlutil::CYAN);
-    rlutil::locate(posX, posY);
-    cout << (char)218<<"-----"<<(char)194<<"----------------------"<<(char)194<<"----------------------"<<(char)191 << endl;
-
-    rlutil::locate(posX, posY + 1);
-    cout << "| " << left << setw(3) << "ID"
-         << " | " << setw(20) << "NOMBRE"
-         << " | " << setw(20) << "PAIS" << " |";
-
-    rlutil::locate(posX, posY + 2);
-    cout <<(char)195<<"-----"<<(char)197<<"----------------------"<<(char)197<<"----------------------|" << endl;
-
-    rlutil::setColor(rlutil::WHITE);
+    const int TAM = 3;
+    string columnas[TAM] = {"ID","NOMBRE","PAIS"};
+    int anchos[TAM] = {3,20,20};
+    Menu m;
+    m.dibujarCabecera(posX, posY, columnas, anchos, TAM);
 }
 
 void menuMarca::tablaMarcas(int posX, int posY){
@@ -40,21 +32,21 @@ void menuMarca::tablaMarcas(int posX, int posY){
         return;
     }
     mostrarCabeceraTabla(posX,posY);
+    posY += 3;
     Marca m;
+    Menu me;
+    const int TAM = 3;
+    int anchos[TAM] = {3,20,20};
+    int filasDibujadas = 0;
     for(int i=0; i<cant; i++){
         m = arc.leerRegistro(i);
         if(m.getEstado()){
-            cout << "| " << left << setw(3) << m.getId()
-            << " | " << setw(20) << m.getNombre()
-            << " | " << setw(20) << m.getPais() << " |" << endl;
-            if(i == cant-1){
-                cout <<(char)192<<"-----"<<(char)193<<"----------------------"<<(char)193<<"----------------------"<<(char)217 << endl;
-            }else{
-                cout <<(char)195<<"-----"<<(char)197<<"----------------------"<<(char)197<<"----------------------|" << endl;
-            }
+            filasDibujadas++;
+            string columnas[TAM] = {to_string(m.getId()),m.getNombre(),m.getPais()};
+            bool esFin = (filasDibujadas == cantActivos);
+            me.dibujarFila(posX, posY, columnas, anchos, TAM, esFin);
         }
     }
-
 }
 
 void menuMarca::subMenuBuscarMarca(){

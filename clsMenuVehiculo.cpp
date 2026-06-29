@@ -12,27 +12,11 @@ menuVehiculo::menuVehiculo(){
 }
 
 void menuVehiculo::mostrarCabeceraTabla(int posX, int posY) {
-    rlutil::setColor(rlutil::CYAN);
-    rlutil::locate(posX, posY);
-
-    cout << (char)218<<"-----"<<(char)194<<"----------"<<(char)194<<"----------------"<<(char)194<<"--------------------"<<(char)194;
-    cout << "------"<<(char)194<<"----------------"<<(char)194<<"--------"<<(char)194<<"--------------"<<(char)194<<"--------------"<<(char)191 << endl;
-
-    rlutil::locate(posX, posY + 1);
-    cout << "| " << left << setw(3) << "ID"
-        << " | " << setw(8) << "PATENTE"
-        << " | " << setw(14) << "MARCA"
-        << " | " << setw(18) << "MODELO"
-        << " | " << setw(4) << "ANIO"
-        << " | " << setw(14) << "COLOR"
-        << " | " << setw(6) << "KMS"
-        << " | " << setw(12) << "PRECIO"
-        << " | " << setw(12) << "COMBUSTIBLE" << " |";
-
-    rlutil::locate(posX, posY + 2);
-    cout << (char)195<<"-----"<<(char)197<<"----------"<<(char)197<<"----------------"<<(char)197<<"--------------------"<<(char)197;
-    cout << "------"<<(char)197<<"----------------"<<(char)197<<"--------"<<(char)197<<"--------------"<<(char)197<<"--------------|" << endl;
-    rlutil::setColor(rlutil::WHITE);
+    const int TAM = 9;
+    string columnas[TAM] = {"ID","PATENTE","MARCA","MODELO","ANIO","COLOR","KMS","PRECIO","COMBUSTIBLE"};
+    int anchos[TAM] = {3,8,14,18,4,12,6,14,12};
+    Menu m;
+    m.dibujarCabecera(posX, posY, columnas, anchos, TAM);
 }
 
 void menuVehiculo::tablaVehiculos(int posX, int posY){
@@ -43,33 +27,30 @@ void menuVehiculo::tablaVehiculos(int posX, int posY){
         cout << "No hay vehiculos cargados." << endl;
         return;
     }
+    int cantActivos = arc.contarRegistrosActivos(cant);
+    if(cantActivos == 0){
+        cout << "No hay vehiculos activos cargados." << endl;
+        return;
+    }
     mostrarCabeceraTabla(posX, posY);
+    posY += 3;
     Vehiculo v;
     Marca m;
+    Menu me;
+    const int TAM = 9;
+    int anchos[TAM] = {3,8,14,18,4,12,6,14,12};
     int pM;
-    cout << fixed << setprecision(2);
+    int filasDibujadas = 0;
     for(int i = 0; i < cant; i++){
         v = arc.leerRegistro(i);
         pM = v.getIdMarca()-1;
         m = arc2.leerRegistro(pM);
         if(v.getEstado()){
-            cout << "| " << left << setw(3) << v.getId()
-                << " | " << setw(8) << v.getPatente()
-                << " | " << setw(14) << m.getNombre()
-                << " | " << setw(18) << v.getModelo()
-                << " | " << setw(4) << v.getAnio()
-                << " | " << setw(14) << v.getColor()
-                << " | " << setw(6) << v.getKilometros()
-                << " | $" << setw(11) << v.getPrecio()
-                << " | " << setw(12) << v.getCombustible() << " |" << endl;
-
-            if(i == cant - 1){
-                cout << (char)192<<"-----"<<(char)193<<"----------"<<(char)193<<"----------------"<<(char)193<<"--------------------"<<(char)193;
-                cout << "------"<<(char)193<<"----------------"<<(char)193<<"--------"<<(char)193<<"--------------"<<(char)193<<"--------------"<<(char)217 << endl;
-            } else {
-                cout << (char)195<<"-----"<<(char)197<<"----------"<<(char)197<<"----------------"<<(char)197<<"--------------------"<<(char)197;
-                cout << "------"<<(char)197<<"----------------"<<(char)197<<"--------"<<(char)197<<"--------------"<<(char)197<<"--------------|" << endl;
-            }
+            filasDibujadas++;
+            string columnas[TAM] = {to_string(v.getId()),v.getPatente(),m.getNombre(),v.getModelo(),
+            to_string(v.getAnio()),v.getColor(),to_string(v.getKilometros()),v.getPrecioFormato(),v.getCombustible()};
+            bool esFin = (filasDibujadas == cantActivos);
+            me.dibujarFila(posX, posY, columnas, anchos, TAM, esFin);
         }
     }
 }

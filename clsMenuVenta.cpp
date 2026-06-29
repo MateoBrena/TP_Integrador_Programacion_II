@@ -14,29 +14,14 @@ menuVenta::menuVenta(){
 }
 
 void menuVenta::mostrarCabeceraTabla(int posX, int posY){
-    rlutil::setColor(rlutil::CYAN);
-    rlutil::locate(posX, posY);
-    cout << (char)218<<"----"<<(char)194<<"------------"<<(char)194<<"----------------"<<(char)194<<"------------"<<(char)194;
-    cout << "----------"<<(char)194<<"------------------"<<(char)194<<"--------------"<<(char)191 << endl;
-
-    rlutil::locate(posX, posY + 1);
-    cout << "| " << left << setw(2) << "ID"
-         << " | " << setw(10) << "FECHA"
-         << " | " << setw(14) << "CUIT"
-         << " | " << setw(10) << "NRO VEND."
-         << " | " << setw(8) << "PATENTE"
-         << " | " << setw(16) << "MARCA"
-         << " | " << setw(12) << "MONTO" << " |";
-
-    rlutil::locate(posX, posY + 2);
-    cout << (char)195<<"----"<<(char)197<<"------------"<<(char)197<<"----------------"<<(char)197<<"------------"<<(char)197;
-    cout << "----------"<<(char)197<<"------------------"<<(char)197<<"--------------|" << endl;
-
-    rlutil::setColor(rlutil::WHITE);
+    const int TAM = 7;
+    string columnas[TAM] = {"ID","FECHA","CUIT","NRO VEND","PATENTE","MARCA","MONTO"};
+    int anchos[TAM] = {2,10,14,10,8,16,12};
+    Menu m;
+    m.dibujarCabecera(posX, posY, columnas, anchos, TAM);
 }
 
 void menuVenta::tablaVentas(int posX, int posY){
-
     ArchivoVentas arc;
     int cant = arc.contarRegistros();
     if(cant == 0){
@@ -49,6 +34,7 @@ void menuVenta::tablaVentas(int posX, int posY){
         return;
     }
     mostrarCabeceraTabla(posX,posY);
+    posY += 3;
     Venta v;
     ArchivoClientes arcCli;
     ArchivoVehiculos arcVeh;
@@ -56,30 +42,23 @@ void menuVenta::tablaVentas(int posX, int posY){
     Cliente c;
     Vehiculo veh;
     Marca m;
-    cout << fixed << setprecision(2);
+    Menu me;
+    const int TAM = 7;
+    int anchos[TAM] = {2,10,14,10,8,16,12};
+    int filasDibujadas = 0;
     for(int i=0; i<cant; i++){
         v = arc.leerRegistro(i);
         c = arcCli.leerRegistro(v.getNroCliente()-1);
         veh = arcVeh.leerRegistro(v.getNroVehiculo()-1);
         m = arcMar.leerRegistro(v.getIdMarcaVehiculo()-1);
         if(v.getEstado()){
-            cout << "| " << left << setw(2) << v.getNroVenta()
-            << " | " << setw(10) << v.getFechaVenta().mostrarFechaFormato()
-            << " | " << setw(14) << c.getCuit()
-            << " | " << setw(10) << v.getNroVendedor()
-            << " | " << setw(8) << veh.getPatente()
-            << " | " << setw(16) << m.getNombre()
-            << " | $" << setw(11) << v.getMonto() << " |" << endl;
-            if(i == cant-1){
-                cout <<(char)192<<"----"<<(char)193<<"------------"<<(char)193<<"----------------"<<(char)193<<"------------"<<(char)193;
-                cout<<"----------"<<(char)193<<"------------------"<<(char)193<<"--------------"<<(char)217 << endl;
-            }else{
-                cout <<(char)195<<"----"<<(char)197<<"------------"<<(char)197<<"----------------"<<(char)197<<"------------"<<(char)197;
-                cout <<"----------"<<(char)197<<"------------------"<<(char)197<<"--------------|" << endl;
-            }
+            filasDibujadas++;
+            string columnas[TAM] ={to_string(v.getNroVenta()), v.getFechaVenta().mostrarFechaFormato(), c.getCuit(),
+            to_string(v.getNroVendedor()), veh.getPatente(), m.getNombre(), v.getMontoFormato()};
+            bool esFin = (filasDibujadas == cantActivos);
+            me.dibujarFila(posX, posY, columnas, anchos, TAM, esFin);
         }
     }
-
 }
 
 void menuVenta::subMenuBuscarVenta(){

@@ -11,25 +11,11 @@ menuCliente::menuCliente(){
 }
 
 void menuCliente::mostrarCabeceraTabla(int posX, int posY){
-    rlutil::setColor(rlutil::CYAN);
-    rlutil::locate(posX, posY);
-    cout << (char)218<<"-----"<<(char)194<<"--------------"<<(char)194<<"--------------"<<(char)194<<"----------"<<(char)194;
-    cout << "--------------------------------"<<(char)194<<"------------"<<(char)194<<"------------------------"<<(char)191;
-
-    rlutil::locate(posX, posY + 1);
-    cout << "| " << left << setw(3) << "NC"
-         << " | " << setw(12) << "NOMBRE"
-         << " | " << setw(12) << "APELLIDO"
-         << " | " << setw(8) << "D.N.I"
-         << " | " << setw(30) << "DOMICILIO"
-         << " | " << setw(10) << "FECHA NAC."
-         << " | " << setw(22) << "MAIL" << " |";
-
-    rlutil::locate(posX, posY + 2);
-    cout <<(char)195<<"-----"<<(char)197<<"--------------"<<(char)197<<"--------------"<<(char)197<<"----------"<<(char)197;
-    cout << "--------------------------------"<<(char)197<<"------------"<<(char)197<<"------------------------|" << endl;
-
-    rlutil::setColor(rlutil::WHITE);
+    const int TAM = 7;
+    string columnas[TAM] = {"NC","NOMBRE","APELLIDO","D.N.I","DOMICILIO","FECHA NAC.","MAIL"};
+    int anchos[TAM] = {3,12,12,8,30,10,22};
+    Menu m;
+    m.dibujarCabecera(posX, posY, columnas, anchos, TAM);
 }
 
 void menuCliente::tablaClientes(int posX, int posY){
@@ -46,27 +32,22 @@ void menuCliente::tablaClientes(int posX, int posY){
         return;
     }
     mostrarCabeceraTabla(posX,posY);
+    posY += 3;
     Cliente c;
+    const int TAM = 7;
+    int anchos[TAM] = {3,12,12,8,30,10,22};
+    int filasDibujadas = 0;
+    Menu m;
     for(int i=0; i<cant; i++){
         c = arc.leerRegistro(i);
         if(c.getEstado()){
-            cout << "| " << left << setw(3) << c.getNroCliente()
-            << " | " << setw(12) << c.getNombre()
-            << " | " << setw(12) << c.getApellido()
-            << " | " << setw(8) << c.getDni()
-            << " | " << setw(30) << c.getDomicilio().MostrarFormato()
-            << " | " << setw(10) << c.getFechaNacimiento().mostrarFechaFormato();
-            cout << " | " << setw(22) << c.getMail() << " |" << endl;
-            if(i == cant-1){
-                cout <<(char)192<<"-----"<<(char)193<<"--------------"<<(char)193<<"--------------"<<(char)193<<"----------"<<(char)193;
-                cout<<"--------------------------------"<<(char)193<<"------------"<<(char)193<<"------------------------"<<(char)217 << endl;
-            }else{
-                cout <<(char)195<<"-----"<<(char)197<<"--------------"<<(char)197<<"--------------"<<(char)197<<"----------"<<(char)197;
-                cout << "--------------------------------"<<(char)197<<"------------"<<(char)197<<"------------------------|" << endl;
-            }
+            filasDibujadas++;
+            string columnas[TAM] = {to_string(c.getNroCliente()),c.getNombre(),c.getApellido(),c.getDni(),
+            c.getDomicilio().MostrarFormato(),c.getFechaNacimiento().mostrarFechaFormato(),c.getMail()};
+            bool esFin = (filasDibujadas == cantActivos);
+            m.dibujarFila(posX, posY, columnas, anchos, TAM, esFin);
         }
     }
-
 }
 
 void menuCliente::subMenuBuscarCliente(){

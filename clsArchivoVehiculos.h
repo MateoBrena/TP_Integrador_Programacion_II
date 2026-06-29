@@ -12,6 +12,7 @@ class ArchivoVehiculos {
         bool grabarRegistro(Vehiculo obj);
         bool modificarRegistro(Vehiculo obj, int pos);
         int contarRegistros();
+        int contarRegistrosActivos(int ca);
         int buscarRegistro(int d);
         int buscarRegistroInactivo(int d);
         int buscarRegistroPorPatente(const char *p);

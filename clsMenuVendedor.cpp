@@ -12,26 +12,11 @@ menuVendedor::menuVendedor(){
 }
 
 void menuVendedor::mostrarCabeceraTabla(int posX, int posY) {
-    rlutil::setColor(rlutil::CYAN);
-    rlutil::locate(posX, posY);
-    // Dibujamos la línea superior del cuadro adaptada a vendedores
-    cout << (char)218<<"----"<<(char)194<<"--------------"<<(char)194<<"--------------"<<(char)194<<"----------"<<(char)194;
-    cout << "--------------"<<(char)194<<"------------"<<(char)194<<"------------------------"<<(char)191 << endl;
-
-    rlutil::locate(posX, posY + 1);
-    cout << "| " << left << setw(2) << "NV"
-         << " | " << setw(12) << "NOMBRE"
-         << " | " << setw(12) << "APELLIDO"
-         << " | " << setw(8) << "D.N.I"
-         << " | " << setw(12) << "CATEGORIA"
-         << " | " << setw(10) << "FEC.CONTR."
-         << " | " << setw(22) << "MAIL" << " |";
-
-    rlutil::locate(posX, posY + 2);
-    cout <<(char)195<<"----"<<(char)197<<"--------------"<<(char)197<<"--------------"<<(char)197<<"----------"<<(char)197;
-    cout << "--------------"<<(char)197<<"------------"<<(char)197<<"------------------------|" << endl;
-
-    rlutil::setColor(rlutil::WHITE);
+    const int TAM = 7;
+    string columnas[TAM] = {"NV","NOMBRE","APELLIDO","D.N.I","CATEGORIA","FEC. CONTR.","MAIL"};
+    int anchos[TAM] = {2,12,12,8,12,12,22};
+    Menu m;
+    m.dibujarCabecera(posX, posY, columnas, anchos, TAM);
 }
 
 void menuVendedor::tablaVendedores(int posX, int posY){
@@ -42,31 +27,31 @@ void menuVendedor::tablaVendedores(int posX, int posY){
         cout << "No hay vendedores cargados." << endl;
         return;
     }
+    int cantActivos = arc.contarRegistrosActivos(cant);
+    if(cantActivos == 0){
+        cout << "No hay vendedores activos cargados." << endl;
+        return;
+    }
 
     mostrarCabeceraTabla(posX, posY);
+    posY += 3;
     Vendedor v;
     CategoriaVendedor c;
+    Menu m;
+    const int TAM = 7;
+    int anchos[TAM] = {2,12,12,8,12,12,22};
     int pC;
+    int filasDibujadas = 0;
     for(int i = 0; i < cant; i++){
         v = arc.leerRegistro(i);
         pC = v.getCategoria()-1;
         c = arc2.leerRegistro(pC);
         if(v.getEstado()){
-            cout << "| " << left << setw(2) << v.getNroVendedor()
-                 << " | " << setw(12) << v.getNombre()
-                 << " | " << setw(12) << v.getApellido()
-                 << " | " << setw(8) << v.getDni()
-                 << " | " << setw(12) << c.getDescripcion()
-                 << " | " << setw(10) << v.getFechaContratacion().mostrarFechaFormato();
-            cout << " | " << setw(22) << v.getMail() << " |" << endl;
-
-            if(i == cant - 1){
-                cout <<(char)192<<"----"<<(char)193<<"--------------"<<(char)193<<"--------------"<<(char)193<<"----------"<<(char)193;
-                cout<<"--------------"<<(char)193<<"------------"<<(char)193<<"------------------------"<<(char)217 << endl;
-            }else{
-                cout <<(char)195<<"----"<<(char)197<<"--------------"<<(char)197<<"--------------"<<(char)197<<"----------"<<(char)197;
-                cout << "--------------"<<(char)197<<"------------"<<(char)197<<"------------------------|" << endl;
-            }
+            filasDibujadas++;
+            string columnas[TAM] = {to_string(v.getNroVendedor()),v.getNombre(),v.getApellido(),v.getDni(),
+            c.getDescripcion(),v.getFechaContratacion().mostrarFechaFormato(),v.getMail()};
+            bool esFin = (filasDibujadas == cantActivos);
+            m.dibujarFila(posX, posY, columnas, anchos, TAM, esFin);
         }
     }
 }

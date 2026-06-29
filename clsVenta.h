@@ -30,6 +30,7 @@ class Venta {
         int getNroVehiculo();
         int getIdMarcaVehiculo();
         float getMonto();
+        std::string getMontoFormato();
         bool getEstado();
         void Cargar(int n, Fecha f, int nC, int nV, int nVeh, int iM, float m);
         void Mostrar();

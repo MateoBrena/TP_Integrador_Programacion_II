@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include <iomanip>
+#include <sstream>
 #include "clsVenta.h"
 using namespace std;
 
@@ -73,6 +74,14 @@ int Venta::getIdMarcaVehiculo(){
 
 float Venta::getMonto(){
     return monto;
+}
+
+string Venta::getMontoFormato(){
+    float montoFloat = getMonto();
+    stringstream ss;
+    ss << "$" << fixed << setprecision(2) << montoFloat;
+
+    return ss.str();
 }
 
 bool Venta::getEstado(){

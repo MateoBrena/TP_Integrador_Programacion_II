@@ -63,6 +63,17 @@ int ArchivoVendedores::contarRegistros(){
     return cant;
 }
 
+int ArchivoVendedores::contarRegistrosActivos(int ca){
+    int cantActivos = 0;
+    for(int i=0; i<ca; i++){
+        Vendedor v = leerRegistro(i);
+        if(v.getEstado()){
+            cantActivos++;
+        }
+    }
+    return cantActivos;
+}
+
 int ArchivoVendedores::buscarRegistro(int d){
 
     int cantReg = contarRegistros();

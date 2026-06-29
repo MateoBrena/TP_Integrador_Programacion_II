@@ -1,6 +1,7 @@
 #ifndef CLSVEHICULO_H_INCLUDED
 #define CLSVEHICULO_H_INCLUDED
 
+
 #include "clsFecha.h"
 
 class Vehiculo {
@@ -40,6 +41,7 @@ class Vehiculo {
         const char *getColor();
         int getKilometros();
         float getPrecio();
+        std::string getPrecioFormato();
         const char *getCombustible();
         Fecha getFechaIngreso();
         bool getEstado();

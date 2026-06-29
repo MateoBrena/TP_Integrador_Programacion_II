@@ -12,19 +12,11 @@ menuCategoriaVendedor::menuCategoriaVendedor(){
 }
 
 void menuCategoriaVendedor::mostrarCabeceraTabla(int posX, int posY) {
-    rlutil::setColor(rlutil::CYAN);
-    rlutil::locate(posX, posY);
-    cout << (char)218<<"-----"<<(char)194<<"----------------------"<<(char)194<<"------------"<<(char)191 << endl;
-
-    rlutil::locate(posX, posY + 1);
-    cout << "| " << left << setw(3) << "ID"
-         << " | " << setw(20) << "DESCRIPCION"
-         << " | " << setw(10) << "COMISION" << " |";
-
-    rlutil::locate(posX, posY + 2);
-    cout <<(char)195<<"-----"<<(char)197<<"----------------------"<<(char)197<<"------------|" << endl;
-
-    rlutil::setColor(rlutil::WHITE);
+    const int TAM = 3;
+    string columnas[TAM] = {"ID","DESCRIPCION","COMISION"};
+    int anchos[TAM] = {3,20,10};
+    Menu m;
+    m.dibujarCabecera(posX, posY, columnas, anchos, TAM);
 }
 
 void menuCategoriaVendedor::tablaCategorias(int posX, int posY){
@@ -40,23 +32,23 @@ void menuCategoriaVendedor::tablaCategorias(int posX, int posY){
         return;
     }
     mostrarCabeceraTabla(posX,posY);
+    posY += 3;
+    Menu m;
     CategoriaVendedor c;
+    const int TAM = 3;
+    int anchos[TAM] = {3,20,10};
+    int filasDibujadas = 0;
     for(int i=0; i<cant; i++){
         c = arc.leerRegistro(i);
         stringstream porcFormato;
         porcFormato << fixed << setprecision(2) << c.getPorcentajeComision() << "%";
         if(c.getEstado()){
-            cout << "| " << left << setw(3) << c.getIdCategoria()
-            << " | " << setw(20) << c.getDescripcion()
-            << " | " << setw(10) << porcFormato.str() << " |" << endl;
-            if(i == cant-1){
-                cout <<(char)192<<"-----"<<(char)193<<"----------------------"<<(char)193<<"------------"<<(char)217 << endl;
-            }else{
-                cout <<(char)195<<"-----"<<(char)197<<"----------------------"<<(char)197<<"------------|" << endl;
-            }
+            filasDibujadas++;
+            string columnas[TAM] = {to_string(c.getIdCategoria()),c.getDescripcion(),porcFormato.str()};
+            bool esFin = (filasDibujadas == cantActivos);
+            m.dibujarFila(posX, posY, columnas, anchos, TAM, esFin);
         }
     }
-
 }
 
 void menuCategoriaVendedor::subMenuBuscarCategoria(){

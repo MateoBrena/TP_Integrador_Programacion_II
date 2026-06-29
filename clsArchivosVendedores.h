@@ -12,6 +12,7 @@ class ArchivoVendedores {
         bool grabarRegistro(Vendedor);
         bool modificarRegistro(Vendedor, int pos);
         int contarRegistros();
+        int contarRegistrosActivos(int ca);
         int buscarRegistro(int d);
         int buscarRegistroxDNI(const char *d);
         void listarRegistros();

@@ -2,6 +2,7 @@
 #include <cstring>
 #include <cctype>
 #include <iomanip>
+#include <sstream>
 #include "clsVehiculo.h"
 #include "cargarCadena.h"
 using namespace std;
@@ -127,6 +128,14 @@ int Vehiculo::getKilometros(){
 
 float Vehiculo::getPrecio(){
     return precio;
+}
+
+string Vehiculo::getPrecioFormato(){
+    float precioFloat = getPrecio();
+    stringstream ss;
+    ss << "$" << fixed << setprecision(2) << precioFloat;
+
+    return ss.str();
 }
 
 const char* Vehiculo::getCombustible(){

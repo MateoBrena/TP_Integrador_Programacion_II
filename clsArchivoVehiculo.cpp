@@ -55,6 +55,17 @@ int ArchivoVehiculos::contarRegistros(){
     return cant;
 }
 
+int ArchivoVehiculos::contarRegistrosActivos(int ca){
+    int cantActivos = 0;
+    for(int i=0; i<ca; i++){
+        Vehiculo v = leerRegistro(i);
+        if(v.getEstado()){
+            cantActivos++;
+        }
+    }
+    return cantActivos;
+}
+
 int ArchivoVehiculos::buscarRegistro(int d){
     int cantReg = contarRegistros();
     for(int i = 0; i < cantReg; i++){

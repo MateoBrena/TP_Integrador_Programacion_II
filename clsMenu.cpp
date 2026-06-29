@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include "rlutil.h"
 #include <string>
 #include "clsMenu.h"
@@ -75,6 +76,102 @@ int Menu::mostrarMenu(string opciones[], int cantidad, int x, int y, int anchoMe
                 return pos;
         }
     }
+}
+
+void Menu::dibujarCabecera(int posX, int posY, string columnas[], int anchos[], const int cantidadColumnas){
+    rlutil::setColor(rlutil::CYAN);
+
+    unsigned char izqSup = 218, derSup = 191, cruceSup = 194;
+    unsigned char cruceMed = 197, izqMed = 195, derMed = 180;
+    unsigned char horizontal = 196, vertical = 179;
+
+    // Línea superior
+    rlutil::locate(posX, posY);
+    cout << izqSup;
+    for (int i = 0; i < cantidadColumnas; i++) {
+        for (int j = 0; j < anchos[i]+ 2; j++){
+            cout << horizontal;
+        }
+
+        if(i == cantidadColumnas -1){
+            cout << derSup;
+        }else{
+            cout << cruceSup;
+        }
+    }
+
+    // Títulos y textos
+    rlutil::locate(posX, posY + 1);
+    cout << vertical;
+    for (int i = 0; i < cantidadColumnas; i++) {
+        cout<< " " << left << setw(anchos[i]) << columnas[i]<< " " << vertical;
+    }
+
+    // Línea intermedia
+    rlutil::locate(posX, posY + 2);
+    cout << izqMed;
+    for (int i = 0; i < cantidadColumnas; i++) {
+        for (int j = 0; j < anchos[i]+ 2; j++){
+            cout << horizontal;
+        }
+
+        if(i == cantidadColumnas -1){
+            cout << derMed;
+        }else{
+            cout << cruceMed;
+        }
+    }
+    cout << endl;
+    rlutil::setColor(rlutil::WHITE);
+}
+
+void Menu::dibujarFila(int posX, int& posY, string datos[], int anchos[], const int cantidadColumnas, bool esUltimaFila){
+    rlutil::setColor(rlutil::WHITE);
+
+    unsigned char vertical = 179;
+    unsigned char izqMed = 195, derMed = 180, cruceMed = 197, horizontal = 196;
+    unsigned char izqInf = 192, derInf = 217, cruceInf = 193;
+
+    // Imprimir los datos de la fila
+    rlutil::locate(posX, posY);
+    cout << vertical;
+    for (int i = 0; i < cantidadColumnas; i++) {
+        cout << " " << left << setw(anchos[i]) << datos[i] << " " << vertical;
+    }
+    cout << endl;
+    posY++; // Bajamos una línea para el separador
+
+    // Imprimir el separador (intermedio o piso de la tabla)
+    rlutil::locate(posX, posY);
+    if (esUltimaFila) {
+        cout << izqInf;
+        for (int i = 0; i < cantidadColumnas; i++) {
+            for (int j = 0; j < anchos[i] + 2; j++){
+               cout << horizontal;
+            }
+            if(i == cantidadColumnas -1){
+                cout << derInf;
+            }else{
+                cout << cruceInf;
+            }
+        }
+    } else {
+        cout << izqMed;
+        for (int i = 0; i < cantidadColumnas; i++) {
+            for (int j = 0; j < anchos[i] + 2; j++){
+                cout << horizontal;
+            }
+            if(i == cantidadColumnas - 1){
+                cout << derMed;
+            }else{
+                cout << cruceMed;
+            }
+        }
+    }
+    cout << endl;
+    posY++; // Dejamos el cursor listo en la siguiente línea para el próximo registro
+
+    rlutil::setColor(rlutil::WHITE);
 }
 
 void Menu::iniciar(){
