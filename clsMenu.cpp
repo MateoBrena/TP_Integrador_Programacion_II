@@ -202,14 +202,13 @@ void Menu::iniciar(){
     while(true){
         rlutil::setBackgroundColor(rlutil::BLACK);
         system("cls");
-        // Imprimimos el título utilizando la coordenada X calculada
         rlutil::locate(posX, posY);
         cout << "================================";
         rlutil::locate(posX, posY + 1);
         cout << "|        MENU PRINCIPAL        |";
         rlutil::locate(posX, posY + 2);
         cout << "================================";
-        // Llamamos al menú pasándole la posición ajustada (debajo del título) y el ancho
+
         int opc = mostrarMenu(opcionesMenu, cantidadOpciones, posX, posY + 4, anchoMenu);
 
         system("cls");

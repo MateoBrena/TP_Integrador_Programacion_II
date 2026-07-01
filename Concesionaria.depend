@@ -71,7 +71,7 @@
 	"clsPersona.h"
 	"cargarCadena.h"
 
-1782749369 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsmenu.cpp
+1782862568 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsmenu.cpp
 	<iostream>
 	<iomanip>
 	"rlutil.h"
@@ -195,7 +195,7 @@
 
 1780692049 c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsmenuvehiculo.h
 
-1782756454 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsmenuventa.cpp
+1782760483 source:c:\users\matub\onedrive\escritorio\mateo\carrera tup\programacion ii\tpi\concesionaria\clsmenuventa.cpp
 	<iostream>
 	<string>
 	<iomanip>

@@ -174,6 +174,12 @@ void Reporte::mayorVendedor(){
         cout << endl << "ERROR DE ASIGNACION DE MEMORIA";
         return;
     }
+    int *ventasxVendedor;
+    ventasxVendedor = new int[cantVendedores]{};
+    if(ventasxVendedor==NULL){
+        cout << endl << "ERROR DE ASIGNACION DE MEMORIA";
+        return;
+    }
     ArchivoVentas arcVent;
     int cantVentas = arcVent.contarRegistros();
     if(cantVentas <= 0){
@@ -192,16 +198,26 @@ void Reporte::mayorVendedor(){
                 int nroCat = ve.getCategoria();
                 c = arcCat.leerRegistro(nroCat-1);
                 float monto = v.getMonto() * (c.getPorcentajeComision()/100.00);
-                montoxVendedor[i]+=monto;
+                montoxVendedor[i]+= monto;
+                ventasxVendedor[i]++;
             }
         }
     }
     int pos = buscarMayor(montoxVendedor, cantVendedores);
     ve = arcVend.leerRegistro(pos);
     cout << fixed << setprecision(2);
+//    for(int i=0; i<cantVendedores; i++){
+//        cout << montoxVendedor[i] << endl;
+//    }
+//    cout << endl;
+//    for(int i=0; i<cantVendedores; i++){
+//        cout << ventasxVendedor[i] << endl;
+//    }
     ve.Mostrar();
     cout << endl << "Comision por ventas: $" << montoxVendedor[pos] << endl;
+    cout << "Unidades vendidas: " << ventasxVendedor[pos] << endl;
     delete[] montoxVendedor;
+    delete[] ventasxVendedor;
 }
 
 void Reporte::marcaMasVendida(){
